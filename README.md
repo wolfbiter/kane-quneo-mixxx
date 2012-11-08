@@ -1,5 +1,6 @@
-Version 0.9.0
 #Kane QuNeo Mixxx Preset
+Version 0.9.0
+
 ------------------------
 ###[Introductory Video](http://google.com)
 ------------------------
