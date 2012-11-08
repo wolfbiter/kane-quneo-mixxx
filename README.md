@@ -1,3 +1,4 @@
+Version 1.0.0
 #Kane QuNeo Mixxx Preset
 ------------------------
 ###[Introductory Video](http://google.com)
