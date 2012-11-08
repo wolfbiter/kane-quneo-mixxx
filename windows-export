@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# copy linux configs to windows
+cp -r /home/kane/.mixxx/* /windows/Users/Andy/AppData/Local/Mixxx

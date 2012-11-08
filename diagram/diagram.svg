@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="640" height="480" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+
+ <g display="inline">
+  <title>outline</title>
+  <path id="svg_32" transform="rotate(-89.3703, 17.0691, 66.2168)" d="m6.023005,75.263474l11.045715,-18.089729l11.046537,18.089729l-22.092253,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_36" d="m213.612045,426.401459l17.278717,-24.549927l17.279984,24.549927l-34.558701,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_37" transform="rotate(179.391, 231.025, 446.878)" d="m213.744278,459.152618l17.278717,-24.549927l17.279984,24.549927l-34.558701,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_38" d="m582.649963,427.62442l17.278748,-24.549927l17.279968,24.549927l-34.558716,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_39" transform="rotate(179.391, 600.704, 448.101)" d="m583.423279,460.37561l17.278687,-24.549927l17.280029,24.549927l-34.558716,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <rect id="svg_46" height="82.63489" width="92.215502" y="297.261922" x="214.078154" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_50" height="82.63489" width="92.215502" y="200.854562" x="213.780073" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_51" height="82.63489" width="92.215502" y="106.242046" x="213.479473" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <rect id="svg_52" height="82.63489" width="92.215502" y="11.63187" x="213.180016" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_53" height="82.63489" width="92.215502" y="296.49714" x="320.085016" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_54" height="82.63489" width="92.215502" y="200.08978" x="319.786936" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_55" height="82.63489" width="92.215502" y="105.477264" x="319.486335" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_56" height="82.63489" width="92.215502" y="10.867088" x="319.186879" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_65" height="82.63489" width="92.215502" y="296.497983" x="426.842776" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_66" height="82.63489" width="92.215502" y="200.090623" x="426.544695" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_67" height="82.63489" width="92.215502" y="105.478107" x="426.244094" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_68" height="82.63489" width="92.215502" y="10.867931" x="425.944638" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_77" height="82.63489" width="92.215502" y="296.496873" x="532.248125" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_78" height="82.63489" width="92.215502" y="200.089513" x="531.950045" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_79" height="82.63489" width="92.215502" y="105.476997" x="531.649444" stroke-width="3" stroke="#000000" fill="none"/>
+  <rect id="svg_80" height="82.63489" width="92.215502" y="10.866821" x="531.349988" stroke-width="3" stroke="#000000" fill="none"/>
+  <ellipse transform="rotate(-89.9922, 418.443, 427.495)" ry="152.494271" rx="16.684473" id="svg_82" cy="427.494833" cx="418.443416" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_86" transform="rotate(90.2301, 45.1023, 66.0645)" d="m34.056412,75.110504l11.045715,-18.089706l11.046539,18.089706l-22.092255,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_90" transform="rotate(-89.3703, 16.1628, 109.146)" d="m5.116905,118.192863l11.045715,-18.089737l11.046539,18.089737l-22.092255,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_91" transform="rotate(90.2301, 44.8495, 109.636)" d="m33.803917,118.680908l11.045715,-18.089691l11.046539,18.089691l-22.092255,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_92" transform="rotate(-89.3703, 16.1628, 152.736)" d="m5.117069,161.782867l11.045715,-18.089752l11.046539,18.089752l-22.092255,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_93" transform="rotate(90.2301, 44.8386, 152.584)" d="m33.791512,161.629883l11.045715,-18.089706l11.046539,18.089706l-22.092255,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_94" transform="rotate(-89.3703, 16.8184, 196.967)" d="m5.771626,206.013184l11.045715,-18.089752l11.046539,18.089752l-22.092255,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_95" transform="rotate(90.2301, 44.8386, 196.814)" d="m33.792473,205.860199l11.045715,-18.089691l11.046539,18.089691l-22.092255,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <ellipse ry="10.89747" rx="73.076926" id="svg_96" cy="66.153804" cx="132.43585" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <ellipse id="svg_98" ry="10.89747" rx="73.076926" cy="109.743322" cx="132.114927" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <ellipse id="svg_99" ry="10.89747" rx="73.076926" cy="153.333326" cx="132.757296" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <ellipse id="svg_100" ry="10.89747" rx="73.076926" cy="197.563633" cx="132.756689" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <ellipse ry="37.173201" rx="41.647928" id="svg_101" cy="262.251144" cx="48.983243" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <ellipse id="svg_105" ry="37.173201" rx="40.994341" cy="261.906684" cx="152.82884" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <ellipse transform="rotate(-90.0016, 37.2438, 393.076)" id="svg_110" ry="10.89747" rx="73.076926" cy="393.076106" cx="37.244405" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <ellipse id="svg_111" transform="rotate(-90.0016, 82.1144, 394.36)" ry="10.89747" rx="73.076926" cy="394.360117" cx="82.115041" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <ellipse id="svg_112" transform="rotate(-90.0016, 125.706, 394.359)" ry="10.89747" rx="73.076926" cy="394.358973" cx="125.706288" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <ellipse id="svg_113" transform="rotate(-90.0016, 168.013, 393.668)" ry="10.89747" rx="73.076926" cy="393.668483" cx="168.013417" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_114" d="m84.90287,302.613342l17.042,-9.525421l17.042252,9.525421l-17.042252,9.525269l-17.042,-9.525269z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path transform="rotate(-90.0006, 78.9539, 24.2478)" id="svg_116" d="m64.853127,24.249657l14.100914,-14.427338l14.101097,14.427338l-14.101097,14.427109l-14.100914,-14.427109z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_117" transform="rotate(134.509, 123.072, 23.597)" d="m106.874451,23.597275l16.198334,-16.489308l16.198547,16.489308l-16.198547,16.489025l-16.198334,-16.489025z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_118" transform="rotate(90.2301, 168.518, 24.2863)" d="m156.497696,34.969677l12.01944,-21.365505l12.02037,21.365505l-24.03981,0z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+  <path id="svg_119" d="m17.435202,20.197184l3.677608,-6.36946l6.369511,-3.677649l7.35533,0l6.369503,3.677649l3.677704,6.36946l0,7.355379l-3.677704,6.369469l-6.369503,3.677685l-7.35533,0l-6.369511,-3.677685l-3.677608,-6.369469l0,-7.355379z" stroke-width="3" stroke="#000000" fill="#ffffff"/>
+ </g>
+ <g display="inline">
+  <title>shading</title>
+  <rect opacity="0.5" id="svg_127" height="381.045768" width="213.071886" y="4.967277" x="205.751619" stroke-width="3" stroke="#ffffff" fill="#007fff"/>
+  <rect id="svg_129" height="71.24153" width="48.366175" y="395.817274" x="207.058804" opacity="0.5" stroke-width="3" stroke="#ffffff" fill="#007fff"/>
+  <rect id="svg_133" height="164.052029" width="27.45046" y="49.738878" x="4.117866" opacity="0.5" stroke-width="3" stroke="#ffffff" fill="#007fff"/>
+  <rect id="svg_134" height="165.359211" width="26.796836" y="49.41053" x="30.588549" opacity="0.5" stroke-width="3" stroke="#ffffff" fill="#ff7f00"/>
+  <rect id="svg_136" height="71.24153" width="48.366175" y="396.144498" x="577.319893" opacity="0.5" stroke-width="3" stroke="#ffffff" fill="#ff7f00"/>
+  <rect id="svg_137" opacity="0.5" height="381.045768" width="211.764685" y="4.314269" x="419.479485" stroke-width="3" stroke="#ffffff" fill="#ff7f00"/>
+  <ellipse ry="38.562093" rx="43.790851" id="svg_138" cy="261.830035" cx="48.888882" opacity="0.5" stroke-width="3" stroke="#ffffff" fill="#007fff"/>
+  <ellipse id="svg_139" ry="38.562093" rx="43.790851" cy="261.176429" cx="152.483868" opacity="0.5" stroke-width="3" stroke="#ffffff" fill="#ff7f00"/>
+  <ellipse opacity="0.45" ry="23.529292" rx="165.359538" id="svg_213" cy="427.124088" cx="418.562289" stroke="#ffffff" fill="#7f00ff"/>
+  <ellipse transform="rotate(89.8086, 38.4316, 391.566)" id="svg_221" opacity="0.45" ry="19.256752" rx="74.822449" cy="391.566479" cx="38.431665" stroke="#ffffff" fill="#7f00ff"/>
+  <ellipse id="svg_222" transform="rotate(89.8086, 82.877, 392.547)" opacity="0.45" ry="19.256752" rx="74.822449" cy="392.547114" cx="82.877792" stroke="#ffffff" fill="#7f00ff"/>
+  <ellipse id="svg_223" transform="rotate(89.8086, 124.709, 392.547)" opacity="0.45" ry="19.256752" rx="74.822449" cy="392.547114" cx="124.707856" stroke="#ffffff" fill="#7f00ff"/>
+  <ellipse id="svg_224" transform="rotate(89.8086, 167.846, 393.201)" opacity="0.45" ry="19.256752" rx="74.822449" cy="393.200709" cx="167.845119" stroke="#ffffff" fill="#7f00ff"/>
+  <ellipse id="svg_225" transform="rotate(-179.999, 133.205, 198.43)" opacity="0.45" ry="19.256752" rx="74.822449" cy="198.429466" cx="133.20459" stroke="#ffffff" fill="#7f00ff"/>
+  <ellipse id="svg_227" transform="rotate(-179.999, 133.857, 153.334)" opacity="0.45" ry="19.256752" rx="74.822449" cy="153.335033" cx="133.855717" stroke="#ffffff" fill="#7f00ff"/>
+  <ellipse id="svg_228" transform="rotate(-179.999, 133.857, 109.545)" opacity="0.45" ry="19.256752" rx="74.822449" cy="109.544183" cx="133.855717" stroke="#ffffff" fill="#7f00ff"/>
+  <ellipse id="svg_229" transform="rotate(-179.999, 131.24, 65.0996)" opacity="0.45" ry="19.256752" rx="74.822449" cy="65.099735" cx="131.241348" stroke="#ffffff" fill="#7f00ff"/>
+  <ellipse ry="11.764706" rx="18.954249" id="svg_230" cy="302.352913" cx="102.483655" opacity="0.45" stroke="#ffffff" fill="#7f00ff"/>
+  <rect id="svg_233" height="24.70649" width="82.352921" y="452.35238" x="280.0015" opacity="0.5" stroke-width="3" stroke="#ffffff" fill="#007fff"/>
+  <rect id="svg_236" height="24.118362" width="84.117633" y="451.470317" x="464.117448" opacity="0.5" stroke-width="3" stroke="#ffffff" fill="#ff7f00"/>
+  <rect id="svg_239" height="24.70649" width="82.352921" y="452.353159" x="375.296273" opacity="0.5" stroke-width="3" stroke="#ffffff" fill="#7f00ff"/>
+ </g>
+ <g display="inline">
+  <title>text</title>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_140" y="344.836578" x="261.960785" stroke-width="0" stroke="#ffffff" fill="#00007f">Reloop</text>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_142" y="248.75814" x="258.692808" stroke-width="0" stroke="#ffffff" fill="#00007f">Play</text>
+  <text transform="matrix(0.571783, 0, 0, 0.561031, 138.66, 88.2876)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_144" y="227.927903" x="351.667376" stroke-width="0" stroke="#ffffff" fill="#000000">Sync</text>
+  <text id="svg_146" transform="matrix(0.571783, 0, 0, 0.561031, 138.66, 88.2876)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="336.596666" x="344.807885" stroke-width="0" stroke="#ffffff" fill="#000000">Cue</text>
+  <text id="svg_147" transform="matrix(0.357556, 0, 0, 0.468599, 221.584, 116.637)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="340.187247" x="466.632185" stroke-width="0" stroke="#ffffff" fill="#000000">Kill Mids</text>
+  <text id="svg_148" transform="matrix(0.350777, 0, 0, 0.50571, 223.995, 101.206)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="227.60923" x="466.91294" stroke-width="0" stroke="#ffffff" fill="#000000">Kill Highs</text>
+  <text id="svg_149" transform="matrix(0.326585, 0, 0, 0.50571, 233.622, 107.73)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="399.526246" x="476.022325" stroke-width="0" stroke="#ffffff" fill="#000000">Kill Lows</text>
+  <text id="svg_153" transform="matrix(0.450822, 0, 0, 0.654427, 176.862, 52.9215)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="397.172679" x="364.551889" stroke-width="0" stroke="#ffffff" fill="#000000">Double</text>
+  <text id="svg_154" transform="matrix(0.357556, 0, 0, 0.468599, 221.584, 116.637)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="339.465243" x="641.202711" stroke-width="0" stroke="#ffffff" fill="#000000">Kill Mids</text>
+  <text id="svg_155" transform="matrix(0.350777, 0, 0, 0.50571, 223.995, 101.206)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="225.647782" x="644.857158" stroke-width="0" stroke="#ffffff" fill="#000000">Kill Highs</text>
+  <text id="svg_156" transform="matrix(0.326585, 0, 0, 0.50571, 233.622, 107.73)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="398.857228" x="663.145276" stroke-width="0" stroke="#ffffff" fill="#000000">Kill Lows</text>
+  <text id="svg_157" transform="matrix(0.450822, 0, 0, 0.654427, 176.862, 52.9215)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="487.720237" x="361.27725" stroke-width="0" stroke="#ffffff" fill="#000000">Halve</text>
+  <text id="svg_158" transform="matrix(0.450822, 0, 0, 0.654427, 176.862, 52.9215)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="487.718638" x="474.365419" stroke-width="0" stroke="#ffffff" fill="#000000">4Loop</text>
+  <text id="svg_159" transform="matrix(0.571783, 0, 0, 0.561031, 138.66, 88.2876)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="227.40181" x="626.854369" stroke-width="0" stroke="#ffffff" fill="#000000">Sync</text>
+  <text id="svg_160" transform="matrix(0.571783, 0, 0, 0.561031, 138.66, 88.2876)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="336.070573" x="632.568779" stroke-width="0" stroke="#ffffff" fill="#000000">Cue</text>
+  <text id="svg_161" transform="matrix(0.450822, 0, 0, 0.654427, 176.862, 52.9215)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="396.721668" x="713.574903" stroke-width="0" stroke="#ffffff" fill="#000000">Double</text>
+  <text id="svg_162" transform="matrix(0.450822, 0, 0, 0.654427, 176.862, 52.9215)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="487.269225" x="714.649617" stroke-width="0" stroke="#ffffff" fill="#000000">Halve</text>
+  <text id="svg_163" transform="matrix(0.450822, 0, 0, 0.654427, 176.862, 52.9215)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="487.71895" x="599.042343" stroke-width="0" stroke="#ffffff" fill="#000000">4Loop</text>
+  <text id="svg_164" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="340.261887" x="579.607711" stroke-width="0" stroke="#ffffff" fill="#7f0000">Reloop</text>
+  <text id="svg_165" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="244.183449" x="576.339734" stroke-width="0" stroke="#ffffff" fill="#7f0000">Play</text>
+  <text id="svg_166" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-149.732837" x="16.932742" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 1</text>
+  <text id="svg_167" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-37.529395" x="21.287662" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 1</text>
+  <text id="svg_168" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-38.73299" x="158.99172" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 2</text>
+  <text id="svg_169" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-148.416244" x="164.215068" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 2</text>
+  <text id="svg_170" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-150.27898" x="307.147174" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 3</text>
+  <text id="svg_171" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-38.075538" x="311.502094" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 3</text>
+  <text id="svg_172" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-39.279132" x="449.206151" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 4</text>
+  <text id="svg_173" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-148.962386" x="454.4295" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 4</text>
+  <text id="svg_174" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="26.896618" x="19.549592" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 5</text>
+  <text id="svg_175" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="139.10006" x="23.904512" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 5</text>
+  <text id="svg_176" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="137.896466" x="161.60857" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 6</text>
+  <text id="svg_177" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="28.213212" x="166.831918" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 6</text>
+  <text id="svg_178" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="24.48605" x="301.918371" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 7</text>
+  <text id="svg_179" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="136.689492" x="306.27329" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 7</text>
+  <text id="svg_180" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="135.485898" x="443.977348" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 8</text>
+  <text id="svg_181" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="25.802643" x="449.200696" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 8</text>
+  <text id="svg_182" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-153.949748" x="583.850269" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 1</text>
+  <text id="svg_183" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-41.746307" x="588.205188" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 1</text>
+  <text id="svg_184" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-42.949901" x="725.909246" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 2</text>
+  <text id="svg_185" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-152.633155" x="731.132594" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 2</text>
+  <text id="svg_186" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-154.495891" x="874.0647" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 3</text>
+  <text id="svg_187" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-42.292449" x="878.41962" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 3</text>
+  <text id="svg_188" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-43.496044" x="1016.123678" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 4</text>
+  <text id="svg_189" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="-153.179298" x="1021.347026" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 4</text>
+  <text id="svg_190" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="22.679707" x="586.467119" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 5</text>
+  <text id="svg_191" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="134.883149" x="590.822038" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 5</text>
+  <text id="svg_192" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="133.679555" x="728.526096" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 6</text>
+  <text id="svg_193" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="23.9963" x="733.749444" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 6</text>
+  <text id="svg_194" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="20.269139" x="868.835897" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 7</text>
+  <text id="svg_195" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="132.472581" x="873.190816" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 7</text>
+  <text id="svg_196" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="131.268986" x="1010.894874" stroke-width="0" stroke="#ffffff" fill="#000000">Clear 8</text>
+  <text id="svg_197" transform="matrix(0.374979, 0, 0, 0.542271, 224.566, 107.626)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="21.585732" x="1016.118223" stroke-width="0" stroke="#ffffff" fill="#000000">Cue 8</text>
+  <text transform="matrix(0.333265, 0, 0, 0.507533, -24.3719, 23.2327)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_198" y="61.202078" x="169.81557" stroke="#7c6666" fill="#000000">Keylock</text>
+  <text id="svg_199" transform="matrix(0.333265, 0, 0, 0.507533, -24.3719, 23.2327)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="223.50245" x="164.915498" stroke="#7c6666" fill="#000000">Headphones</text>
+  <text id="svg_200" transform="matrix(0.333265, 0, 0, 0.507533, -24.3719, 23.2327)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="312.36009" x="162.953676" stroke="#7c6666" fill="#000000">Flanger</text>
+  <text id="svg_201" transform="matrix(0.333265, 0, 0, 0.507533, -24.3719, 23.2327)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="141.084034" x="166.876674" stroke="#7c6666" fill="#000000">???</text>
+  <text transform="matrix(0.65796, 0, 0, 0.476293, 28.6996, 23.6522)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_202" y="94.012812" x="153.7429" stroke="#000000" fill="#3f7f00">Master</text>
+  <text id="svg_203" transform="matrix(0.65796, 0, 0, 0.476293, 28.6996, 23.6522)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="187.467688" x="156.270408" stroke="#000000" fill="#3f7f00">Flanger LFO</text>
+  <text id="svg_204" transform="matrix(0.572687, 0, 0, 0.404134, 35.0417, 48.564)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="376.201889" x="165.126463" stroke="#000000" fill="#3f7f00">Flanger Depth</text>
+  <text id="svg_205" transform="matrix(0.65796, 0, 0, 0.476293, 28.6996, 23.6522)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="279.408676" x="158.257139" stroke="#000000" fill="#3f7f00">Headphones</text>
+  <text transform="matrix(0.667958, 0, 0, 0.680806, 6.96573, 78.365)" id="svg_206" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="275.811431" x="58.704789" stroke-width="0" stroke="#ffffff" fill="#00007f">Scratch</text>
+  <text transform="matrix(0.742972, 0, 0, 0.67711, 21.0204, 80.8891)" id="svg_207" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="272.57964" x="178.140152" stroke-width="0" stroke="#ffffff" fill="#7f0000">Scratch</text>
+  <text id="svg_209" transform="matrix(0.571783, 0, 0, 0.561031, 138.66, 88.2876)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="557.945322" x="163.058901" stroke-width="0" stroke="#ffffff" fill="#000000">Nudge Up</text>
+  <text id="svg_210" transform="matrix(0.571783, 0, 0, 0.561031, 138.66, 88.2876)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="677.938924" x="161.920803" stroke-width="0" stroke="#ffffff" fill="#000000">Nudge Down</text>
+  <text id="svg_211" transform="matrix(0.571783, 0, 0, 0.561031, 138.66, 88.2876)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="556.197549" x="800.894563" stroke-width="0" stroke="#ffffff" fill="#000000">Nudge Up</text>
+  <text id="svg_212" transform="matrix(0.571783, 0, 0, 0.561031, 138.66, 88.2876)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="676.191151" x="799.756466" stroke-width="0" stroke="#ffffff" fill="#000000">Nudge Down</text>
+  <text transform="matrix(0.652119, 0, 0, 0.486461, 23.0335, 136.924)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_232" y="319.529537" x="122.311477" opacity="0.85" stroke-width="0" stroke="#ffffff" fill="#000000">Bank</text>
+  <text transform="matrix(0.822304, 0, 0, 0.936975, 48.1244, 24.2312)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_235" y="478.040068" x="335.276553" stroke-width="0" stroke="#ffffff" fill="#00007f">DECK 1</text>
+  <text id="svg_238" transform="matrix(0.822304, 0, 0, 0.936975, 48.1244, 24.2312)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="476.971546" x="557.39441" stroke-width="0" stroke="#ffffff" fill="#7f0000">DECK 2</text>
+  <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_231" y="436.862722" x="420.52288" opacity="0.85" stroke-width="0" stroke="#ffffff" fill="#00007f">Xfader</text>
+  <text id="svg_241" transform="matrix(0.803417, 0, 0, 0.844391, 56.0228, 69.2374)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="476.83606" x="450.106148" stroke-width="0" stroke="#ffffff" fill="#00007f">Misc</text>
+ </g>
+</svg>

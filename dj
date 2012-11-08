@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# can be called with first arg of 1, which updates mixxx's global
+# configs based on quneo-mixxx/install-tools/.mixxx
+
+# find where script is located
+DIR=$(cd $(dirname "$0"); pwd)
+
+# copy over any saved script/midi.xml changes to both
+# local and global mixxx resource locations
+cp $DIR/mixxx-controls/KANE_QuNeo_scripts.js $DIR/mixxx/res/controllers/
+cp $DIR/mixxx-controls/KANE_QuNeo.midi.xml $DIR/mixxx/res/controllers/
+
+sudo cp $DIR/mixxx-controls/KANE_QuNeo_scripts.js /usr/share/mixxx/midi
+sudo cp $DIR/mixxx-controls/KANE_QuNeo.midi.xml /usr/share/mixxx/midi
+
+# run mixx
+$DIR/mixxx/mixxx --resourcePath $DIR/mixxx/res/
+

@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+# can be called with date of modified traktor entries to export as first arg
+# in the format 'yyyy/mm/dd'; else will default to today
+
+import xml.etree.ElementTree as ET
+import datetime
+import sys
+
+day = datetime.date.today().strftime("%Y/%m/%d")
+
+# if we were given an arg, make that be the day to check
+try:
+    day = sys.argv[1]
+except IndexError:
+    pass
+
+with open("test.data","w") as f:
+    tree = ET.parse('/windows/Users/Andy/Documents/Native Instruments/Traktor 2.0.1/collection.nml')
+    root = tree.getroot()
+    for collection in root.findall('COLLECTION'):
+
+        # find all songs in database
+        for song in collection:
+            try:
+                f.write("SONG TITLE: " + \
+                    str(song.attrib["TITLE"]) + \
+                    "\n")
+                f.write(str(song.attrib) + "\n")
+            except UnicodeEncodeError:
+                pass
+
+            # check to see if this song has been modified on the proper day
+            dateModified = str(song.attrib['MODIFIED_TIME']) 
+            if (dateModified == day):
+                print "SONG MODIFIED TODAY"
+
+            # find which cue is the beat marker
+            for beatMarker in song.findall('CUE_V2'):
+                if (str(beatMarker.attrib['NAME']) == 'Beat Marker'):
+                    f.write(str("\n" + beatMarker.tag)+" "  \
+                            + str(beatMarker.attrib) + "\n")
+
+            f.write("END SONG\n\n\n\n")
+
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
