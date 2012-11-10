@@ -7,9 +7,9 @@ Version 0.9.0
 + This repository contains all the components necessary to link a QuNeo to Mixxx with
 my customized set of controls and LEDs.
 
-+ Here are several quick-reference guides for the [Controls](#controls).
++ Here are several quick-reference guides for the [The Controls](#i-controls-list).
 
-+ Feel free to [Contact Me](#contact) with any questions, suggestions, or bug reports!
++ Feel free to [Contact Me](#iii-contact-me) with any questions, suggestions, or bug reports!
 
 ####NOTE: The guide assumes the user already has Mixxx installed.
 [Link-to-Mixxx's-Website](http://www.mixxx.org/).
