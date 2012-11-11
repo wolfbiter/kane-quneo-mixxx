@@ -62,7 +62,7 @@ END INDEX*/
 KANE_QuNeo.assertionDelayTimer = 60; // time(ms) to wait before asserting LEDs
 KANE_QuNeo.jumpLoopTimer = 70; // time(ms) to wait before executing a jumped loop 
 KANE_QuNeo.jumpSyncTimer = 30; // time(ms) to wait before executing a jumped sync 
-KANE_QuNeo.beatOffset = 50; // time(ms) to wait before signaling a beat, used
+KANE_QuNeo.beatOffset = 70; // time(ms) to wait before signaling a beat, used
 // to synchronize LED's and actual audible beat
 
 KANE_QuNeo.minBrightness = .2 // minimum value for flashing LEDs, 0...1
@@ -1030,7 +1030,7 @@ KANE_QuNeo.resetBeat = function (deck) {
     var spb = 60/bpm // seconds per beat
 
     KANE_QuNeo.cancelScheduledBeats(deck) // first, cancel old beats
-    KANE_QuNeo.wholeBeat[channel] = 1; // set beat to 1,
+    KANE_QuNeo.wholeBeat[channel] = KANE_QuNeo.totalBeats; // set beat to 1,
     KANE_QuNeo.scheduleBeat(deck, 1, spb, 1) // then schedule this beat
 }
 
@@ -1079,6 +1079,8 @@ KANE_QuNeo.handleBeat = function (deck) {
     var channel = deck - 1; // confusing, yes. channels start from 0.
     var channelName = KANE_QuNeo.getChannelName(deck);
 
+    print("previous beat: "+KANE_QuNeo.wholeBeat[channel])
+
     // signify that this beat was reached outside the beat_active window
     engine.beginTimer(KANE_QuNeo.beatOffset,
 		      "KANE_QuNeo.resetNextBeatTimer("+deck+")",
@@ -1095,6 +1097,8 @@ KANE_QuNeo.handleBeat = function (deck) {
     var spb = samplerate * 60 * 2 / bpm // samples per beat, not sure on the 2.
     var position = value * samples; // scale 0...1 to position in samples
     var diff = position - KANE_QuNeo.lastBeatPosition[channel];
+
+    //print("percent diff from last beat: "+diff / spb)
 
     // if this is a consecutive beat, do regular stuff:
     if (diff >= .8*spb && diff <= 1.2*spb) {
@@ -2090,7 +2094,7 @@ KANE_QuNeo.deckVuMeter = function (deck, value) {
 KANE_QuNeo.masterVuMeter = function (value) {
     // adjust from 0...1 to 0...127
     var values = KANE_QuNeo.defineValues(value);
-
+    
     // top horizontal slider
     KANE_QuNeo.LEDs(0xb0,0x0b,values.squared);
     // AssertLED Button
