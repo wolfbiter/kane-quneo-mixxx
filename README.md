@@ -107,8 +107,6 @@ The rotaries, in dj mode, serve one of two functions:
 touch for the left and right decks respectively.
 + Pressing the playscratch button toggles playscratch off (the play transport button is dark), which turns the rotaries
 into turntables for scratching.
-+ The sensitivity of the scratches can be modified by tweaking the KANE_QuNeo.scratchSpeed variable in
-kane-quneo-mixxx/mixxx-controls/KANE_QuNeo_scripts.js (make sure to reinstall after modifying!).
 
 #####4) Vertical Sliders / Rhombus
 The rhombus serves as a bank to the vertical sliders. This means that pressing the rhombus will cycle through different
@@ -123,7 +121,7 @@ the loaded song, then the slider will be full. As deck 1 progresses through the 
 linearly until it reaches empty when the song is at the end. Touching the slider will jump the song to the place you
 press; however, be forewarned that the limited range of slider values (0 - 127) lends the cursor to imprecision.
 
-**Mode 2 (Rhombus Green) **
+**Mode 2 (Rhombus Green)**
 + *Gain* (ChannelN, gain)
 + *Rate* (ChannelN, rate)
 
@@ -135,23 +133,34 @@ press; however, be forewarned that the limited range of slider values (0 - 127) 
 + *FilterMids* (ChannelN, filterMid)
 + *FilterLows* (ChannelN, filterLow)
 
-#####5) Rate Nudges / Crossfader
+#####5) Rate Nudging / Crossfader
 + The *Crossfader* (Master, crossfader) works however your Mixxx settings dictate (default: left for left deck
 full volume, middle for both decks full volume, right for right deck full volume).
 + A single press given to the vertical arrows will *Rate Nudge* (ChannelN, rate_perm_X_small) the appropriate deck in
 the pressed direction.
-+ *Auto Rate Nudge*: 
++ *Auto Rate Nudge*: pressing and holding any of the vertical arrows for more than the prescribed time (default: 500ms)
+will activate auto nudge in the direction of the pressed arrow. Auto nudge, indicated by the vertical arrow LEDs in
+the direction chosen, will proceed to nudge all decks and samplers at the prescribed rate (default: 800ms between
+nudges) until one of two things happen: 1) pressing any vertical arrow will stop auto nudge, or 2) the deck corresponding
+to the vertical arrow press nears its natural (file) bpm (0% rate adjustment). The 2nd option is sugar to allow the DJ
+to, for example, unnoticably nudge down during the outtro of a 132 BPM song to reach 125 BPM for the next song with
+a single button press (thereby freeing the DJ to perform more complex transitions).
 
+#####6) Hotcues
 
+### III) Customizing This Preset
++ TODO: Documentation
++ EXAMPLE: The sensitivity of the scratches can be modified by tweaking the KANE_QuNeo.scratchSpeed variable in
+kane-quneo-mixxx/mixxx-controls/KANE_QuNeo_scripts.js (make sure to reinstall after modifying!).
 
-### III) Troubles
+### IV) Troubles
 #####1. LED's out of whack
 You can simply reselect whatever mode you happen to be in, and reassert the LEDs.
 Doing this should simultaneously clear any garbage LED values and assert the proper values.
 
 #####2. [Contact Me!](#iii-contact-me)
 
-### IV) TODO:
+### V) TODO:
 + allow for 4 decks
 + 1 shot samples via sampler decks
 + allow for cue place/delete undos
@@ -159,8 +168,11 @@ Doing this should simultaneously clear any garbage LED values and assert the pro
 + revamp jumploop system
 + VuMeters to reflect volume when track stopped
 + more sliders to pulse to kicks, hitting true value? (maybe too noisy for practical use)
++ add functionality to discretely change the key of a given deck up/down one half-step at a time
++ fix auto nudge so that the nudge rates are consistent between decks (it's messed up because nudge operates on % of
+natural BPM, which is off course different for different natural BPMs). 
 
-### <a id="contact"></a>V) Contact Me
+## <a id="contact"></a>Contact Me
 #####One of four ways:
 + post to this preset's [Mixxx Forum Thread](http://mixxx.org/forums/viewtopic.php?f=7&t=4130&sid=d276c35cf0670fa571eb4e8519a6ffa8)
 + post to this preset's [KMI Forums Thread](http://forum.keithmcmillen.com/viewtopic.php?f=52&t=677)
