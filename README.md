@@ -79,26 +79,27 @@ press the mode button and the pad of the mode you're in will highlight. Pressing
 will return you to your original mode.
 
 ### <a id="controls"></a>II) Controls List
-Many of the controls map directly to Mixxx - further details of them can be found 
-[here](http://www.mixxx.org/wiki/doku.php/mixxxcontrols) - and are marked with (M)
++ Many of the controls map directly to Mixxx.
++ These are indicated by (Group, Control), and further details of them can be found
+[here](http://www.mixxx.org/wiki/doku.php/mixxxcontrols).
 #### DJ Mode (13)
 ![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
 
 #####1) Horizontal Sliders
 The horizontal sliders each manipulate one control in Mixxx.
-+ Slider 1: Master Volume (M), but the LEDs correspond to the Master VuMeter (M)
-+ Slider 2: Headphone Volume (M)
-+ Slider 3: Flanger LFO (M)
-+ Slider 4: Flanger Depth (M)
++ Slider 1: Master Volume (Master, volume), but the LEDs correspond to the Master VuMeter (Master, VuMeter)
++ Slider 2: Headphone Volume (Master, headVolume)
++ Slider 3: Flanger Period (Flanger, lfoPeriod)
++ Slider 4: Flanger Depth (Flanger, lfoDepth)
 
 #####2) Horizontal Arrows
 The horizontal arrows correspond to on/off toggles for controls for each deck. When the left arrow is on, the control
 is enabled for the left deck. Symmetrically, hen the right arrow is on, the control is enabled for the right deck.
 The controls are as follows:
-+ Topmost: Keylock (M)
-+ Middle Top: pfl (sends selected decks to headphones) (M)
-+ Middle Bottom: Slip Enabled (M)
-+ Bottom: Flanger (M)
++ Topmost: Keylock (ChannelN, keylock)
++ Middle Top: Send deck to headphones (ChannelN, pfl)
++ Middle Bottom: Slip Enabled (ChannelN, slip_enabled)
++ Bottom: Flanger (ChannelN, flanger)
 
 #####3) Rotaries / Playscratch
 The rotaries, in dj mode, serve one of two functions:
@@ -114,15 +115,33 @@ The rhombus serves as a bank to the vertical sliders. This means that pressing t
 vertical slider modes, with unique functionality offered by each mode. The modes are denoted by rhombus color:
 + Off == 1, Green == 2, Red == 3, and Orange == 4. 
 + Refer to the diagram to see which modes correspond with which functionality.
-+ Zoom: zooms the waveform in and out with 6 discrete steps.
-+ Cursor: transforms the slider into a 1 - 0 position indicator for the deck. For example, if deck 1 is at the start of
+
+**Mode 1 (Rhombus Off)**
++ *Zoom*: zooms the waveform in and out with 6 discrete steps.
++ *Cursor*: transforms the slider into a 1 - 0 position indicator for the deck. For example, if deck 1 is at the start of
 the loaded song, then the slider will be full. As deck 1 progresses through the song, the slider LED value will decrease
 linearly until it reaches empty when the song is at the end. Touching the slider will jump the song to the place you
 press; however, be forewarned that the limited range of slider values (0 - 127) lends the cursor to imprecision.
-+ Gain:                                                                          
 
+**Mode 2 (Rhombus Green) **
++ *Gain* (ChannelN, gain)
++ *Rate* (ChannelN, rate)
 
-#####5) 
+**Mode 3 (Rhombus Red)**
++ *Deck Volume* (ChannelN, volume), but the LEDs correspond to the *Deck VuMeter* (ChannelN, VuMeter)
++ *Highs* (ChannelN, filterHigh)
+
+**Mode 4 (Rhombus Orange)**
++ *FilterMids* (ChannelN, filterMid)
++ *FilterLows* (ChannelN, filterLow)
+
+#####5) Rate Nudges / Crossfader
++ The *Crossfader* (Master, crossfader) works however your Mixxx settings dictate (default: left for left deck
+full volume, middle for both decks full volume, right for right deck full volume).
++ A single press given to the vertical arrows will *Rate Nudge* (ChannelN, rate_perm_X_small) the appropriate deck in
+the pressed direction.
++ *Auto Rate Nudge*: 
+
 
 
 ### III) Troubles
