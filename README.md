@@ -175,8 +175,26 @@ to X*4^1. X is 1 when the LED is off, 2 when the LED is green, 3 when the LED is
 NOTE: The beat counters aren't always correct, due to the wide variety of music and the difficulty associated with
 reading waveforms. The counter can be manually reset to 1 using the reset beat button in visualizer mode.
 
-#####9)
-
+#####9) Jumping / Looping / Scheduling Loops
++ When in *Looping* mode (looping button LED orange), you can set a loop by selecting the desired length from {1,2,4,8}.
+The LED corresponding to the length of a present, activate loop lights up orange.
++ When a loop is present, it can be doubled or halved by pressing *Double Loop* (ChannelN loop_double) or *Halve Loop*
+(ChannelN, loop_halve)
++ *Reloop* (ChannelN, reloop_exit) will toggle a set loop on or off.
++ When *Jumping Mode* is on (either forward or backward LED red), you can jump a number of beats by pressing the
+desired distance {1,2,4,8}. The track will jump either forwards or backwards appropriately. If the track's metadata
+contains the correct BPM information, jump will jump exactly on the beatgrid.
+NOTE: Activating jumping mode will automatically toggle off looping mode, whereas deactivating jumping mode will
+automatically toggle on looping mode. These behaviours are for ease of use while DJing.
++ *JumpLoop Mode* (looping LED orange and either forward or backward LED red) can be achieved by toggling looping mode
+while already in jumping mode. While in jumploop mode, pressing {1,2,4,8} will jump the deck that number of beats
+forward or backward depending upon which jump is on, and then loop over that many beats. This is incredibly useful if,
+while mixing two songs, you miss a looping point and need to smoothly recover.
++ *Loop Scheduling Mode* (looping LED green and both jump LEDs off) is achieved by toggling off looping mode while in
+looping mode. Pressing {1,2,4,8} in this mode will light the LED corresponding to that number red, indicating that a
+loop of that length is scheduled for that deck's next jump. A jump is defined as the deck position changing in any way
+other than moving forward by playing or jumping forward one beat. A loop may be unscheduled if it is reselected while
+in loop scheduling mode.
 
 ### III) Customizing This Preset
 + documentation TODO
@@ -188,7 +206,7 @@ kane-quneo-mixxx/mixxx-controls/KANE_QuNeo_scripts.js (make sure to reinstall af
 You can simply reselect whatever mode you happen to be in, and reassert the LEDs.
 Doing this should simultaneously clear any garbage LED values and assert the proper values.
 
-#####2. [Contact Me!](#iii-contact-me)
+#####2. [Contact Me](#iii-contact-me) with any other troubles or bugs!
 
 ### V) Todo:
 + allow for 4 decks
