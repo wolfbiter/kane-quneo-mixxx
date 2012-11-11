@@ -5,7 +5,7 @@ Version 0.9.0
 ###[Introductory Video](http://google.com)
 ------------------------
 + This repository contains all the components necessary to link a QuNeo to Mixxx with
-my customized set of controls and LEDs.
+my customized set of controls and LEDs. Virtually every LED pulses to the beat!
 
 + Here are several quick-reference guides for the [The Controls](#i-controls-list).
 
@@ -114,22 +114,22 @@ vertical slider modes, with unique functionality offered by each mode. The modes
 + Off == 1, Green == 2, Red == 3, and Orange == 4. 
 + Refer to the diagram to see which modes correspond with which functionality.
 
-**Mode 1 (Rhombus Off)**
+**Vertical Slider Mode 1 (Rhombus Off)**
 + *Zoom*: zooms the waveform in and out with 6 discrete steps.
 + *Cursor*: transforms the slider into a 1 - 0 position indicator for the deck. For example, if deck 1 is at the start of
 the loaded song, then the slider will be full. As deck 1 progresses through the song, the slider LED value will decrease
 linearly until it reaches empty when the song is at the end. Touching the slider will jump the song to the place you
 press; however, be forewarned that the limited range of slider values (0 - 127) lends the cursor to imprecision.
 
-**Mode 2 (Rhombus Green)**
+**Vertical Slider Mode 2 (Rhombus Green)**
 + *Gain* (ChannelN, gain)
 + *Rate* (ChannelN, rate)
 
-**Mode 3 (Rhombus Red)**
+**Vertical Slider Mode 3 (Rhombus Red)**
 + *Deck Volume* (ChannelN, volume), but the LEDs correspond to the *Deck VuMeter* (ChannelN, VuMeter)
 + *Highs* (ChannelN, filterHigh)
 
-**Mode 4 (Rhombus Orange)**
+**Vertical Slider Mode 4 (Rhombus Orange)**
 + *FilterMids* (ChannelN, filterMid)
 + *FilterLows* (ChannelN, filterLow)
 
@@ -147,9 +147,39 @@ to, for example, unnoticably nudge down during the outtro of a 132 BPM song to r
 a single button press (thereby freeing the DJ to perform more complex transitions).
 
 #####6) Hotcues
++ *Hotcues* (ChannelN, hotcue_X_activate) jump to the location of the hotcue in the corresponding deck, and if held
+while track is not playing, will temporarily play until release (after release, the track jumps back to the
+pressed hotcue).
++ Hotcue LEDs convey information about the track:
++ A **set** hotcues is **red** if the track has *passed*,
++ **orange** if it's the *next* hotcue vis-a-vis track position,
++ and **green** if it's *yet to be passed*.
++ **Unset** hotcues are **off**.
+
+#####7) Kills
+These buttons toggle bands from the deck's frequency spectrum on/off. The size of the bands is determined by
+preferences in Mixxx.
++ *Kill Highs* (ChannelN, filterHighKill)
++ *Kill Mids* (ChannelN, filterMidKill)
++ *Kill Lows* (ChannelN, filterLowKill)
+
+#####8) Sync / Cue / Jumpsync / Beat Counters
++ *Sync* (ChannelN, beatsync)
++ *Cue* defaults to CDJ behaviour (ChannelN, cue_default)
++ *Jumpsync* Toggles Jumpsync on/off. If the deck position changes in any way other than moving forward by playing
+(ie the deck jumps to a pressed hotcue), and jumpsync is active for that deck, the jumpsync button will flash red
+and the jumping deck will be synced to the other deck. Note, this sync is in terms of *phase* and **not** *tempo*.
++ *Beat Counters*: these are effectively hexidecimal counters which keep track of which beat (1 through 16) each deck is
+on. For a given deck, the LED on the cue button corresponds to X*4^0, whereas the LED on the sync button corresponds
+to X*4^1. X is 1 when the LED is off, 2 when the LED is green, 3 when the LED is red, and 4 when the LED is orange.
+NOTE: The beat counters aren't always correct, due to the wide variety of music and the difficulty associated with
+reading waveforms. The counter can be manually reset to 1 using the reset beat button in visualizer mode.
+
+#####9)
+
 
 ### III) Customizing This Preset
-+ TODO: Documentation
++ documentation TODO
 + EXAMPLE: The sensitivity of the scratches can be modified by tweaking the KANE_QuNeo.scratchSpeed variable in
 kane-quneo-mixxx/mixxx-controls/KANE_QuNeo_scripts.js (make sure to reinstall after modifying!).
 
@@ -160,7 +190,7 @@ Doing this should simultaneously clear any garbage LED values and assert the pro
 
 #####2. [Contact Me!](#iii-contact-me)
 
-### V) TODO:
+### V) Todo:
 + allow for 4 decks
 + 1 shot samples via sampler decks
 + allow for cue place/delete undos
@@ -171,6 +201,9 @@ Doing this should simultaneously clear any garbage LED values and assert the pro
 + add functionality to discretely change the key of a given deck up/down one half-step at a time
 + fix auto nudge so that the nudge rates are consistent between decks (it's messed up because nudge operates on % of
 natural BPM, which is off course different for different natural BPMs). 
++ fix cue/sync/beatcounter LED interplay
++ documentation on customizing the preset
++ documentation for when beat counters are/aren't correct
 
 ## <a id="contact"></a>Contact Me
 #####One of four ways:
