@@ -151,9 +151,9 @@ a single button press (thereby freeing the DJ to perform more complex transition
 while track is not playing, will temporarily play until release (after release, the track jumps back to the
 pressed hotcue).
 + Hotcue LEDs convey information about the track:
-+ A **set** hotcues is **red** if the track has *passed*,
-+ **orange** if it's the *next* hotcue vis-a-vis track position,
-+ and **green** if it's *yet to be passed*.
++ A **Set** hotcues is **Red** if the track has *passed*,
++ **Orange** if it's the *next* hotcue vis-a-vis track position,
++ and **Green** if it's *yet to be passed*.
 + **Unset** hotcues are **off**.
 
 #####7) Kills
@@ -166,7 +166,7 @@ preferences in Mixxx.
 #####8) Sync / Cue / Jumpsync / Beat Counters
 + *Sync* (ChannelN, beatsync)
 + *Cue* defaults to CDJ behaviour (ChannelN, cue_default)
-+ *Jumpsync* Toggles Jumpsync on/off. If the deck position changes in any way other than moving forward by playing
++ *Jumpsync* toggles jumpsync on/off. If the deck position changes in any way other than moving forward by playing
 (ie the deck jumps to a pressed hotcue), and jumpsync is active for that deck, the jumpsync button will flash red
 and the jumping deck will be synced to the other deck. Note, this sync is in terms of *phase* and **not** *tempo*.
 + *Beat Counters*: these are effectively hexidecimal counters which keep track of which beat (1 through 16) each deck is
