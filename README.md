@@ -2,18 +2,14 @@
 Version 1.0.0
 
 ------------------------
-###[Demo Video](https://youtu.be/dpdWzb0PEWo)
-###[Tutorial Video](https://youtu.be/dnWSqPFBHGk)
+###Featuring a [Demo Video](https://youtu.be/dpdWzb0PEWo) and a [Beginner Tutorial Video](https://youtu.be/dnWSqPFBHGk)!
 ------------------------
 + This repository contains all the components necessary to link a QuNeo to Mixxx with
 my customized set of controls and LEDs. Virtually every LED pulses to the beat!
-
 + Here are several quick-reference guides for the [The Controls](#ii-controls-list).
-
 + This script is driven by 2 core principles:
   - iterative improvements stemming directly from wants found during actual dj use
   - abstractions free the mind for more complex expression (leading to a higher skill cap)
-
 + Feel free to [Contact Me](#contact-me) with any questions, suggestions, or bug reports!
 
 ####NOTE: The guide assumes the user already has Mixxx installed.
