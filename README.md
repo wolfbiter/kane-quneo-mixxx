@@ -1,15 +1,20 @@
 #Kane QuNeo Mixxx Preset
-Version 0.9.0
+Version 1.0.0
 
 ------------------------
-###[Introductory Video](http://youtu.be/dC0QPncuffE)
+###[Demo Video](https://youtu.be/dpdWzb0PEWo)
+###[Tutorial Video](https://youtu.be/dnWSqPFBHGk)
 ------------------------
 + This repository contains all the components necessary to link a QuNeo to Mixxx with
 my customized set of controls and LEDs. Virtually every LED pulses to the beat!
 
-+ Here are several quick-reference guides for the [The Controls](#i-controls-list).
++ Here are several quick-reference guides for the [The Controls](#ii-controls-list).
 
-+ Feel free to [Contact Me](#iii-contact-me) with any questions, suggestions, or bug reports!
++ This script is driven by 2 core principles:
+  - iterative improvements stemming directly from wants found during actual dj use
+  - abstractions free the mind for more complex expression (leading to a higher skill cap)
+
++ Feel free to [Contact Me](#contact-me) with any questions, suggestions, or bug reports!
 
 ####NOTE: The guide assumes the user already has Mixxx installed.
 [Link-to-Mixxx's-Website](http://www.mixxx.org/).
@@ -79,7 +84,7 @@ values.
 press the mode button and the pad of the mode you're in will highlight. Pressing either the mode button again or the pad
 will return you to your original mode.
 
-### <a id="controls"></a>II) Controls List
+### II) Controls List
 + Many of the controls map directly to Mixxx.
 + These are indicated by (Group, Control), and further details of them can be found
 [here](http://www.mixxx.org/wiki/doku.php/mixxxcontrols).
@@ -263,22 +268,9 @@ kane-quneo-mixxx/mixxx-controls/KANE_QuNeo_scripts.js (make sure to reinstall af
 You can simply reselect whatever mode you happen to be in, and reassert the LEDs.
 Doing this should simultaneously clear any garbage LED values and assert the proper values.
 
-#####2. [Contact Me](#iii-contact-me) with any other troubles or bugs!
+#####2. [Contact Me](#contact-me) with any other troubles or bugs!
 
-### V) Todo:
-+ revamp jumploop system
-+ VuMeters to reflect volume when track stopped
-+ more sliders to pulse to kicks, hitting true value? (maybe too noisy for practical use)
-+ add functionality to discretely change the key of a given deck up/down one half-step at a time
-+ fix auto nudge so that the nudge rates are consistent between decks (it's messed up because nudge operates on % of
-natural BPM, which is off course different for different natural BPMs). 
-+ fix cue/sync/beatcounter LED interplay
-+ documentation on customizing the preset
-+ documentation for when beat counters are/aren't correct
-+ make it clear that others can switch which modes my presets are mapped to, in case they need the modes for other things
-+ clarify when reset beat does/does not work
-
-## <a id="contact"></a>Contact Me
+## Contact Me
 #####One of four ways:
 + post to this preset's [Mixxx Forum Thread](http://mixxx.org/forums/viewtopic.php?f=7&t=4130&sid=d276c35cf0670fa571eb4e8519a6ffa8)
 + post to this preset's [KMI Forums Thread](http://forum.keithmcmillen.com/viewtopic.php?f=52&t=677)

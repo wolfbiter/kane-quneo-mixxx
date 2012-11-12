@@ -1079,8 +1079,6 @@ KANE_QuNeo.handleBeat = function (deck) {
     var channel = deck - 1; // confusing, yes. channels start from 0.
     var channelName = KANE_QuNeo.getChannelName(deck);
 
-    print("previous beat: "+KANE_QuNeo.wholeBeat[channel])
-
     // signify that this beat was reached outside the beat_active window
     engine.beginTimer(KANE_QuNeo.beatOffset,
 		      "KANE_QuNeo.resetNextBeatTimer("+deck+")",
@@ -1143,7 +1141,6 @@ KANE_QuNeo.handleBeat = function (deck) {
 	    KANE_QuNeo.loopNextJump[channel] = 0; // handled, so reset global
 	}
     }
-    print("whole beat: "+KANE_QuNeo.wholeBeat[channel])
     // remember to clear our list of previously scheduled beats
     KANE_QuNeo.scheduledBeats[channel] = [];
     // schedule the next beat
