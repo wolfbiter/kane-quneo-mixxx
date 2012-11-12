@@ -68,7 +68,7 @@ linux debian machine.
 ## Usage:
 
 ###I) Information on Modes
-![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
+![Modes Diagram](https://raw.github.com/wolfbiter/kane-quneo-mixxx/master/diagram/modes.png)
 + The KANE_QuNeo preset utilizes many of the QuNeo's modes to allow more complete control over Mixxx.
 + To switch modes, first press the mode button, then the pad of the mode you want to select (see above),
 and finally the assertLEDs button to tell the the KANE_QuNeo script that you've changed modes. It's important to do
@@ -86,7 +86,7 @@ will return you to your original mode.
 
 #### DJ Mode (13)
 + The core functionality mode, it is assumed that the QuNeo is in this mode when turning on Mixxx.
-![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
+![DJ Mode Diagram](https://raw.github.com/wolfbiter/kane-quneo-mixxx/master/diagram/dj.png)
 
 #####1) Horizontal Sliders
 The horizontal sliders each manipulate one control in Mixxx.
@@ -204,8 +204,8 @@ in loop scheduling mode.
 ####Cueleft Mode (14) / Cueright Mode (15)
 + These modes are used for cuing, as they provide cue deletes for the left and right decks respectively.
 + Unless otherwise specified, all controls default to the functionality specified in DJ Mode (13)
-![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
-![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
+![Cueleft Mode Diagram](https://raw.github.com/wolfbiter/kane-quneo-mixxx/master/diagram/cueleft.png)
+![Cueright Mode Diagram](https://raw.github.com/wolfbiter/kane-quneo-mixxx/master/diagram/cueright.png)
 
 #####1) Hotcue Deletes
 + Deletes the hotcue (ChannelN, hotcue_X_delete)
@@ -224,7 +224,7 @@ the corresponding deck will continuously nudge (at a customizable speed) in the 
 + This mode is for selecting and loading songs from your playlists into your decks and samplers.
 + Includes pleasant LED visualizers where cues would normally go in DJ Mode (13)!
 + Unless otherwise specified, all controls default to the functionality specified in DJ Mode (13)
-![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
+![Library Mode Diagram](https://raw.github.com/wolfbiter/kane-quneo-mixxx/master/diagram/library.png)
 
 #####1) Load Buttons
 + Loads the highlighted track into the selected deck or sampler iff the selected deck or sampler is not playing.
@@ -244,7 +244,7 @@ NOTE: Activating library mode defaults playscratch to off.
 
 ####Visualizer Mode (16)
 + This mode basically unbinds most functionality and replaces it with LED visualizations.
-![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
+![Visualizer Mode Diagram](https://raw.github.com/wolfbiter/kane-quneo-mixxx/master/diagram/visualizer.png)
 
 #####1) Reset Beat
 + *Reset Beat* sets the beat count (internal to the KANE_QuNeo script) of the corresponding deck to 1.
