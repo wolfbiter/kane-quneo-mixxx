@@ -2,7 +2,7 @@
 Version 0.9.0
 
 ------------------------
-###[Introductory Video](http://google.com)
+###[Introductory Video](http://youtu.be/dC0QPncuffE)
 ------------------------
 + This repository contains all the components necessary to link a QuNeo to Mixxx with
 my customized set of controls and LEDs. Virtually every LED pulses to the beat!
@@ -266,10 +266,6 @@ Doing this should simultaneously clear any garbage LED values and assert the pro
 #####2. [Contact Me](#iii-contact-me) with any other troubles or bugs!
 
 ### V) Todo:
-+ allow for 4 decks
-+ 1 shot samples via sampler decks
-+ allow for cue place/delete undos
-+ shift button to allow for up to 32 (64?) cues
 + revamp jumploop system
 + VuMeters to reflect volume when track stopped
 + more sliders to pulse to kicks, hitting true value? (maybe too noisy for practical use)
