@@ -83,6 +83,7 @@ will return you to your original mode.
 + These are indicated by (Group, Control), and further details of them can be found
 [here](http://www.mixxx.org/wiki/doku.php/mixxxcontrols).
 #### DJ Mode (13)
++ The core functionality mode, it is assumed that the QuNeo is in this mode when turning on Mixxx.
 ![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
 
 #####1) Horizontal Sliders
@@ -159,16 +160,16 @@ pressed hotcue).
 #####7) Kills
 These buttons toggle bands from the deck's frequency spectrum on/off. The size of the bands is determined by
 preferences in Mixxx.
-+ *Kill Highs* (ChannelN, filterHighKill)
-+ *Kill Mids* (ChannelN, filterMidKill)
-+ *Kill Lows* (ChannelN, filterLowKill)
++ *Kill Highs* (ChannelN, filterHighKill).
++ *Kill Mids* (ChannelN, filterMidKill).
++ *Kill Lows* (ChannelN, filterLowKill).
 
 #####8) Sync / Cue / Jumpsync / Beat Counters
-+ *Sync* (ChannelN, beatsync)
-+ *Cue* defaults to CDJ behaviour (ChannelN, cue_default)
++ *Sync* syncs the deck's phase and tempo (ChannelN, beatsync).
++ *Cue* defaults to CDJ behaviour (ChannelN, cue_default).
 + *Jumpsync* toggles jumpsync on/off. If the deck position changes in any way other than moving forward by playing
 (ie the deck jumps to a pressed hotcue), and jumpsync is active for that deck, the jumpsync button will flash red
-and the jumping deck will be synced to the other deck. Note, this sync is in terms of *phase* and **not** *tempo*.
+and the jumping deck will be synced to the other deck. Note, this sync is in terms of **phase** and **not tempo**.
 + *Beat Counters*: these are effectively hexidecimal counters which keep track of which beat (1 through 16) each deck is
 on. For a given deck, the LED on the cue button corresponds to X*4^0, whereas the LED on the sync button corresponds
 to X*4^1. X is 1 when the LED is off, 2 when the LED is green, 3 when the LED is red, and 4 when the LED is orange.
@@ -195,6 +196,34 @@ looping mode. Pressing {1,2,4,8} in this mode will light the LED corresponding t
 loop of that length is scheduled for that deck's next jump. A jump is defined as the deck position changing in any way
 other than moving forward by playing or jumping forward one beat. A loop may be unscheduled if it is reselected while
 in loop scheduling mode.
+
+####Cueleft Mode (14) / Cueright Mode (15)
++ These modes are used for cuing, as they provide cue deletes for the left and right decks respectively.
++ Unless otherwise specified, all controls default to the functionality specified in DJ Mode (13)
+![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
+![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
+
+#####1) Hotcue Deletes
++ Deletes the hotcue (ChannelN, hotcue_X_delete)
+
+#####2) Beatgrid
++ Sets the beatgrid of the corresponding deck to its current visual playposition (ChannelN, beats_translate_curpos)
+
+#####3) Visual Nudge / Visual Scroll
++ *Visual Nudge*: each vertical arrow press nudges the corresponding deck's visual play position in the direction of
+the press (up => forward, down => backward). This is incredibly useful for setting precise beatgrids; the distance
+nudged can be customized.
++ *Visual Scroll*: when a visual nudge arrow is held for greater than a customizable amount of time (default: 500ms),
+the corresponding deck will continuously nudge (at a customizable speed) in the pressed direction until button release.
+
+####Library Mode (16)
++ This mode is for selecting and loading songs from your playlists into your decks and samplers.
++ Unless otherwise specified, all controls default to the functionality specified in DJ Mode (13)
+![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
+
+#####1) Load Buttons
++ Loads the highlighted track into the selected deck or sampler iff the selected deck or sampler is not playing.
++ The color of the load LED corresponds to the play status of the deck or sampler.
 
 ### III) Customizing This Preset
 + documentation TODO
