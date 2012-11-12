@@ -67,8 +67,9 @@ linux debian machine.
 
 ## Usage:
 
-###I) Modes
+###I) Information on Modes
 ![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
++ The KANE_QuNeo preset utilizes many of the QuNeo's modes to allow more complete control over Mixxx.
 + To switch modes, first press the mode button, then the pad of the mode you want to select (see above),
 and finally the assertLEDs button to tell the the KANE_QuNeo script that you've changed modes. It's important to do
 this last step: otherwise, behaviour is undefined.
@@ -82,6 +83,7 @@ will return you to your original mode.
 + Many of the controls map directly to Mixxx.
 + These are indicated by (Group, Control), and further details of them can be found
 [here](http://www.mixxx.org/wiki/doku.php/mixxxcontrols).
+
 #### DJ Mode (13)
 + The core functionality mode, it is assumed that the QuNeo is in this mode when turning on Mixxx.
 ![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
@@ -108,6 +110,7 @@ The rotaries, in dj mode, serve one of two functions:
 touch for the left and right decks respectively.
 + Pressing the playscratch button toggles playscratch off (the play transport button is dark), which turns the rotaries
 into turntables for scratching.
++ Playscratch defaults to on unless otherwise specified.
 
 #####4) Vertical Sliders / Rhombus
 The rhombus serves as a bank to the vertical sliders. This means that pressing the rhombus will cycle through different
@@ -175,6 +178,7 @@ on. For a given deck, the LED on the cue button corresponds to X*4^0, whereas th
 to X*4^1. X is 1 when the LED is off, 2 when the LED is green, 3 when the LED is red, and 4 when the LED is orange.
 NOTE: The beat counters aren't always correct, due to the wide variety of music and the difficulty associated with
 reading waveforms. The counter can be manually reset to 1 using the reset beat button in visualizer mode.
+NOTE: Jumpsync will not sync unless the other deck is playing. This is to prevent glitchy jumpsync loops.
 
 #####9) Jumping / Looping / Scheduling Loops
 + When in *Looping* mode (looping button LED orange), you can set a loop by selecting the desired length from {1,2,4,8}.
@@ -218,12 +222,36 @@ the corresponding deck will continuously nudge (at a customizable speed) in the 
 
 ####Library Mode (16)
 + This mode is for selecting and loading songs from your playlists into your decks and samplers.
++ Includes pleasant LED visualizers where cues would normally go in DJ Mode (13)!
 + Unless otherwise specified, all controls default to the functionality specified in DJ Mode (13)
 ![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
 
 #####1) Load Buttons
 + Loads the highlighted track into the selected deck or sampler iff the selected deck or sampler is not playing.
-+ The color of the load LED corresponds to the play status of the deck or sampler.
+(ChannelN, LoadSelectedTrack) or (SamplerN, LoadSelectedTrack).
++ The color of the load LED corresponds to the play status of the deck or sampler. Red means the deck or sampler is
+playing and therefore will not accept a load command; vice versa for green.
+
+#####2) Playlist Scroll / Tracklist Scroll / Playscratch
++ *Playscratch* retains similar functionality, except that now it toggles the rotaries between play and scroll.
+NOTE: Activating library mode defaults playscratch to off.
++ *Playlist Scroll* allows for quick, coarse scrolling through playlists.
++ *Tracklist Scroll* allows for quick, coarse scrolling through tracks.
+
+#####3) Playlist Step / Tracklist Step
++ *Playlist Step* scrolls up/down through playlists, one at a time (Playlist, Select****Playlist)
++ *Tracklist Step* scrolls up/down through tracks, one at a time (Playlist, Select****Track)
+
+####Visualizer Mode (16)
++ This mode basically unbinds most functionality and replaces it with LED visualizations.
+![QuNeo Diagram](https://raw.github.com/wolfbiter/quneo-mixxx/master/quneo-mixxx-controls.png)
+
+#####1) Reset Beat
++ *Reset Beat* sets the beat count (internal to the KANE_QuNeo script) of the corresponding deck to 1.
++ Useful for lining up the LEDs while enjoying visualizer mode.
+
+#####2) Sync
++ The sync button (described in DJ Mode (13)) is still active so that visualizers between decks may be synced.
 
 ### III) Customizing This Preset
 + documentation TODO
@@ -251,6 +279,8 @@ natural BPM, which is off course different for different natural BPMs).
 + fix cue/sync/beatcounter LED interplay
 + documentation on customizing the preset
 + documentation for when beat counters are/aren't correct
++ make it clear that others can switch which modes my presets are mapped to, in case they need the modes for other things
++ clarify when reset beat does/does not work
 
 ## <a id="contact"></a>Contact Me
 #####One of four ways:
