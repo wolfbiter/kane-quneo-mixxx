@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# exports newest mixxx configs and music to this machine
+# must be called as the user with the mixxx configs in order to 
+# get the proper .mixxx folder
+
+echo "INSTALLING CONFIGS"
+
+# find where script is located
+DIR=$(cd $(dirname "$0"); pwd)
+
+# now sync this computer's mixxx installation's information
+rsync -ri --inplace --delete $DIR/../.mixxx ~/.mixxx # configs to home dir
+rsync -ri --inplace $DIR/.. /home/kane/

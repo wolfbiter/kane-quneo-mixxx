@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# installer for mixxx v 1.11 beta and all dependencies
+sudo aptitude -y install libid3tag0 libportaudio2 libportmidi0 libvamp-hostsdk3 libvamp-sdk2 libqt4-opengl libqt4-svg libqt4-xmlpatterns libqt4-webkit libqt4-sql libqt4-sql-sqlite libqt4-script
+
+# try both versions, depending on 32bit or 64bit
+sudo dpkg -i libprotobuf5_2.2.0a-0.1ubuntu1_amd64.deb
+sudo dpkg -i libprotobuf5_2.2.0a-0.1ubuntu1_i386.deb
+
+# try both versions, depending on 32bit or 64bit
+sudo dpkg -i mixxx_1.11.0-beta1-0ubuntu1_i386.deb
+sudo dpkg -i mixxx_1.11.0-beta1-0ubuntu1_amd64.deb
+
+# find where this script is located
+DIR=$(cd $(dirname "$0"); pwd)
+
+# now move preferences over to home directory
+mv $DIR/../.mixxx ~/
+

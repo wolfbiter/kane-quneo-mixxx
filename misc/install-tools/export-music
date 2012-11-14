@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# exports music to given location
+
+# make sure there is a first arg
+if [ -z $1 ]; then
+	echo "usage: first arg is the target dir or machine"
+	return -1
+fi
+
+# requires location to export to as first arg $1
+USB=$1
+echo "EXPORTING MUSIC TO URI: "$USB
+
+# find where script is located
+DIR=$(cd $(dirname "$0"); pwd)
+
+# find out where the music dir is located based on setting
+MUSICDIR=$(head -n 1 $DIR/musicdir)
+
+# update this installation's information
+rsync -ri --progress --inplace --delete $MUSICDIR/ $DIR/../music
+
+# sync most recent stuff with $1's quneo-mixxx directory
+rsync -riK --progress --inplace --delete $DIR/../music $USB/quneo-mixxx --exclude=unsorted
+
