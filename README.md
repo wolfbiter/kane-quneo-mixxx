@@ -12,8 +12,14 @@ my customized set of controls and LEDs. Virtually every LED pulses to the beat!
   - abstractions free the mind for more complex expression (leading to a higher skill cap)
 + Feel free to [Contact Me](#contact-me) with any questions, suggestions, or bug reports!
 
-####NOTE: The guide assumes the user already has Mixxx installed.
-[Link-to-Mixxx's-Website](http://www.mixxx.org/).
+####NOTE: The guide assumes the user has Mixxx v1.11 installed.
+Possible Mixxx v1.11 downloads:
++ [Mixxx v1.11 Beta 1](http://www.mixxx.org/forums/viewtopic.php?f=1&t=3834&sid=e66b9897d467b3b07209584fe085730c)
+  - This version works with all controls except slip_enabled
+  - The error message Mixxx presents says that slip enabled won't work, and can safely be ignored
++ [Mixxx v1.11 Beta 2 (r3460)](http://builds.mixxx.org/builds/release-1.11.x/r3460/)
+  - This version works with all controls but is more unstable
+
 ## Install:
 ### I) How to apply this preset
 ####1. Copy presets to mixxx preset folder
