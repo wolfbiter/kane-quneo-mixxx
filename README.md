@@ -10,7 +10,7 @@ my customized set of controls and LEDs. Virtually every LED pulses to the beat!
 + This script is driven by 2 core principles:
   - iterative improvements stemming directly from wants found during actual dj use
   - abstractions free the mind for more complex expression (leading to a higher skill cap)
-+ Feel free to [Contact Me](#contact-me) with any questions, suggestions, or bug reports!
++ For any questions, suggestions, or bug reports, I encourage you to either [Submit An Issue](https://github.com/wolfbiter/kane-quneo-mixxx/issues?state=open) or [Contact Me](#contact-me)!
 
 ####NOTE: The guide assumes the user has Mixxx v1.11 installed.
 Possible Mixxx v1.11 downloads:
@@ -30,7 +30,8 @@ mixxx-controls/KANE_QuNeo_scripts.js
 Windows: C:\Program Files\Mixxx\midi    
 Linux: /usr/share/mixxx/midi (or /usr/local/share/mixxx/midi)
        /usr/share/mixxx/controllers (or /usr/local/share/mixxx/controllers)
-OS X: /Applications/Mixxx.app/Contents/Resources/midi    
+OS X: /Applications/Mixxx.app/Contents/Resources/midi
+
 ####2. Update your QuNeo's midi output preset
 NOTE: following this section of instructions will change all the presets on your QuNeo. MORE ADVANCED: If you have a preset you do not want to change, or would like to change any or all of the mode numbers of this script's modes, then you can do so by importing any of the kane-quneo-mixxx/QuNeo Editor/presets/KANE_QuNeo_*.quneopreset files into a QuNeo Editor run from a different folder. This is because the QuNeo Editor program loads presets based upon data in the folder in which it is run. This method allows you to import the kane preset's .quneopreset files one at a time into preset numbers of your choosing (but don't forget to update the presets).
 ######Plug in your QuNeo
@@ -39,26 +40,20 @@ when it is successfully connected.
 ######Run QuNeo Editor/QuNeo Editor.exe
 It is important that you run the editor in the above folder so that the correct presets are loaded.
 File > Import Preset, select
-
 ######Click "Update All Presets"
-
 There might be a QuNeo flash to this; I'm not certain.
-
 ######Switch QuNeo's mode to DJ Mode
 + Press the mode button,
 + Then select the upper left pad.
 
 ####3. Start Mixxx, select the preset
-
 While running Mixxx, do the following:
 ######Options > Preferences > MIDI Controllers > QUNEO MIDI 1 > Load Preset
-
 (If the QuNeo is not listed, refer to Mixxx's Midi Controller documentation)
-######Select, from the drop down menu, the preset KANE_QuNeo
-
+######Select, from the drop down menu, the preset KANE QuNeo Mixxx Preset
 Click ok for success!
 
-### II) Potentially Important files/folders
+### II) Important Folders
 #####1. diagrams
 Here are all the quick-reference .png images of this preset's control mappings
 the appropriate folder for Mixxx presets (according to my machine), then runs Mixxx.
@@ -264,12 +259,16 @@ NOTE: Activating library mode defaults playscratch to off.
 + EXAMPLE: The sensitivity of the scratches can be modified by tweaking the KANE_QuNeo.scratchSpeed variable in
 kane-quneo-mixxx/mixxx-controls/KANE_QuNeo_scripts.js (make sure to reinstall after modifying!).
 
-### IV) Troubles
-#####1. LED's out of whack
+### IV) Troubleshooting
+#####1. LED's out of whack:
 You can simply reselect whatever mode you happen to be in, and reassert the LEDs.
 Doing this should simultaneously clear any garbage LED values and assert the proper values.
 
-#####2. [Contact Me](#contact-me) with any other troubles or bugs!
+#####2. Anything to the effect "the midi script function 'KANE_QuNeo.[function]' was not found in loaded scripts.'":
+This might be due to the incorrect Mixxx version for the kane preset. Refer to (This Note)[#note-the-guide-assumes-the-user-has-mixxx-v111-installed] for more information.
+
+#####3. Any other troubles or bugs: 
+Feel free to [Submit An Issue](https://github.com/wolfbiter/kane-quneo-mixxx/issues?state=open) or [Contact Me](#contact-me)!
 
 ## Contact Me
 #####One of four ways:
