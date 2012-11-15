@@ -1,5 +1,5 @@
 #Kane QuNeo Mixxx Preset
-Version 1.0.0
+Version 1.0.x
 
 ------------------------
 ###Featuring a [Demo Video](https://youtu.be/dpdWzb0PEWo) and a [Beginner Tutorial Video](https://youtu.be/dnWSqPFBHGk)!
