@@ -28,9 +28,11 @@ mixxx-controls/KANE_QuNeo.xml.midi
 mixxx-controls/KANE_QuNeo_scripts.js   
 ######The location of the preset folder depends upon your OS:
 Windows: C:\Program Files\Mixxx\midi    
-Linux: /usr/share/mixxx/midi (or /usr/local/share/mixxx/midi)    
+Linux: /usr/share/mixxx/midi (or /usr/local/share/mixxx/midi)
+       /usr/share/mixxx/controllers (or /usr/local/share/mixxx/controllers)
 OS X: /Applications/Mixxx.app/Contents/Resources/midi    
 ####2. Update your QuNeo's midi output preset
+NOTE: following this section of instructions will change all the presets on your QuNeo. MORE ADVANCED: If you have a preset you do not want to change, or would like to change any or all of the mode numbers of this script's modes, then you can do so by importing any of the kane-quneo-mixxx/QuNeo Editor/presets/KANE_QuNeo_*.quneopreset files into a QuNeo Editor run from a different folder. This is because the QuNeo Editor program loads presets based upon data in the folder in which it is run. This method allows you to import the kane preset's .quneopreset files one at a time into preset numbers of your choosing (but don't forget to update the presets).
 ######Plug in your QuNeo
 Via usb, this should be trivial. The QuNeo's LED's will go from left to right
 when it is successfully connected.
@@ -38,7 +40,7 @@ when it is successfully connected.
 It is important that you run the editor in the above folder so that the correct presets are loaded.
 File > Import Preset, select
 
-######Click "Update All Presets
+######Click "Update All Presets"
 
 There might be a QuNeo flash to this; I'm not certain.
 
