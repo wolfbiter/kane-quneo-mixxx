@@ -110,7 +110,7 @@ The rotaries, in dj mode, serve one of two functions:
 + If playscratch is enabled (the play transport button is green), then the left and right rotaries are play buttons on
 touch for the left and right decks respectively.
 + Pressing the playscratch button toggles playscratch off (the play transport button is dark), which turns the rotaries
-into turntables for scratching.
+into turntables for scratching. You can [customize](#iii-customizing-this-preset) the scratch speed.
 + Playscratch defaults to on unless otherwise specified.
 
 #####4) Vertical Sliders / Rhombus
@@ -143,9 +143,9 @@ press; however, be forewarned that the limited range of slider values (0 - 127) 
 full volume, middle for both decks full volume, right for right deck full volume).
 + A single press given to the vertical arrows will *Rate Nudge* (ChannelN, rate_perm_X_small) the appropriate deck in
 the pressed direction.
-+ *Auto Rate Nudge*: pressing and holding any of the vertical arrows for more than the prescribed time (default: 500ms)
++ *Auto Rate Nudge*: pressing and holding any of the vertical arrows for more than the [customized](#iii-customizing-this-preset) time (default: 500ms)
 will activate auto nudge in the direction of the pressed arrow. Auto nudge, indicated by the vertical arrow LEDs in
-the direction chosen, will proceed to nudge all decks and samplers at the prescribed rate (default: 800ms between
+the direction chosen, will proceed to nudge all decks and samplers at the [customized](#iii-customizing-this-preset) rate (default: 800ms between
 nudges) until one of two things happen: 1) pressing any vertical arrow will stop auto nudge, or 2) the deck corresponding
 to the vertical arrow press nears its natural (file) bpm (0% rate adjustment). The 2nd option is sugar to allow the DJ
 to, for example, unnoticably nudge down during the outtro of a 132 BPM song to reach 125 BPM for the next song with
@@ -217,9 +217,9 @@ in loop scheduling mode.
 #####3) Visual Nudge / Visual Scroll
 + *Visual Nudge*: each vertical arrow press nudges the corresponding deck's visual play position in the direction of
 the press (up => forward, down => backward). This is incredibly useful for setting precise beatgrids; the distance
-nudged can be customized.
-+ *Visual Scroll*: when a visual nudge arrow is held for greater than a customizable amount of time (default: 500ms),
-the corresponding deck will continuously nudge (at a customizable speed) in the pressed direction until button release.
+nudged can be [customized](#iii-customizing-this-preset).
++ *Visual Scroll*: when a visual nudge arrow is held for greater than a [customizable](#iii-customizing-this-preset) amount of time (default: 500ms),
+the corresponding deck will continuously nudge (at a [customizable](#iii-customizing-this-preset) speed) in the pressed direction until button release.
 
 ####Library Mode (16)
 + This mode is for selecting and loading songs from your playlists into your decks and samplers.
@@ -255,9 +255,11 @@ NOTE: Activating library mode defaults playscratch to off.
 + The sync button (described in DJ Mode (13)) is still active so that visualizers between decks may be synced.
 
 ### III) Customizing This Preset
-+ documentation TODO
-+ EXAMPLE: The sensitivity of the scratches can be modified by tweaking the KANE_QuNeo.scratchSpeed variable in
-kane-quneo-mixxx/mixxx-controls/KANE_QuNeo_scripts.js (make sure to reinstall after modifying!).
++ I've incorporated some tweakable parameters, but of course you can hack on any part of the preset!
+  - Look for the **(GV) Global Variables** in your instance of kane-quneo-preset/mixxx-controls/KANE_QuNeo_scripts.js for a list of available parameters and their descriptions.
+  - EXAMPLE: The sensitivity of the scratches can be modified by changed the KANE_QuNeo.scratchSpeed variable (make sure Mixxx rereads the preset after modifying!).
++ You can also customize visualizer LEDs.
+  - Check out the the comments and code for the functions KANE_QuNeo.playerSequence and KANE_QuNeo.visualize in kane-quneo-preset/mixxx-controls/KANE_QuNeo_scripts.js - they're also in (GV) Global Variables, just below the tweakable parameters.
 
 ### IV) Troubleshooting
 #####1. LED's out of whack:
