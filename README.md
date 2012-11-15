@@ -265,7 +265,7 @@ You can simply reselect whatever mode you happen to be in, and reassert the LEDs
 Doing this should simultaneously clear any garbage LED values and assert the proper values.
 
 #####2. Anything to the effect "the midi script function 'KANE_QuNeo.[function]' was not found in loaded scripts.'":
-This might be due to the incorrect Mixxx version for the kane preset. Refer to (This Note)[#note-the-guide-assumes-the-user-has-mixxx-v111-installed] for more information.
+This might be due to the incorrect Mixxx version for the kane preset. Refer to [the note at the top of the page](#note-the-guide-assumes-the-user-has-mixxx-v111-installed) for more information.
 
 #####3. Any other troubles or bugs: 
 Feel free to [Submit An Issue](https://github.com/wolfbiter/kane-quneo-mixxx/issues?state=open) or [Contact Me](#contact-me)!
