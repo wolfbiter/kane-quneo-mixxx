@@ -180,12 +180,12 @@ preferences in Mixxx.
 + *Jumpsync* toggles jumpsync on/off. If the deck position changes in any way other than moving forward by playing
 (ie the deck jumps to a pressed hotcue), and jumpsync is active for that deck, the jumpsync button will flash red
 and the jumping deck will be synced to the other deck. Note, this sync is in terms of **phase** and **not tempo**.
+  - NOTE: Jumpsync will not sync unless the other deck is playing. This is to prevent glitchy jumpsync loops.
 + *Beat Counters*: these are effectively hexidecimal counters which keep track of which beat (1 through 16) each deck is
 on. For a given deck, the LED on the cue button corresponds to X*4^0, whereas the LED on the sync button corresponds
 to X*4^1. X is 1 when the LED is off, 2 when the LED is green, 3 when the LED is red, and 4 when the LED is orange.
-NOTE: The beat counters aren't always correct, due to the wide variety of music and the difficulty associated with
-reading waveforms. The counter can be manually reset to 1 using the reset beat button in visualizer mode.
-NOTE: Jumpsync will not sync unless the other deck is playing. This is to prevent glitchy jumpsync loops.
+  - NOTE: The beat counters aren't always correct, due to the wide variety of music and the difficulty associated with reading waveforms. The counter can be manually reset to 1 using the reset beat button in visualizer mode.
+  - Specifics on Beat Counter algorithm: currently, a given deck's beat counter changes only under1 of 3 conditions. 1, the regular situation wherein a playing deck moving to the next beat increments the beat counter. 2, it will add or subtract the number of beats when beat jumping. 3, it will reset to beat 1 whenever any other kind of jump occurs in the deck (including hotcues). The idea is that jumps will be to hotcues, and hotcues generally lie on the beginning of a sixteen beat loop.
 
 #####9) Jumping / Looping / Scheduling Loops
 + When in *Looping* mode (looping button LED orange), you can set a loop by selecting the desired length from {1,2,4,8}.
