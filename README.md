@@ -257,7 +257,7 @@ NOTE: Activating library mode defaults playscratch to off.
 ### III) Customizing This Preset
 + I've incorporated some tweakable parameters, but of course you can hack on any part of the preset!
   - Look for the **(GV) Global Variables** in your instance of kane-quneo-preset/mixxx-controls/KANE_QuNeo_scripts.js for a list of available parameters and their descriptions.
-  - EXAMPLE: The sensitivity of the scratches can be modified by changed the KANE_QuNeo.scratchSpeed variable (make sure Mixxx rereads the preset after modifying!).
+  - **EXAMPLE:** The sensitivity of the scratches can be modified by changed the KANE_QuNeo.scratchSpeed variable (make sure Mixxx rereads the preset after modifying!).
 + You can also customize visualizer LEDs.
   - Check out the the comments and code for the functions KANE_QuNeo.playerSequence and KANE_QuNeo.visualize in kane-quneo-preset/mixxx-controls/KANE_QuNeo_scripts.js - they're also in (GV) Global Variables, just below the tweakable parameters.
 
