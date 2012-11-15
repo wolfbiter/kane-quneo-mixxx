@@ -1218,6 +1218,29 @@ KANE_QuNeo.scheduleBeat = function (deck, wholeBeat, direction) {
 
 /***** (U) Utilities *****/
 
+KANE_QuNeo.oneToFiveKnob = function (value) {
+    if (value < 1) // first half of the knob, 0-1
+	return value * 127 / 2;
+    else // second half of the knob, 1-5
+	return 63.5 + (value - 1) * 63.5 / 4
+}
+
+KANE_QuNeo.getSliderControl = function (deck, side) {
+    var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
+
+    // left side
+    if (side == 0) {
+	if (LEDGroup == 1) return [0x01]; // leftmost slider
+	else if (LEDGroup == 2) return [0x02]; // middle left slider
+
+	// right side
+    } else if (side == 1) {
+	if (LEDGroup == 1) return [0x03]; // middle right slider
+	else if (LEDGroup == 2) return [0x04]; // rightmost slider
+
+    } else print("ERROR: getSliderControl called with improper args.")
+}
+
 KANE_QuNeo.delayedAssertion = function (functionName, oneShotFlag) {
     engine.beginTimer(KANE_QuNeo.assertionDelayTimer,functionName,oneShotFlag)
 }
@@ -2056,6 +2079,7 @@ KANE_QuNeo.triggerVuMeter = function (deck) {
 
 // VuMeters
 KANE_QuNeo.deckVuMeter = function (deck, value) {
+    var channelName = KANE_QuNeo.getChannelName(deck);
     var channel = deck - 1;
     // adjust from 0...1 to 0...127
     var values = KANE_QuNeo.defineValues(value);
@@ -2065,19 +2089,27 @@ KANE_QuNeo.deckVuMeter = function (deck, value) {
 	KANE_QuNeo.LEDs(0x91,KANE_QuNeo.activeBeatLEDs[channel],
 			values.cubedNeverOff);
 	
-    // Hotcue LEDs
-    KANE_QuNeo.LEDs(0x91,KANE_QuNeo.hotcueActivateLEDs[channel],values.cubedNeverOff)
-    KANE_QuNeo.LEDs(0x91,KANE_QuNeo.hotcueClearLEDs[channel],values.cubedNeverOff)
     // Vertical Arrow Beat LEDs
     if (!KANE_QuNeo.rateNudge) {
 	var controls = [[0x2e,0x2f],[0x30,0x31]];
 	KANE_QuNeo.LEDs(0x90,controls[channel],values.cubedNeverOff);
     }
+
     // Vertical Vu Meters, only when in modes which use slider modes
     mode = KANE_QuNeo.mode
     if (KANE_QuNeo.sliderMode == 2 &&
-	(mode == 13 || mode == 14 || mode == 15 || mode == 16))
-	KANE_QuNeo.LEDs(0xb0,KANE_QuNeo.getSliderControl(deck,0),values.squared);
+	(mode == 13 || mode == 14 || mode == 15 || mode == 16)) {
+	var level;
+	if (KANE_QuNeo.trackPlaying[channel]) // if track is playing, do VuMeter
+	    level = values.squared;
+	else // else do volume
+	    level = KANE_QuNeo.scaleToSlider(engine.getValue(channelName,"volume"))
+	KANE_QuNeo.LEDs(0xb0,KANE_QuNeo.getSliderControl(deck,0),level);
+    }
+
+    // Hotcue LEDs
+    KANE_QuNeo.LEDs(0x91,KANE_QuNeo.hotcueActivateLEDs[channel],values.cubedNeverOff)
+    KANE_QuNeo.LEDs(0x91,KANE_QuNeo.hotcueClearLEDs[channel],values.cubedNeverOff)
     // Beat Jump LEDs
     KANE_QuNeo.LEDs(0x91,KANE_QuNeo.jumpLoopLEDs[channel],values.cubedNeverOff);
     // Jump Direction LEDs
@@ -2100,8 +2132,17 @@ KANE_QuNeo.masterVuMeter = function (value) {
     // adjust from 0...1 to 0...127
     var values = KANE_QuNeo.defineValues(value);
     
-    // top horizontal slider
-    KANE_QuNeo.LEDs(0xb0,0x0b,values.squared);
+    // top horizontal slider: master volume
+    var level = -1; // -1 for no playing decks
+    for (var channel = 0; channel < KANE_QuNeo.numDecks; channel++) {
+	if (KANE_QuNeo.trackPlaying[channel])  { // if any deck is playing,
+	    level = values.squared; break; // do VuMeter then break
+	}
+    }
+    if (level == -1) // if there were no playing decks, display volume
+	level = KANE_QuNeo.oneToFiveKnob(engine.getValue("[Master]","volume"))
+    KANE_QuNeo.LEDs(0xb0,0x0b,level);
+
     // AssertLED Button
     KANE_QuNeo.LEDs(0x90,KANE_QuNeo.assertLED,values.cubedNeverOff)
     // PlayScratch LED
@@ -2111,22 +2152,6 @@ KANE_QuNeo.masterVuMeter = function (value) {
 }
 
 // Sliders
-KANE_QuNeo.getSliderControl = function (deck, side) {
-    var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
-
-    // left side
-    if (side == 0) {
-	if (LEDGroup == 1) return [0x01]; // leftmost slider
-	else if (LEDGroup == 2) return [0x02]; // middle left slider
-
-    // right side
-    } else if (side == 1) {
-	if (LEDGroup == 1) return [0x03]; // middle right slider
-	else if (LEDGroup == 2) return [0x04]; // rightmost slider
-
-    } else print("ERROR: getSliderControl called with improper args.")
-}
-
 KANE_QuNeo.deckZoomLEDs = function (deck, value) {
     var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
     // normalize zoom LED value to be 0-127
@@ -2239,11 +2264,7 @@ KANE_QuNeo.deck2RightVol = function (value) {
 }
 
 KANE_QuNeo.headVol = function (value) {
-    var vol;
-    if (value < 1) // first half of the knob, 0-1
-	vol = value * 127 / 2;
-    else // second half of the knob, 1-5
-	vol = 63.5 + (value - 1) * 63.5 / 4
+    var vol = KANE_QuNeo.oneToFiveKnob(value)
     midi.sendShortMsg(0xb0,0x0a,0x00+vol);
 }
 
