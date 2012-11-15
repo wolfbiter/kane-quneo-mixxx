@@ -1,5 +1,5 @@
 /* Midi scripts for Kane's Quneo presets. Fills out some LED's, provides rotary
-   scratching/playing, and (1300 lines of) other things. */
+   scratching/playing, and (2000+ lines of) other things. */
 
 function KANE_QuNeo () {}
 
@@ -1058,6 +1058,13 @@ KANE_QuNeo.timeKeeper = function (deck, value) {
 	    [engine.beginTimer(KANE_QuNeo.beatOffset,
 			      "KANE_QuNeo.handleBeat("+deck+")",
 			      true)];
+
+    // if we're at the end of the song, set track to not playing
+    if (value == 1) {
+	KANE_QuNeo.trackPlaying[channel] = 0
+	KANE_QuNeo.assertLoadLEDs(deck);
+	KANE_QuNeo.triggerVuMeter(0); // trigger master VuMeter
+    }
 }
 
 /***** (B) Beat Handling *****/
@@ -2053,10 +2060,11 @@ KANE_QuNeo.deckVuMeter = function (deck, value) {
     // adjust from 0...1 to 0...127
     var values = KANE_QuNeo.defineValues(value);
 
-    // Cue Visualizer Beat LEDs
+    // Cue Visualizer Region's Beat LEDs
     if (KANE_QuNeo.beatLEDsOn)
 	KANE_QuNeo.LEDs(0x91,KANE_QuNeo.activeBeatLEDs[channel],
 			values.cubedNeverOff);
+	
     // Hotcue LEDs
     KANE_QuNeo.LEDs(0x91,KANE_QuNeo.hotcueActivateLEDs[channel],values.cubedNeverOff)
     KANE_QuNeo.LEDs(0x91,KANE_QuNeo.hotcueClearLEDs[channel],values.cubedNeverOff)
@@ -2137,9 +2145,6 @@ KANE_QuNeo.deckCursorLEDs = function (deck, position) {
     var normalized = position * 127;
     // determine which control we are manipulating
     var control = KANE_QuNeo.getSliderControl(deck, 1)
-    // if we're at the end, set track to not playing
-    if (normalized == 127)
-	KANE_QuNeo.trackPlaying[channel] == 0
     // emit LED message
     KANE_QuNeo.LEDs(0xb0,control,127 - normalized) // inverted to show time left
 }
