@@ -1062,7 +1062,8 @@ KANE_QuNeo.timeKeeper = function (deck, value) {
     // if we're at the end of the song, set track to not playing
     if (value == 1) {
 	KANE_QuNeo.trackPlaying[channel] = 0
-	KANE_QuNeo.assertLoadLEDs(deck);
+	if (KANE_QuNeo.mode == 16)
+	    KANE_QuNeo.assertLoadLEDs(deck);
 	KANE_QuNeo.triggerVuMeter(0); // trigger master VuMeter
     }
 }
