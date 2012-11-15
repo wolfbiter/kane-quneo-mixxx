@@ -57,20 +57,17 @@ While running Mixxx, do the following:
 Click ok for success!
 
 ### II) Potentially Important files/folders
-#####1. QuNeo Editor
+#####1. diagrams
+Here are all the quick-reference .png images of this preset's control mappings
+the appropriate folder for Mixxx presets (according to my machine), then runs Mixxx.
+#####2. mixxx-controls
+This folder contains the two files (xml and js) necessary for mapping midi notes into
+Mixxx's controls.
+#####3. QuNeo Editor
 This folder has the factory presets for the QuNeo mappings, where I have modified
 several presets to output midi notes consistent with my settings for Mixxx controls.
 This folder also contains the windows executable "QuNeo Editor.exe", which is necessary for
 updating a given QuNeo's presets.
-#####2. mixxx-controls
-This folder contains the two files (xml and js) necessary for mapping midi notes into
-Mixxx's controls.
-#####3. dj
-This is a home-brewed script which places the relevant files from Mixxx Controls into
-the appropriate folder for Mixxx presets (according to my machine), then runs Mixxx.
-#####4. install-tools
-Custom scripts to export all the files necessary to install mixxx with my presets on a
-linux debian machine.
 
 ## Usage:
 
