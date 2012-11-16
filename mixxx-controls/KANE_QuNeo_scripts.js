@@ -340,7 +340,7 @@ KANE_QuNeo.init = function (id) { // called when the device is opened & set up
 
   // led controls for the master / flanger channels
   engine.connectControl("[Master]","VuMeter","KANE_QuNeo.masterVuMeter");
-  engine.softTakeover("[Master]","volume",true);
+  //engine.softTakeover("[Master]","volume",true);
   engine.connectControl("[Master]","headVolume","KANE_QuNeo.headVol");		    
   engine.connectControl("[Flanger]","lfoPeriod","KANE_QuNeo.flangerPeriod");
   engine.connectControl("[Flanger]","lfoDepth","KANE_QuNeo.flangerDepth");  
@@ -353,12 +353,12 @@ KANE_QuNeo.init = function (id) { // called when the device is opened & set up
       engine.connectControl(channelName,"VuMeter","KANE_QuNeo.deck"+deck+"VuMeter");
       
       // soft takeovers
-      engine.softTakeover(channelName,"rate",true);
-      engine.softTakeover(channelName,"volume",true);
-      engine.softTakeover(channelName,"filterHigh",true);
-      engine.softTakeover(channelName,"filterMid",true);
-      engine.softTakeover(channelName,"filterLow",true);
-      engine.softTakeover(channelName,"pregain",true);
+      //engine.softTakeover(channelName,"rate",true);
+      //engine.softTakeover(channelName,"volume",true);
+      //engine.softTakeover(channelName,"filterHigh",true);
+      //engine.softTakeover(channelName,"filterMid",true);
+      //engine.softTakeover(channelName,"filterLow",true);
+      //engine.softTakeover(channelName,"pregain",true);
 
       // Conveniences
       engine.setValue(channelName,"keylock",1);
