@@ -5,11 +5,13 @@ Version 1.0.x
 ###Featuring a [Demo Video](https://youtu.be/dpdWzb0PEWo) and an [Intro Tutorial](https://youtu.be/dnWSqPFBHGk)!
 ------------------------
 + This repository contains all the components necessary to link a QuNeo to Mixxx with
-my customized set of controls and LEDs. Virtually every LED pulses to the beat!
+my customized set of controls and LEDs.
 + Here are several quick-reference guides for the [The Controls](#ii-controls-list).
 + This script is driven by 2 core principles:
   - iterative improvements stemming directly from wants found during actual dj use
   - abstractions free the mind for more complex expression (leading to a higher skill cap)
++ Every button (every corner of every pad) and every LED is mapped to useful functionality in order to maximize the dj's potential.
++ Plus, virtually every LED pulses to the beat!
 + For any questions, suggestions, or bug reports, I encourage you to either [Submit An Issue](https://github.com/wolfbiter/kane-quneo-mixxx/issues?state=open) or [Contact Me](#contact-me)!
 
 ####NOTE: The guide assumes the user has Mixxx v1.11 installed.
