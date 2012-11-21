@@ -1708,6 +1708,24 @@
 	<status>0x96</status>
 	<midino>0x08</midino>
 	<group>[Channel1]</group>
+	<key>KANE_QuNeo.quantize1Cues</key>
+	<options>
+	  <Script-Binding/>
+	</options>
+      </control>
+      <control>
+	<status>0x96</status>
+	<midino>0x09</midino>
+	<group>[Channel2]</group>
+	<key>KANE_QuNeo.quantize2Cues</key>
+	<options>
+	  <Script-Binding/>
+	</options>
+      </control>
+      <control>
+	<status>0x96</status>
+	<midino>0x0a</midino>
+	<group>[Channel1]</group>
 	<key>beats_translate_curpos</key>
 	<options>
 	  <normal/>
@@ -1715,7 +1733,7 @@
       </control>
       <control>
 	<status>0x96</status>
-	<midino>0x09</midino>
+	<midino>0x0b</midino>
 	<group>[Channel2]</group>
 	<key>beats_translate_curpos</key>
 	<options>
@@ -1724,7 +1742,7 @@
       </control>
       <control>
 	<status>0x86</status>
-	<midino>0x08</midino>
+	<midino>0x0a</midino>
 	<group>[Channel1]</group>
 	<key>beats_translate_curpos</key>
 	<options>
@@ -1733,7 +1751,7 @@
       </control>
       <control>
 	<status>0x86</status>
-	<midino>0x09</midino>
+	<midino>0x0b</midino>
 	<group>[Channel2]</group>
 	<key>beats_translate_curpos</key>
 	<options>
