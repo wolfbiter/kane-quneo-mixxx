@@ -1226,6 +1226,7 @@ KANE_QuNeo.handleBeat = function (deck) {
     KANE_QuNeo.scheduleBeat(deck, KANE_QuNeo.wholeBeat[channel], 1);
     // update beat counter LEDs no matter what happened
     KANE_QuNeo.assertBeatCounterLEDs(deck);
+    KANE_QuNeo.assertBeatLEDs(deck);
     // set the last beat to this position
     KANE_QuNeo.lastBeatPosition[channel] = position;
 }
