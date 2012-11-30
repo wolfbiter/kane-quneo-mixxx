@@ -579,7 +579,6 @@ KANE_QuNeo.doSync = function (deck, syncType) {
     var deckType = KANE_QuNeo.getDeckType(deck);
     if (deckType == "deck") { // regular sync works only for decks
 	var channelName = KANE_QuNeo.getChannelName(deck)
-	print("current deck: "+deck)
 	engine.setValue(channelName,"beatsync_"+syncType,1); // do the sync
 	// update LEDs
 	KANE_QuNeo.assertJumpSyncLED(deck);
