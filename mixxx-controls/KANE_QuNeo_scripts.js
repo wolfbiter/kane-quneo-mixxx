@@ -446,7 +446,7 @@ KANE_QuNeo.play = function (deck) {
 
 	// then sync if we are in jumpsync mode
 	if (KANE_QuNeo.trackJumpSync[channel])
-	    KANE_QuNeo.syncTrack(deck,0);
+	    KANE_QuNeo.syncTrack(deck,"phase",0);
     }
     // update global value
     var hotcuePressed = KANE_QuNeo.hotcuePressed[channel];
@@ -571,18 +571,23 @@ KANE_QuNeo.jumpLoop = function (deck, numBeats) {
 }
 
 KANE_QuNeo.scheduleSync = function (deck) {
-    engine.beginTimer(KANE_QuNeo.jumpSyncTimer,"KANE_QuNeo.doSync("+deck+")",true)
+    engine.beginTimer(
+	KANE_QuNeo.jumpSyncTimer, "KANE_QuNeo.doSync("+deck+",tempo)",true)
 }
 
-KANE_QuNeo.doSync = function (deck) {
-    var channelName = KANE_QuNeo.getChannelName(deck)
-    engine.setValue(channelName,"beatsync_phase",1); // do the sync
-    // update LEDs
-    KANE_QuNeo.assertJumpSyncLED(deck);
-    KANE_QuNeo.assertBeatCounterLEDs(deck);
+KANE_QuNeo.doSync = function (deck, syncType) {
+    var deckType = KANE_QuNeo.getDeckType(deck);
+    if (deckType == "deck") { // regular sync works only for decks
+	var channelName = KANE_QuNeo.getChannelName(deck)
+	print("current deck: "+deck)
+	engine.setValue(channelName,"beatsync_"+syncType,1); // do the sync
+	// update LEDs
+	KANE_QuNeo.assertJumpSyncLED(deck);
+	KANE_QuNeo.assertBeatCounterLEDs(deck);
+    }
 }
 
-KANE_QuNeo.syncTrack = function (deck, scheduleFlag) {
+KANE_QuNeo.syncTrack = function (deck, type, scheduleFlag) {
     var channel = deck - 1; // confusing, yes. channels start from 0.
 
     // verify other track is playing before syncing to avoid glitchy jumpsync loops
@@ -594,7 +599,7 @@ KANE_QuNeo.syncTrack = function (deck, scheduleFlag) {
 	if (scheduleFlag) // if this sync should be scheduled
 	    KANE_QuNeo.scheduleSync(deck); // then schedule it
 	else
-	    KANE_QuNeo.doSync(deck); // else do it now
+	    KANE_QuNeo.doSync(deck,type); // else do it now
     }
 }
 
@@ -894,9 +899,19 @@ KANE_QuNeo.rateNudgeHeld = function (deck, direction) {
 
 KANE_QuNeo.rateNudgeAll = function (callingDeck, direction) {
     var channelName = KANE_QuNeo.getChannelName(callingDeck);
-    // first nudge all decks
-    for (var deck = 1; deck <= (KANE_QuNeo.numDecks + 1); deck++)
-	KANE_QuNeo.doRateNudge(deck, direction)
+    // do the calling deck's nudge 
+    KANE_QuNeo.doRateNudge(callingDeck, direction)
+
+    // then sync the tempo of the other decks to the calling deck.
+    // The point of this is to ensure that each nudge amount is
+    // consistent between all decks
+    for (var deck = 1; deck <= (KANE_QuNeo.numDecks + 1); deck++) {
+	print("deck: "+deck)
+	if (deck != callingDeck) {
+	    print("deck!=callingDeck")
+	    KANE_QuNeo.doSync(deck, "tempo")
+	}
+    }
 
     // now check if rate of calling deck is near 0%. if so, turn off auto nudging.
     // NOTE: extra rate factor is for looking ahead 1 tick because the engine is
@@ -1190,7 +1205,7 @@ KANE_QuNeo.handleBeat = function (deck) {
 
 	    // then schedule a sync if we are in JumpSync mode
 	    if (KANE_QuNeo.trackJumpSync[channel]) {
-		KANE_QuNeo.syncTrack(deck,1);
+		KANE_QuNeo.syncTrack(deck,"phase",1);
 	    }
 
 	} else // we just jumped, so reset status
@@ -1342,13 +1357,24 @@ KANE_QuNeo.getLEDGroup = function (deck) {
 }
 
 KANE_QuNeo.getChannelName = function (deck) {
-    if (deck == 0) // master deck
+    var deckType = KANE_QuNeo.getDeckType(deck);
+    if (deckType == "master") // master deck
 	return "[Master]"
-    else if (deck < 5) // if dealing with actual decks
+    else if (deckType == "deck") // if dealing with actual decks
 	return "[Channel"+deck+"]"
-    else // if dealing with samplers
+    else if (deckType == "sampler") // if dealing with samplers
 	return "[Sampler"+(deck - 4)+"]"
 }
+
+KANE_QuNeo.getDeckType = function (deck) {
+    if (deck == 0) // master deck
+	return "master"
+    else if (deck < 5) // if dealing with actual decks
+	return "deck"
+    else // if dealing with samplers
+	return "sampler"
+}
+
 // -------------------------------------------------------
 // Begin LED section
 // -------------------------------------------------------
