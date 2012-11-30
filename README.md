@@ -11,7 +11,7 @@ my customized set of controls and LEDs.
   - iterative improvements stemming directly from wants found during actual dj use
   - abstractions free the mind for more complex expression (leading to a higher skill cap)
 + Every button (every corner of every pad) and every LED is mapped to useful functionality in order to maximize the dj's potential.
-+ Plus, virtually every LED pulses to the beat!
++ Pad LEDs pulse to the beat!
 + For any questions, suggestions, or bug reports, I encourage you to either [Submit An Issue](https://github.com/wolfbiter/kane-quneo-mixxx/issues?state=open) or [Contact Me](#contact-me)!
 
 ####NOTE: The guide assumes the user has Mixxx v1.11 installed.
@@ -217,10 +217,14 @@ in loop scheduling mode.
 #####1) Hotcue Deletes
 + Deletes the hotcue (ChannelN, hotcue_X_delete)
 
-#####2) Beatgrid
+#####2) Quantize Cues
++ Snaps all currently set hotcues in the calling deck to the nearest beat with respect to the current play position.
++ Useful when fixing the beatgrid of a song fully saturated with cues: set the new beatgrid, snap to a beat, then press Quantize Cues.
+
+#####3) Beatgrid
 + Sets the beatgrid of the corresponding deck to its current visual playposition (ChannelN, beats_translate_curpos)
 
-#####3) Visual Nudge / Visual Scroll
+#####4) Visual Nudge / Visual Scroll
 + *Visual Nudge*: each vertical arrow press nudges the corresponding deck's visual play position in the direction of
 the press (up => forward, down => backward). This is incredibly useful for setting precise beatgrids; the distance
 nudged can be [customized](#iii-customizing-this-preset).
