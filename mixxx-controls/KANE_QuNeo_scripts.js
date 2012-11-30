@@ -30,6 +30,7 @@ function KANE_QuNeo () {}
        (HA) Horizontal Arrows
        (P)  Playlist Mode
        (RB) Reset Beat
+       (QC) Quantize Cues
        (TK) Time Keeping
        (B)  Beat Handling
        (U)  Utilities
@@ -366,8 +367,8 @@ KANE_QuNeo.init = function (id) { // called when the device is opened & set up
       engine.setValue(channelName,"pregain",KANE_QuNeo.pregain)
   }
 
-  engine.setValue("[Samplers]","show_samplers",1)
-  engine.setValue("[Microphone]","show_microphone",1)
+  //engine.setValue("[Samplers]","show_samplers",1)
+  //engine.setValue("[Microphone]","show_microphone",1)
 
 
     // for coolness
@@ -1034,6 +1035,48 @@ KANE_QuNeo.resetBeat = function (deck) {
     KANE_QuNeo.scheduleBeat(deck, 1, spb, 1) // then schedule this beat
 }
 
+/***** (QC) Quantize Cues *****/
+
+KANE_QuNeo.quantizeCues = function (deck) {
+    var channelName = KANE_QuNeo.getChannelName(deck);
+
+    // light LED to indicate button press
+    var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
+    var control;
+    if (LEDGroup == 1) control = [0x28];
+    if (LEDGroup == 2) control = [0x29];
+    KANE_QuNeo.LEDs(0x90,control,0x7f)
+    
+    // find out our current position, assume it's on the beatgrid
+    var trackSamples = engine.getValue(channelName,"track_samples")
+    var position = engine.getValue(channelName,"visual_playposition")
+	* trackSamples; // track position in samples
+
+    // determine bpm and spb
+    var samplerate = engine.getValue(channelName,"track_samplerate")
+    var bpm = engine.getValue(channelName,"file_bpm");
+    var spb = samplerate * 60 * 2 / bpm // samples per beat, not sure on the 2.
+
+    // iterate through each active cue, clearing it then resetting it such that
+    // it will end up on the beat nearest its original position
+    for (var cue = 1; cue <= KANE_QuNeo.numHotcues; cue++) {
+	var cuePosition = engine.getValue(channelName,"hotcue_"+cue+"_position");
+
+	// if cue is enabled, reset it
+	if (cuePosition >= 0) {
+	    print("setting cue " + cue)
+	    var diffBeats = Math.round((cuePosition - position) / spb)
+	    var newPosition = position + (diffBeats * spb)
+	    engine.setValue(channelName,"hotcue_"+cue+"_position",newPosition)
+	    print("old position: "+cuePosition)
+	    print("new position: "+newPosition)
+	    print("diffBeats: "+diffBeats)
+	}
+    }
+    // turn off LED to indicate completion
+    KANE_QuNeo.LEDs(0x90,control,0x00)
+}
+
 /***** (TK) Time Keeping *****/
 
 KANE_QuNeo.timeKeeper = function (deck, value) {
@@ -1641,7 +1684,7 @@ KANE_QuNeo.assertHotcueActivateLEDs = function (deck) {
 	// if cue is enabled
 	if (cuePosition >= 0) {
 
-	    // if in main DJ mode, light passed hotcues red,
+	    // if in main DJ mode, light past hotcues red,
 	    // upcoming hotcues green, and the next hotcue orange.
 	    if (KANE_QuNeo.mode == 13) { 
 		var red = LEDs[channel][cue - 1];
@@ -2642,6 +2685,15 @@ KANE_QuNeo.reset2Beat = function (channel, control, value, status, group) {
     KANE_QuNeo.resetBeat(2) 
 }
 
+//Quantize Cues
+KANE_QuNeo.quantize1Cues = function (channel, control, value, status, group) {
+    KANE_QuNeo.quantizeCues(1)
+}
+
+KANE_QuNeo.quantize2Cues = function (channel, control, value, status, group) {
+    KANE_QuNeo.quantizeCues(2)
+}
+	    
 /***** (SD) Sampler Dispatches *****/
 
 //JumpSyncing
