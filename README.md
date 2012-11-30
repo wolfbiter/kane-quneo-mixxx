@@ -10,8 +10,7 @@ my customized set of controls and LEDs.
 + This script is driven by 2 core principles:
   - iterative improvements stemming directly from wants found during actual dj use
   - abstractions free the mind for more complex expression (leading to a higher skill cap)
-+ Every button (every corner of every pad) and every LED is mapped to useful functionality in order to maximize the dj's potential.
-+ Pad LEDs pulse to the beat!
++ Every button (every corner of every pad) and every LED is mapped to useful functionality.
 + For any questions, suggestions, or bug reports, I encourage you to either [Submit An Issue](https://github.com/wolfbiter/kane-quneo-mixxx/issues?state=open) or [Contact Me](#contact-me)!
 
 ####NOTE: The guide assumes the user has Mixxx v1.11 installed.
