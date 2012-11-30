@@ -570,9 +570,10 @@ KANE_QuNeo.jumpLoop = function (deck, numBeats) {
     }
 }
 
-KANE_QuNeo.scheduleSync = function (deck) {
+KANE_QuNeo.scheduleSync = function (deck, syncType) {
     engine.beginTimer(
-	KANE_QuNeo.jumpSyncTimer, "KANE_QuNeo.doSync("+deck+",tempo)",true)
+	KANE_QuNeo.jumpSyncTimer,
+	"KANE_QuNeo.doSync("+deck+", \"" + syncType + "\")",true)
 }
 
 KANE_QuNeo.doSync = function (deck, syncType) {
@@ -596,7 +597,7 @@ KANE_QuNeo.syncTrack = function (deck, type, scheduleFlag) {
 	// flash jumpsync LED to signify the sync
 	KANE_QuNeo.syncLEDRed(deck);
 	if (scheduleFlag) // if this sync should be scheduled
-	    KANE_QuNeo.scheduleSync(deck); // then schedule it
+	    KANE_QuNeo.scheduleSync(deck, type); // then schedule it
 	else
 	    KANE_QuNeo.doSync(deck,type); // else do it now
     }
