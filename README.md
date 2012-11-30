@@ -177,9 +177,10 @@ preferences in Mixxx.
 #####8) Sync / Cue / Jumpsync / Beat Counters
 + *Sync* syncs the deck's phase and tempo (ChannelN, beatsync).
 + *Cue* defaults to CDJ behaviour (ChannelN, cue_default).
-+ *Jumpsync* toggles jumpsync on/off. If the deck position changes in any way other than moving forward by playing
-(ie the deck jumps to a pressed hotcue), and jumpsync is active for that deck, the jumpsync button will flash red
-and the jumping deck will be synced to the other deck. Note, this sync is in terms of **phase** and **not tempo**.
++ *Jumpsync* toggles jumpsync on/off. Jumpsync will trigger a sync for the activated deck when one of two things happens:
+  - 1) If the play button is pressed, the track will play and immediately sync to the other track.
+  - 2) If the deck position changes in any way other than moving forward by playing (ie the deck jumps to a pressed hotcue), and jumpsync is active for that deck,
+the jumping deck will be synced to the other deck. Note, this sync is in terms of **phase** and **not tempo**.
   - NOTE: Jumpsync will not sync unless the other deck is playing. This is to prevent glitchy jumpsync loops.
 + *Beat Counters*: these are effectively hexidecimal counters which keep track of which beat (1 through 16) each deck is
 on. For a given deck, the LED on the cue button corresponds to X*4^0, whereas the LED on the sync button corresponds

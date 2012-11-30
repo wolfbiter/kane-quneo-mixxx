@@ -443,6 +443,10 @@ KANE_QuNeo.play = function (deck) {
     }
     else {    // If not currently playing,
         engine.setValue(channelName,"play",1);    // Start
+
+	// then sync if we are in jumpsync mode
+	if (KANE_QuNeo.trackJumpSync[channel])
+	    KANE_QuNeo.syncTrack(deck,0);
     }
     // update global value
     var hotcuePressed = KANE_QuNeo.hotcuePressed[channel];
@@ -576,6 +580,22 @@ KANE_QuNeo.doSync = function (deck) {
     // update LEDs
     KANE_QuNeo.assertJumpSyncLED(deck);
     KANE_QuNeo.assertBeatCounterLEDs(deck);
+}
+
+KANE_QuNeo.syncTrack = function (deck, scheduleFlag) {
+    var channel = deck - 1; // confusing, yes. channels start from 0.
+
+    // verify other track is playing before syncing to avoid glitchy jumpsync loops
+    var otherDeck = ((channel + 1) % 2) + 1;
+    var otherTrackPlaying = engine.getValue("[Channel"+otherDeck+"]","play")
+    if (otherTrackPlaying) {
+	// flash jumpsync LED to signify the sync
+	KANE_QuNeo.syncLEDRed(deck);
+	if (scheduleFlag) // if this sync should be scheduled
+	    KANE_QuNeo.scheduleSync(deck); // then schedule it
+	else
+	    KANE_QuNeo.doSync(deck); // else do it now
+    }
 }
 
 KANE_QuNeo.scheduleLoop = function (deck, numBeats) {
@@ -1168,15 +1188,9 @@ KANE_QuNeo.handleBeat = function (deck) {
 	    KANE_QuNeo.wholeBeat[channel] = 1; // restart at beat 1
 	    KANE_QuNeo.cancelScheduledBeats(deck); // cancel any scheduled beats
 
-	    // then schedule a sync if we are in JumpSync mode;
-	    // verifying other track is playing to avoid glitchy jumpsync loops
-	    var otherDeck = ((channel + 1) % 2) + 1;
-	    var otherTrackPlaying = engine.getValue("[Channel"+otherDeck+"]","play")
-	    if (KANE_QuNeo.trackJumpSync[channel] &&
-		otherTrackPlaying) {
-		print("Syncing deck "+deck)
-		KANE_QuNeo.syncLEDRed(deck);
-		KANE_QuNeo.scheduleSync(deck);
+	    // then schedule a sync if we are in JumpSync mode
+	    if (KANE_QuNeo.trackJumpSync[channel]) {
+		KANE_QuNeo.syncTrack(deck,1);
 	    }
 
 	} else // we just jumped, so reset status
