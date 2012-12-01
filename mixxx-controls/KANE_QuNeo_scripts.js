@@ -495,7 +495,18 @@ KANE_QuNeo.toggleRecord = function (channel, control, value, status, group) {
     var old = KANE_QuNeo.recordToggle;
     KANE_QuNeo.recordToggle = (old + 1) % 2 // toggle global on/off
     engine.setValue("[Recording]","toggle_recording",1) // toggle engine
-    KANE_QuNeo.assertRecordLED() // update LED
+    
+    // for each deck, print out the sample at which recording started
+    for (var deck = 1; deck <= 2; deck++) {
+	var channelName = KANE_QuNeo.getChannelName(deck);
+	var samples = engine.getValue(channelName,"track_samples");
+	var position = engine.getValue(channelName,"visual_playposition");
+	var samplePosition = samples * position;
+	print("Recording started with deck "+deck+ " at sample: "+samplePosition)
+
+    }
+    
+    KANE_QuNeo.assertRecordLED() // update record LED
 }
 
 // -------------------------------------
