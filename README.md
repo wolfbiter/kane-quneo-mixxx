@@ -80,8 +80,8 @@ updating a given QuNeo's presets.
 + To switch modes:
   - First press the mode button.
   - Then the pad of the mode you want to select (see above diagram).
-  - Finally, **press the assertLEDs button** to tell the the KANE_QuNeo script that you've changed modes.
-**WARNING: IF YOU DO NOT DO THIS, BEHAVIOR IS UNDEFINED.**
+  - Finally, press the assertLEDs button to tell the the KANE_QuNeo script that you've changed modes.
+    + **WARNING: If you do not assert the LEDs, BEHAVIOR IS UNDEFINED.**
 + If the LEDs are messed up, you can simply change into the mode you're already in and reassert LEDs to clear garbage
 values.
 + The mode you're currently in is usually clear from the LEDs that are present, but if you are unsure, you can always
