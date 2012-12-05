@@ -22,7 +22,7 @@ function KANE_QuNeo () {}
    3) Functionality
    
        (JL) Jump, Sync, and/or Loop over 1,2,4,8 Beats
-       (SM) Slider Modes
+       (VS) Vertical Sliders
        (ZC) Zoom and Cursor
        (VN) Visual Nudging
        (RN) Periodic and Regular Rate Nudging
@@ -69,6 +69,8 @@ KANE_QuNeo.beatOffset = 70; // time(ms) to wait before signaling a beat, used
 KANE_QuNeo.minBrightness = .2 // minimum value for flashing LEDs, 0...1
 KANE_QuNeo.numDecks = 8 // number of decks we are supporting. currently 4 decks +
                         // 4 samplers = 8 total decks
+KANE_QuNeo.doubleTapWindow = 500; // time(ms) window in which to consider
+                                  // two note presses as a double tap
 KANE_QuNeo.numHotcues = 16; // total hotcues we are currently supporting
 KANE_QuNeo.pregain = 1.0 // initialize deck gains to this value
 KANE_QuNeo.scratchSpeed = 5.0 // Scratch ticks per rotary sense
@@ -323,6 +325,9 @@ KANE_QuNeo.trackPlaying =
     KANE_QuNeo.makeVar(0); // 1 if track is currently playing
 KANE_QuNeo.slipEnabled = KANE_QuNeo.makeVar(0) // 1 if slip is enabled
 
+KANE_QuNeo.verticalSliderDoubleTap = [0,0,0,0]; // 1 when a the next tap will
+                                                // activate the double tap
+
 // the following hold arrays of timers which may be stopped
 KANE_QuNeo.nextBeatTimer = KANE_QuNeo.makeVar([]);
 KANE_QuNeo.scheduledBeats = KANE_QuNeo.makeVar([]);
@@ -391,6 +396,7 @@ KANE_QuNeo.shutdown = function () {
 KANE_QuNeo.sliderCycle = function (channel, control, value, status, group) {
     KANE_QuNeo.closeSliderMode() // close old mode
     KANE_QuNeo.sliderMode = (KANE_QuNeo.sliderMode + 1) % 4; // cycle 0,1,2,3,0,...
+    KANE_QuNeo.verticalSliderDoubleTap = [0,0,0,0] // reset vert slider double taps
     KANE_QuNeo.openSliderMode() // initiate new mode
 }
 
@@ -503,7 +509,6 @@ KANE_QuNeo.toggleRecord = function (channel, control, value, status, group) {
 	var position = engine.getValue(channelName,"visual_playposition");
 	var samplePosition = samples * position;
 	print("Recording started with deck "+deck+ " at sample: "+samplePosition)
-
     }
     
     KANE_QuNeo.assertRecordLED() // update record LED
@@ -654,22 +659,44 @@ KANE_QuNeo.deckMultiplyLoop = function (deck, factor) {
     KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertBeatLEDs("+deck+")",true);
 }
 
-/***** (SM) Slider Modes *****/
+/***** (VS) Vertical Sliders *****/
 
 KANE_QuNeo.verticalSliderTouch = function (slider, value) {
-    var mode = KANE_QuNeo.sliderMode
-    // determine 0...4 value
-    if (value < 63.5) // first half of the knob, 0...1
-	var zeroToFour = value / 63.5;
-    else // second half of the knob, 1...4
-	var zeroToFour = ( (3 / 63.5) * value ) - 2;
-    // determine 0...1 denormalized from 0...127 value
-    var denormalized = value / 127;
-    // determine -1...1
-    var negOneToOne = value / 63.5 - 1;
+    print("slider touch: "+slider)
+    
+    // if this is the first press:
+    if (!KANE_QuNeo.verticalSliderDoubleTap[slider - 1]) {
+	// record this press,
+	KANE_QuNeo.verticalSliderDoubleTap[slider - 1] = 1;
+	// then begin the reset timer
+	engine.beginTimer(KANE_QuNeo.doubleTapWindow,
+			  "KANE_QuNeo.resetDoubleTap("+slider+")",
+			  true);
+    }
+
+    // if this is the second press:
+    else {
+	// reset the double tap
+	KANE_QuNeo.resetDoubleTap(slider);
+	// reset the pressed slider's level
+	KANE_QuNeo.verticalSliderMove(slider, 0, 1);
+    }
+}
+
+KANE_QuNeo.resetDoubleTap = function (slider) {
+    KANE_QuNeo.verticalSliderDoubleTap[slider - 1] = 0;
+}
+
+KANE_QuNeo.verticalSliderMove = function (slider, value, resetFlag) {
+    print("resetflag on vertical slider move: "+resetFlag);
+    // define values
+    if (resetFlag) // if this is a call to reset the vertical slider,
+	var values = KANE_QuNeo.getVerticalSliderResetValues(); // get reset values
+    else // else get normal values
+	var values = KANE_QuNeo.getReverseValues(value);
     
     // make sliders interact with mixxx based on mode and slider touched
-    switch (mode) {
+    switch (KANE_QuNeo.sliderMode) {
     case 0: // mode 0
 	switch (slider) {
 	case 1:
@@ -684,35 +711,35 @@ KANE_QuNeo.verticalSliderTouch = function (slider, value) {
     case 1: // mode 1
 	switch (slider) {
 	case 1:
-	    engine.setValue("[Channel1]","pregain",zeroToFour); break;
+	    engine.setValue("[Channel1]","pregain",values.zeroToFour); break;
 	case 2:
-	    engine.setValue("[Channel2]","pregain",zeroToFour); break;
+	    engine.setValue("[Channel2]","pregain",values.zeroToFour); break;
 	case 3:
-	    engine.setValue("[Channel1]","rate",negOneToOne); break;
+	    engine.setValue("[Channel1]","rate",values.negOneToOne); break;
 	case 4:
-	    engine.setValue("[Channel2]","rate",negOneToOne); break;
+	    engine.setValue("[Channel2]","rate",values.negOneToOne); break;
 	} break;
     case 2: // mode 2
 	switch (slider) {
 	case 1:
-	    engine.setValue("[Channel1]","volume",denormalized); break;
+	    engine.setValue("[Channel1]","volume",values.denormalized); break;
 	case 2:
-	    engine.setValue("[Channel2]","volume",denormalized); break;
+	    engine.setValue("[Channel2]","volume",values.denormalized); break;
 	case 3:
-	    engine.setValue("[Channel1]","filterHigh",zeroToFour); break;
+	    engine.setValue("[Channel1]","filterHigh",values.zeroToFour); break;
 	case 4:
-	    engine.setValue("[Channel2]","filterHigh",zeroToFour); break;
+	    engine.setValue("[Channel2]","filterHigh",values.zeroToFour); break;
 	} break;
     case 3: // mode 3
 	switch (slider) {
 	case 1:
-	    engine.setValue("[Channel1]","filterMid",zeroToFour); break;
+	    engine.setValue("[Channel1]","filterMid",values.zeroToFour); break;
 	case 2:
-	    engine.setValue("[Channel2]","filterMid",zeroToFour); break;
+	    engine.setValue("[Channel2]","filterMid",values.zeroToFour); break;
 	case 3:
-	    engine.setValue("[Channel1]","filterLow",zeroToFour); break;
+	    engine.setValue("[Channel1]","filterLow",values.zeroToFour); break;
 	case 4:
-	    engine.setValue("[Channel2]","filterLow",zeroToFour); break;
+	    engine.setValue("[Channel2]","filterLow",values.zeroToFour); break;
 	} break;
     }
 }
@@ -1341,7 +1368,7 @@ KANE_QuNeo.scaleToSlider = function (value) {
     return value * 127
 }
 
-KANE_QuNeo.defineValues = function (value) {
+KANE_QuNeo.getForwardValues = function (value) {
     return {squared: KANE_QuNeo.scaleToSlider(Math.pow(value, 2)),
 	    cubed: KANE_QuNeo.scaleToSlider(Math.pow(value, 3)),
 	    fourth:  KANE_QuNeo.scaleToSlider(Math.pow(value, 4)),
@@ -1351,6 +1378,30 @@ KANE_QuNeo.defineValues = function (value) {
 		value, 3)),
 	    fourthNeverOff: KANE_QuNeo.scaleToSlider(KANE_QuNeo.powerNeverOff(
 		value, 4))
+	   }
+}
+
+KANE_QuNeo.getReverseValues = function (value) {
+
+    // determine 0...4 value
+    if (value < 63.5) // first half of the knob, 0...1
+	var zeroToFour1 = value / 63.5;
+    else // second half of the knob, 1...4
+	var zeroToFour1 = ( (3 / 63.5) * value ) - 2;
+    // determine 0...1 denormalized from 0...127 value
+    var denormalized1 = value / 127;
+    // determine -1...1
+    var negOneToOne1 = value / 63.5 - 1;
+    return {zeroToFour: zeroToFour1,
+	    denormalized: denormalized1,
+	    negOneToOne: negOneToOne1
+	   }
+}
+
+KANE_QuNeo.getVerticalSliderResetValues = function () {
+    return {zeroToFour: 1,
+	    denormalized: 1,
+	    negOneToOne: 0
 	   }
 }
 
@@ -2178,7 +2229,7 @@ KANE_QuNeo.deckVuMeter = function (deck, value) {
     var channelName = KANE_QuNeo.getChannelName(deck);
     var channel = deck - 1;
     // adjust from 0...1 to 0...127
-    var values = KANE_QuNeo.defineValues(value);
+    var values = KANE_QuNeo.getForwardValues(value);
 
     // Cue Visualizer Region's Beat LEDs
     if (KANE_QuNeo.beatLEDsOn)
@@ -2226,7 +2277,7 @@ KANE_QuNeo.deckVuMeter = function (deck, value) {
 
 KANE_QuNeo.masterVuMeter = function (value) {
     // adjust from 0...1 to 0...127
-    var values = KANE_QuNeo.defineValues(value);
+    var values = KANE_QuNeo.getForwardValues(value);
     
     // top horizontal slider: master volume
     var level = -1; // -1 for no playing decks
@@ -2385,6 +2436,21 @@ KANE_QuNeo.crossFader = function (value) {
 
 /***** (VSD) Vertical Slider Dispatches *****/
 
+// Moves
+KANE_QuNeo.verticalSlider1Move = function (channel, control, value, status, group) {
+    KANE_QuNeo.verticalSliderMove(1, value, 0); // 1 for deck 1, 0 for no reset
+}
+KANE_QuNeo.verticalSlider2Move = function (channel, control, value, status, group) {
+    KANE_QuNeo.verticalSliderMove(2, value, 0);
+}
+KANE_QuNeo.verticalSlider3Move = function (channel, control, value, status, group) {
+    KANE_QuNeo.verticalSliderMove(3, value, 0);
+}
+KANE_QuNeo.verticalSlider4Move = function (channel, control, value, status, group) {
+    KANE_QuNeo.verticalSliderMove(4, value, 0);
+}
+
+//Touches (taps)
 KANE_QuNeo.verticalSlider1Touch = function (channel, control, value, status, group) {
     KANE_QuNeo.verticalSliderTouch(1, value); // 1 for deck 1
 }

@@ -1918,7 +1918,7 @@
       <control>
 	<status>0x94</status>
 	<midino>0x00</midino>
-	<group>[Channel1]</group>
+	<group>[Master]</group>
 	<key>KANE_QuNeo.sliderCycle</key>
 	<options>
 	  <Script-Binding/>
@@ -1927,6 +1927,15 @@
       <control>
 	<status>0xb4</status>
 	<midino>0x00</midino>
+	<group>[Master]</group>
+	<key>KANE_QuNeo.verticalSlider1Move</key>
+	<options>
+	  <Script-Binding/>
+	</options>
+      </control>
+      <control>
+	<status>0x84</status>
+	<midino>0x01</midino>
 	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider1Touch</key>
 	<options>
@@ -1937,6 +1946,15 @@
 	<status>0xb4</status>
 	<midino>0x01</midino>
 	<group>[Master]</group>
+	<key>KANE_QuNeo.verticalSlider2Move</key>
+	<options>
+	  <Script-Binding/>
+	</options>
+      </control>
+      <control>
+	<status>0x84</status>
+	<midino>0x02</midino>
+	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider2Touch</key>
 	<options>
 	  <Script-Binding/>
@@ -1946,6 +1964,15 @@
 	<status>0xb4</status>
 	<midino>0x02</midino>
 	<group>[Master]</group>
+	<key>KANE_QuNeo.verticalSlider3Move</key>
+	<options>
+	  <Script-Binding/>
+	</options>
+      </control>
+      <control>
+	<status>0x84</status>
+	<midino>0x03</midino>
+	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider3Touch</key>
 	<options>
 	  <Script-Binding/>
@@ -1954,6 +1981,15 @@
       <control>
 	<status>0xb4</status>
 	<midino>0x03</midino>
+	<group>[Master]</group>
+	<key>KANE_QuNeo.verticalSlider4Move</key>
+	<options>
+	  <Script-Binding/>
+	</options>
+      </control>
+      <control>
+	<status>0x84</status>
+	<midino>0x04</midino>
 	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider4Touch</key>
 	<options>
