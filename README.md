@@ -212,7 +212,7 @@ other than moving forward by playing or jumping forward one beat. A loop may be 
 in loop scheduling mode.
 
 ####Cueleft Mode (14) / Cueright Mode (15)
-+ These modes are used for cuing, as they provide cue deletes for the left and right decks respectively.
++ These modes are used for cueing, as they provide cue deletes for the left and right decks respectively.
 + Unless otherwise specified, all controls default to the functionality specified in DJ Mode (13)
 ![Cueleft Mode Diagram](https://raw.github.com/wolfbiter/kane-quneo-mixxx/master/diagrams/cueleft.png)
 ![Cueright Mode Diagram](https://raw.github.com/wolfbiter/kane-quneo-mixxx/master/diagrams/cueright.png)
