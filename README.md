@@ -126,6 +126,8 @@ The rhombus serves as a bank to the vertical sliders. This means that pressing t
 vertical slider modes, with unique functionality offered by each mode. The modes are denoted by rhombus color:
 + Off == 1, Green == 2, Red == 3, and Orange == 4. 
 + Refer to the diagrams to see which modes correspond with which functionality.
++ NOTE: many of the modes support a double tap to reset the value to its default. You can [customize](#iii-customizing-this-preset)
+the maximum time between taps which constitutes a double tap. Default window: 400ms.
 
 **Vertical Slider Mode 1 (Rhombus Off)**
 + *Zoom*: zooms the waveform in and out with 6 discrete steps.
@@ -136,15 +138,21 @@ press; however, be forewarned that the limited range of slider values (0 - 127) 
 
 **Vertical Slider Mode 2 (Rhombus Green)**
 + *Gain* (ChannelN, gain)
+  - double tap to reset gain to 50%
 + *Rate* (ChannelN, rate)
+  - double tap to reset rate to 50%
 
 **Vertical Slider Mode 3 (Rhombus Red)**
 + *Deck Volume* (ChannelN, volume), but the LEDs correspond to the *Deck VuMeter* (ChannelN, VuMeter)
+  - double tap to reset volume to 100%
 + *Highs* (ChannelN, filterHigh)
+  - double tap to reset highs to 50%
 
 **Vertical Slider Mode 4 (Rhombus Orange)**
 + *FilterMids* (ChannelN, filterMid)
+  - double tap to reset mids to 50%
 + *FilterLows* (ChannelN, filterLow)
+  - double tap to reset lows to 50%
 
 #####5) Rate Nudging / Crossfader
 + The *Crossfader* (Master, crossfader) works however your Mixxx settings dictate (default: left for left deck

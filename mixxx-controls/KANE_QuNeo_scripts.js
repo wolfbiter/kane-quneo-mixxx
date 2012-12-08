@@ -69,7 +69,7 @@ KANE_QuNeo.beatOffset = 70; // time(ms) to wait before signaling a beat, used
 KANE_QuNeo.minBrightness = .2 // minimum value for flashing LEDs, 0...1
 KANE_QuNeo.numDecks = 8 // number of decks we are supporting. currently 4 decks +
                         // 4 samplers = 8 total decks
-KANE_QuNeo.doubleTapWindow = 500; // time(ms) window in which to consider
+KANE_QuNeo.doubleTapWindow = 400; // time(ms) window in which to consider
                                   // two note presses as a double tap
 KANE_QuNeo.numHotcues = 16; // total hotcues we are currently supporting
 KANE_QuNeo.pregain = 1.0 // initialize deck gains to this value
