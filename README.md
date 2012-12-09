@@ -33,7 +33,7 @@ mixxx-controls/KANE_QuNeo_scripts.js
   - C:\Program Files\Mixxx\controllers
 + Linux:
   - /usr/share/mixxx/controllers (or /usr/local/share/mixxx/controllers)
-  - Tested on Debian 64bit
+  - Tested on Debian v3.2.32-1 x86 64bit
 + OS X:
   - Assuming Mixxx has been installed to your Applications folder:
   - 1. Go to Applications/
