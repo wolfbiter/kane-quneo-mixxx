@@ -30,25 +30,32 @@ mixxx-controls/KANE_QuNeo.xml.midi
 mixxx-controls/KANE_QuNeo_scripts.js   
 ######The location of the preset folder depends upon your operating system, amongst other things. Here are a few examples:
 + Windows:
-  - C:\Program Files\Mixxx\midi
+  - C:\Program Files\Mixxx\controllers
 + Linux:
-  - /usr/share/mixxx/midi (or /usr/local/share/mixxx/midi)
   - /usr/share/mixxx/controllers (or /usr/local/share/mixxx/controllers)
+  - Tested on Debian 64bit
 + OS X:
-  - /Applications/Mixxx.app/Contents/Resources/midi
+  - Assuming Mixxx has been installed to your Applications folder:
+  - 1. Go to Applications/
+  - 2. Control-click Mixxx, select "Show Package Contents"
+  - 3. Copy the above files to the folder Applications/Mixxx.app/Content/Resources/controllers/
+  - Tested on Mac OSX v10.6.8 32bit
 
 ####3. Update your QuNeo's midi output preset
 + NOTE: following this section of instructions will change all the presets on your QuNeo.
-+ MORE ADVANCED: If you have a preset you do not want to change, or would like to change any or all of the mode numbers of this script's modes, then you can do so by importing any of the kane-quneo-mixxx/QuNeo Editor/presets/KANE_QuNeo_*.quneopreset files into a QuNeo Editor run from a different folder. This is because the QuNeo Editor program loads presets based upon data in the folder in which it is run. This method allows you to import the kane preset's .quneopreset files one at a time into preset numbers of your choosing (but don't forget to update the presets).
++ **MORE ADVANCED**: If you have a preset you do not want to change, or would like to change any or all of the mode numbers of this script's modes, then you can do so by importing any of the kane-quneo-mixxx/QuNeo Editor/presets/KANE_QuNeo_*.quneopreset files into a QuNeo Editor run from a different folder. This is because the QuNeo Editor program loads presets based upon data in the folder in which it is run. This method allows you to import the kane preset's .quneopreset files one at a time into preset numbers of your choosing (but don't forget to update the presets).
 
 ######Plug in your QuNeo
 Via usb, this should be trivial. The QuNeo's LED's will go from left to right
 when it is successfully connected.
-######Run QuNeo Editor/QuNeo Editor.exe
+######Run QuNeo Editor/QuNeo Editor.exe (QuNeo Editor.app for Mac Users)
 It is important that you run the editor in the above folder so that the correct presets are loaded.
-File > Import Preset, select
++ Note: KMI does not currently offer [Linux support](http://forum.keithmcmillen.com/viewtopic.php?f=50&t=651&sid=6061ca7debf028e5317ae6156a91dc4e).
+However, this is the only step where it matters: Update the QuNeo once in either Mac or Windows, and it will
+be done until next update.
+
 ######Click "Update All Presets"
-There might be a QuNeo flash to this; I'm not certain.
+Unlike updating individual presets, the QuNeo will unfortunately not flash when you press this.
 ######Switch QuNeo's mode to DJ Mode
 + Press the mode button,
 + Then select the upper left pad.
