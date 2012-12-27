@@ -69,7 +69,7 @@ KANE_QuNeo.beatOffset = 70; // time(ms) to wait before signaling a beat, used
 KANE_QuNeo.minBrightness = .2 // minimum value for flashing LEDs, 0...1
 KANE_QuNeo.numDecks = 8 // number of decks we are supporting. currently 4 decks +
                         // 4 samplers = 8 total decks
-KANE_QuNeo.doubleTapWindow = 400; // time(ms) window in which to consider
+KANE_QuNeo.doubleTapWindow = 700; // time(ms) window in which to consider
                                   // two note presses as a double tap
 KANE_QuNeo.numHotcues = 16; // total hotcues we are currently supporting
 KANE_QuNeo.pregain = 1.0 // initialize deck gains to this value
@@ -82,7 +82,7 @@ KANE_QuNeo.mode = 13; // assumes we start in mode 13 on the quneo
 KANE_QuNeo.totalBeats = 16; // number of beats over which to sequence the LEDs
 KANE_QuNeo.visualNudgeSpeed = 20 // time(ms) to wait for each tick while scrolling
 KANE_QuNeo.rateNudgeSpeed = 800; // ms to wait between each auto nudge
-KANE_QuNeo.rateNudgeTolerance = 0.16*0.025+.005 // determines how close rate must
+KANE_QuNeo.rateNudgeTolerance = .00625/2 // determines how close rate must
                                // be to 0 in order to trigger turning off auto nudge
 
 // LED Sequencers for each deck - easy to edit!
@@ -944,9 +944,7 @@ KANE_QuNeo.rateNudgeAll = function (callingDeck, direction) {
     // The point of this is to ensure that each nudge amount is
     // consistent between all decks
     for (var deck = 1; deck <= (KANE_QuNeo.numDecks + 1); deck++) {
-	print("deck: "+deck)
 	if (deck != callingDeck) {
-	    print("deck!=callingDeck")
 	    KANE_QuNeo.doSync(deck, "tempo")
 	}
     }
@@ -956,7 +954,7 @@ KANE_QuNeo.rateNudgeAll = function (callingDeck, direction) {
     // slow to update.
     var rate = engine.getValue(channelName, "rate") + 0.16 * direction * 0.05;
     var tolerance = KANE_QuNeo.rateNudgeTolerance
-    if ((rate < 0 && rate > -tolerance) || // if near 0% adjustment,
+    if ((rate < 0 && rate >= -tolerance) || // if near 0% adjustment,
 	(rate > 0 && rate < tolerance))
 	KANE_QuNeo.cancelRateNudge() // cancel rate nudging
 }
@@ -1587,6 +1585,8 @@ KANE_QuNeo.circleLEDs = function (deck, value) {
 /***** (ALED) LED Assertions *****/
 
 KANE_QuNeo.assertLEDs = function (mode) {
+    print("old mode: "+KANE_QuNeo.mode);
+    print("new mode: "+mode);
     KANE_QuNeo.closeMode(KANE_QuNeo.mode) // first, close old mode
     KANE_QuNeo.mode = mode// immediately following, update global mode
 
@@ -1701,7 +1701,8 @@ KANE_QuNeo.closeMode = function (mode) {
     case 13: case 14: case 15:
 	// stop the flashing LEDs
 	KANE_QuNeo.closeSliderMode()
-	for (var channel = 0; channel < KANE_QuNeo.numDecks; channel++) {
+	print("case entered")
+	for (var channel = 0; channel < 2; channel++) {
 	    KANE_QuNeo.jumpLoopLEDs[channel] = [];
 	    KANE_QuNeo.loopingLED[channel] = [];
 	    KANE_QuNeo.horizArrowLEDs[channel] = [];
@@ -1710,7 +1711,16 @@ KANE_QuNeo.closeMode = function (mode) {
 	    KANE_QuNeo.reloopLEDs[channel] = [];
 	    KANE_QuNeo.jumpDirectionLEDs[channel] = [];
 	    KANE_QuNeo.beatCounterLEDs[channel] = [];
-	    KANE_QuNeo.triggerVuMeter(channel+1)
+	    KANE_QuNeo.triggerVuMeter(channel + 1); // trigger the corresponding deck
+
+	    print(KANE_QuNeo.jumpLoopLEDs[channel])
+	    print(KANE_QuNeo.loopingLED[channel])
+	    print(KANE_QuNeo.horizArrowLEDs[channel])
+	    print(KANE_QuNeo.regularCueLEDs[channel])
+	    print(KANE_QuNeo.jumpSyncLED[channel])
+	    print(KANE_QuNeo.reloopLEDs[channel])
+	    print(KANE_QuNeo.jumpDirectionLEDs[channel])
+	    print(KANE_QuNeo.beatCounterLEDs[channel])
 	} break;
     case 16:
 	KANE_QuNeo.playScratchToggle = 1; // return to scratch off
