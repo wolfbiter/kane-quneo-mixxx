@@ -47,15 +47,15 @@ mixxx-controls/KANE_QuNeo_scripts.js
 
 ######Plug in your QuNeo
 Via usb, this should be trivial. The QuNeo's LED's will go from left to right
-when it is successfully connected.
+upon a successful connection.
 ######Run QuNeo Editor/QuNeo Editor.exe (QuNeo Editor.app for Mac Users)
 It is important that you run the editor in the above folder so that the correct presets are loaded.
 + Note: KMI does not currently offer [Linux support](http://forum.keithmcmillen.com/viewtopic.php?f=50&t=651&sid=6061ca7debf028e5317ae6156a91dc4e).
 However, this is the only step where it matters: Update the QuNeo once in either Mac or Windows, and it will
-be done until next update.
+be done until next update. Wine unfortunately also does not work.
 
 ######Click "Update All Presets"
-Unlike updating individual presets, the QuNeo will unfortunately not flash when you press this.
+Note for Mac users: For some reason, Update All Presets can result in a crash. If this happens, then go individually to each of the presets 5, 13, 14, 15, 16 and click "Update Preset". The corresponding pads on the QuNeo should flash in response to each update.
 ######Switch QuNeo's mode to DJ Mode
 + Press the mode button,
 + Then select the upper left pad.
