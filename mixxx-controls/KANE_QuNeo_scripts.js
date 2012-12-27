@@ -1794,8 +1794,9 @@ KANE_QuNeo.assertHotcueActivateLEDs = function (deck) {
 	var cuePosition = engine.getValue(channelName,"hotcue_"+cue+"_position") /
 	    trackSamples;
 
-	// if cue is enabled
-	if (cuePosition >= 0) {
+	// if cue is enabled and deck has a track loaded,
+	if (!((cuePosition < 0 && cuePosition > -1e-7) ||
+	      cuePosition == -Infinity)) {
 
 	    // if in main DJ mode, light past hotcues red,
 	    // upcoming hotcues green, and the next hotcue orange.
