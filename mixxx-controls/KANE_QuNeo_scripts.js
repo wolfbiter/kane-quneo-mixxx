@@ -82,7 +82,7 @@ KANE_QuNeo.mode = 13; // assumes we start in mode 13 on the quneo
 KANE_QuNeo.totalBeats = 16; // number of beats over which to sequence the LEDs
 KANE_QuNeo.visualNudgeSpeed = 20 // time(ms) to wait for each tick while scrolling
 KANE_QuNeo.rateNudgeSpeed = 800; // ms to wait between each auto nudge
-KANE_QuNeo.rateNudgeTolerance = .00625/2 // determines how close rate must
+KANE_QuNeo.rateNudgeTolerance = .006251/2 // determines how close rate must
                                // be to 0 in order to trigger turning off auto nudge
 
 // LED Sequencers for each deck - easy to edit!
@@ -1712,15 +1712,6 @@ KANE_QuNeo.closeMode = function (mode) {
 	    KANE_QuNeo.jumpDirectionLEDs[channel] = [];
 	    KANE_QuNeo.beatCounterLEDs[channel] = [];
 	    KANE_QuNeo.triggerVuMeter(channel + 1); // trigger the corresponding deck
-
-	    print(KANE_QuNeo.jumpLoopLEDs[channel])
-	    print(KANE_QuNeo.loopingLED[channel])
-	    print(KANE_QuNeo.horizArrowLEDs[channel])
-	    print(KANE_QuNeo.regularCueLEDs[channel])
-	    print(KANE_QuNeo.jumpSyncLED[channel])
-	    print(KANE_QuNeo.reloopLEDs[channel])
-	    print(KANE_QuNeo.jumpDirectionLEDs[channel])
-	    print(KANE_QuNeo.beatCounterLEDs[channel])
 	} break;
     case 16:
 	KANE_QuNeo.playScratchToggle = 1; // return to scratch off
@@ -2138,6 +2129,11 @@ KANE_QuNeo.assertBeatCounterLEDs = function (deck) {
 }
 
 KANE_QuNeo.assertBeatLEDs = function (deck) {
+    // do nothing if not in these modes
+    var mode = KANE_QuNeo.mode
+    if (!(mode == 13 || mode == 14 || mode == 15))
+	return;
+
     var channel = deck - 1;
     var channelName = KANE_QuNeo.getChannelName(deck)
     // arrays to control which LEDs to change

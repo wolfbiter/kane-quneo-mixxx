@@ -8,8 +8,8 @@ Version 1.0.x
 my customized set of controls and LEDs.
 + Here are several quick-reference guides for the [The Controls](#ii-controls-list).
 + This script is driven by 2 core principles:
-  - iterative improvements stemming directly from wants found during actual dj use
-  - abstractions free the mind for more complex expression (leading to a higher skill cap)
+  - Controls' effects and layout should reflect actual DJ needs.
+  - Proper abstractions create intuitive and powerful controls, freeing the mind and body of the DJ for more complex expression.
 + Every button (every corner of every pad) and every LED is mapped to useful functionality.
 + For any questions, suggestions, or bug reports, I encourage you to either [Submit An Issue](https://github.com/wolfbiter/kane-quneo-mixxx/issues?state=open) or [Contact Me](#contact-me)!
 
