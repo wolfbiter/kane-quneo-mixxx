@@ -300,9 +300,37 @@ This might be due to the incorrect Mixxx version for the kane preset. Refer to [
 #####3. Any other troubles or bugs: 
 Feel free to [Submit An Issue](https://github.com/wolfbiter/kane-quneo-mixxx/issues?state=open) or [Contact Me](#contact-me)!
 
+### V) My Cuing Setup
+There've been a few requests for me to explain how I use 16 cues, so here it is. I think a good cuing system
+is invaluable to a DJ - the less time you spend finding a spot in a track, the more time you have to mix that
+track.
+
+#### Cues 1-4: Intro Cues
++ Cue 1 is usually right at the start of the song, and always 0 mod 32 beats
++ Cue 2 is either 8 or 16 beats before the first transition section
++ Cue 3 is also 0 mod 32 beats, but further in the song (usually with more instruments)
++ Cue 4 is either 8 or 16 beats before the second transition section
+
+#### Cues 5-8: Rise and Drop Cues
+Cues 5 and 6 are for the first rise and drop, while cues 7 and 8 are for the second rise and drop
++ Cues 5/7 are the starts of the rises, often but not always 0 mod 32 beats
++ Cues 6/8 are always 0 mod 16 beats, and 16 beats before the drop
+
+#### Cues 9-12: Breakdown and Misc Cues
+Cues 9 and 10 mark the breakdowns in the song (ie huge washout / bass dropoff), whereas cues 11 and 12
+are spares for miscenallious usage
++ Cues 9/10 are (almost) always 0 mod 32 beats
+
+#### Cues 13-16: Outtro Cues
++ Cue 13 is almost always 0 mod 32 beats, and marks either the last important phrases of the song or the
+first outtro phrases of the song
++ Cue 14 is always 8 beats before an often significant outtro transition section
++ Cue 15 is often 0 mod 32 beats, but sometimes marks the location of a possible outtro loop
++ Cue 16 is always 8 beats before the song ends
+
 ## Contact Me
 #####One of four ways:
-+ post to this preset's [Mixxx Forum Thread](http://mixxx.org/forums/viewtopic.php?f=7&t=4130&sid=d276c35cf0670fa571eb4e8519a6ffa8)
-+ post to this preset's [KMI Forums Thread](http://forum.keithmcmillen.com/viewtopic.php?f=52&t=677)
-+ check out our music group [beatfn](http://beatfn.com)
-+ email me: wolfbiter--at--gmail.com
+1. post to this preset's [Mixxx Forum Thread](http://mixxx.org/forums/viewtopic.php?f=7&t=4130&sid=d276c35cf0670fa571eb4e8519a6ffa8)
+2. post to this preset's [KMI Forums Thread](http://forum.keithmcmillen.com/viewtopic.php?f=52&t=677)
+3. check out our music group [beatfn](http://beatfn.com)
+4. email me: wolfbiter--at--gmail.com
