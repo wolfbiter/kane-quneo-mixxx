@@ -179,8 +179,8 @@ a single button press (thereby freeing the DJ to perform more complex transition
 while track is not playing, will temporarily play until release (after release, the track jumps back to the
 pressed hotcue).
 + Hotcue LEDs convey information about the track:
-+ A **Set** hotcues is **Red** if the track has *passed*,
-+ **Orange** if it's the *next* hotcue vis-a-vis track position,
++ A **Set** hotcue is **Red** if the track has *passed* it,
++ **Orange** if it's the *next* hotcue to be passed,
 + and **Green** if it's *yet to be passed*.
 + **Unset** hotcues are **off**.
 
