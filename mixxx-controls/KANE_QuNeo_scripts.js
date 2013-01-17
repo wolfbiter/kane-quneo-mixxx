@@ -598,8 +598,8 @@ KANE_QuNeo.doSync = function (deck, syncType) {
 	var channelName = KANE_QuNeo.getChannelName(deck)
 	engine.setValue(channelName,"beatsync_"+syncType,1); // do the sync
 	// update LEDs
-	KANE_QuNeo.assertJumpSyncLED(deck);
-	KANE_QuNeo.assertBeatCounterLEDs(deck);
+	//KANE_QuNeo.assertJumpSyncLED(deck);
+	//KANE_QuNeo.assertBeatCounterLEDs(deck);
     }
 }
 
@@ -942,9 +942,9 @@ KANE_QuNeo.rateNudgeAll = function (callingDeck, direction) {
     // then sync the tempo of the other decks to the calling deck.
     // The point of this is to ensure that each nudge amount is
     // consistent between all decks
-    for (var deck = 1; deck <= (KANE_QuNeo.numDecks + 1); deck++) {
+    for (var deck = 1; deck <= KANE_QuNeo.numDecks; deck++) {
 	if (deck != callingDeck) {
-	    KANE_QuNeo.doSync(deck, "tempo")
+	    KANE_QuNeo.doSync(deck, "tempo");
 	}
     }
 
