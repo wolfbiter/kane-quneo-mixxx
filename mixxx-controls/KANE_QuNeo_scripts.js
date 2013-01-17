@@ -556,7 +556,7 @@ KANE_QuNeo.jumpLoop = function (deck, numBeats) {
 	else if (newBeat > 16)
 	    newBeat -= totalBeats
 
-	KANE_QuNeo.wholeBeat[channel] = newBeat // then set us to that beat
+	KANE_QuNeo.wholeBeat[channel] = newBeat // set the new beat number
 	KANE_QuNeo.trackJumped[channel] = 1; // say that we jumped
     }
 
@@ -662,7 +662,6 @@ KANE_QuNeo.deckMultiplyLoop = function (deck, factor) {
 /***** (VS) Vertical Sliders *****/
 
 KANE_QuNeo.verticalSliderTouch = function (slider, value) {
-    print("slider touch: "+slider)
     
     // if this is the first press:
     if (!KANE_QuNeo.verticalSliderDoubleTap[slider - 1]) {
@@ -688,7 +687,7 @@ KANE_QuNeo.resetDoubleTap = function (slider) {
 }
 
 KANE_QuNeo.verticalSliderMove = function (slider, value, resetFlag) {
-    print("resetflag on vertical slider move: "+resetFlag);
+    // print("resetflag on vertical slider move: "+resetFlag);
     // define values
     if (resetFlag) // if this is a call to reset the vertical slider,
 	var values = KANE_QuNeo.getVerticalSliderResetValues(); // get reset values
@@ -1234,18 +1233,17 @@ KANE_QuNeo.handleBeat = function (deck) {
     else if (diff >= 1.1*spb || (diff <= 0)) { // diff == 0 means repeat beat
 	print("non consecutive beat on deck "+deck)
 	print("diff: "+diff)
+	KANE_QuNeo.cancelScheduledBeats(deck); // first cancel any scheduled beats
 	
-	if (!(KANE_QuNeo.trackJumped[channel])) { // if we did not just jump,
+	if (!(KANE_QuNeo.trackJumped[channel])) { // if there was not a jump press,
 	    KANE_QuNeo.wholeBeat[channel] = 1; // restart at beat 1
-	    KANE_QuNeo.cancelScheduledBeats(deck); // cancel any scheduled beats
-
-	    // then schedule a sync if we are in JumpSync mode
-	    if (KANE_QuNeo.trackJumpSync[channel]) {
-		KANE_QuNeo.syncTrack(deck,"phase",1);
-	    }
-
-	} else // we just jumped, so reset status
+	} else // we just jumped, so reset status and don't touch beat counters
 	    KANE_QuNeo.trackJumped[channel] = 0;
+
+	// schedule a sync if we are in JumpSync mode
+	if (KANE_QuNeo.trackJumpSync[channel]) {
+	    KANE_QuNeo.syncTrack(deck,"phase",1);
+	}
 
 	// update hotcue LEDs
 	KANE_QuNeo.assertHotcueLEDs(deck);
