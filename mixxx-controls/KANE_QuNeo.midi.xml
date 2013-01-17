@@ -3430,16 +3430,6 @@
 	<group>[Channel1]</group>
 	<key>cue_default</key>
 	<status>0x91</status>  
-	<midino>0x06</midino>  
-	<on>0x7F</on>  
-	<off>0x7F</off> 
-	<maximum>127</maximum>  
-	<minimum>1</minimum>
-      </output>  
-      <output>
-	<group>[Channel1]</group>
-	<key>cue_default</key>
-	<status>0x91</status>  
 	<midino>0x07</midino>  
 	<on>0x7F</on>  
 	<off>0x00</off> 
@@ -3456,16 +3446,6 @@
 	<maximum>127</maximum>  
 	<minimum>1</minimum>
       </output>  
-      <output>
-	<group>[Channel2]</group>
-	<key>cue_default</key>
-	<status>0x91</status>  
-	<midino>0x08</midino>  
-	<on>0x7F</on>  
-	<off>0x7F</off> 
-	<maximum>127</maximum>  
-	<minimum>1</minimum>
-      </output>
       <output>
 	<group>[Channel2]</group>
 	<key>cue_default</key>

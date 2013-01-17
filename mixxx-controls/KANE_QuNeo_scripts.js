@@ -283,8 +283,6 @@ KANE_QuNeo.loopingLED =
     KANE_QuNeo.makeVar([]); // stores which looping LEDs to light
 KANE_QuNeo.horizArrowLEDs = 
     KANE_QuNeo.makeVar([]); // stores which horiz arrow LEDs to light
-KANE_QuNeo.regularCueLEDs = 
-    KANE_QuNeo.makeVar([]); // stores which regular cue LEDs to light
 KANE_QuNeo.jumpSyncLED = 
     KANE_QuNeo.makeVar([]); // stores which jumpsync LEDs to light
 KANE_QuNeo.assertLED = []; // stores assert LED if it's on
@@ -1596,8 +1594,6 @@ KANE_QuNeo.assertLEDs = function (mode) {
     KANE_QuNeo.assertPlayScratchLED();
     KANE_QuNeo.assertRecordLED();
     KANE_QuNeo.assertNudgeLEDs();
-    KANE_QuNeo.assertHotcueLEDs(1);
-    KANE_QuNeo.assertHotcueLEDs(2);
     KANE_QuNeo.assertHorizArrowLEDs(1);
     KANE_QuNeo.assertHorizArrowLEDs(2);
     engine.trigger("[Master]","headVolume");
@@ -1658,21 +1654,20 @@ KANE_QuNeo.assertMode13 = function () {
 	KANE_QuNeo.assertJumpDirectionLEDs(deck);
 	KANE_QuNeo.assertBeatLEDs(deck);
 	KANE_QuNeo.LEDSequencing[deck - 1] = 0; // turn off sequencers
+	KANE_QuNeo.assertHotcueLEDs(deck);
 	// filter kills
 	KANE_QuNeo.assertKillLEDs(deck);
-	// regular cue LEDs
-	KANE_QuNeo.assertRegularCueLEDs(deck);
 	// beat counter LEDs
 	KANE_QuNeo.assertBeatCounterLEDs(deck);
     }
 }
 
 KANE_QuNeo.assertMode14 = function () {
-    KANE_QuNeo.assertMode13(); // same as main dj but with no fx leds
+    KANE_QuNeo.assertMode13(); // same as main dj but with no fx or slip leds
 }
 
 KANE_QuNeo.assertMode15 = function () {
-    KANE_QuNeo.assertMode13(); // same as main dj but with no fx leds
+    KANE_QuNeo.assertMode13(); // same as main dj but with no fx or slip leds
 }
 
 KANE_QuNeo.assertMode16 = function () {
@@ -1704,7 +1699,6 @@ KANE_QuNeo.closeMode = function (mode) {
 	    KANE_QuNeo.jumpLoopLEDs[channel] = [];
 	    KANE_QuNeo.loopingLED[channel] = [];
 	    KANE_QuNeo.horizArrowLEDs[channel] = [];
-	    KANE_QuNeo.regularCueLEDs[channel] = [];
 	    KANE_QuNeo.jumpSyncLED[channel] = [];
 	    KANE_QuNeo.reloopLEDs[channel] = [];
 	    KANE_QuNeo.jumpDirectionLEDs[channel] = [];
@@ -1748,9 +1742,9 @@ KANE_QuNeo.assertHotcueLEDs = function (deck) {
     KANE_QuNeo.LEDs(0x91,KANE_QuNeo.hotcueClearLEDs[channel],0x00);
     KANE_QuNeo.hotcueClearLEDs[channel] = [];
 
-    if (mode == 13) // if in main dj mode
-    KANE_QuNeo.assertHotcueActivateLEDs(deck); // light activate hotcues
-
+    if (mode == 13) {// if in main dj mode 
+	KANE_QuNeo.assertHotcueActivateLEDs(deck); // light activate hotcues
+    }
     else if (mode == 14 && LEDGroup == 1) { // if in cue left mode, and group is 1
 	KANE_QuNeo.assertHotcueActivateLEDs(deck); // assert this deck's activates
 	KANE_QuNeo.assertHotcueClearLEDs(deck); // and this deck's clears
@@ -1826,8 +1820,13 @@ KANE_QuNeo.assertHotcueActivateLEDs = function (deck) {
     KANE_QuNeo.numNextHotcues[channel] = cuesToCome;
 
     // but don't forget to emit LED updates!
-    KANE_QuNeo.hotcueActivateLEDs[channel] = on;
-    KANE_QuNeo.triggerVuMeter(deck); // trigger deck VuMeter
+    for (var i = 0; i < LEDs[channel].length; i++) {  // for all LEDs
+	var red = LEDs[channel][i];
+	var green = red - 1;
+	KANE_QuNeo.LEDs(0x91,[red,green],0x00); // reset green and red
+    }
+    KANE_QuNeo.hotcueActivateLEDs[channel] = on; // then turn on the new ones
+    KANE_QuNeo.triggerVuMeter(deck); // finally trigger deck VuMeter
 }
 
 KANE_QuNeo.assertHotcueClearLEDs = function (deck) {
@@ -1850,29 +1849,6 @@ KANE_QuNeo.assertHotcueClearLEDs = function (deck) {
     KANE_QuNeo.triggerVuMeter(deck); // trigger deck VuMeter
 }
 
-KANE_QuNeo.assertRegularCueLEDs = function (deck) {
-    var channel = deck - 1;
-    var on = [], off = [];
-    var channelName = KANE_QuNeo.getChannelName(deck)
-    var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
-
-    // light LED if cue is on
-    if (engine.getValue(channelName, "cue_point") != -1) {
-	switch (LEDGroup) {
-	case 1: on = [0x06]; break;
-	case 2: on = [0x08]; break;
-	}
-    } else  {// cue is off
-	switch (LEDGroup) {
-	case 1: off = [0x06]; break;
-	case 2: off = [0x08]; break;	 
-	}
-    }
-    // emit updates
-//    KANE_QuNeo.regularCueLEDs[channel] = on;
-//    KANE_QuNeo.triggerVuMeter(deck);
-}
-
 KANE_QuNeo.assertHorizArrowLEDs = function (deck) {
     if (deck < 5) // if dealing with actual deck
 	KANE_QuNeo.assertDeckHorizArrowLEDs(deck);
@@ -1885,7 +1861,7 @@ KANE_QuNeo.assertSamplerHorizArrowLEDs = function (deck) {
 }
 
 KANE_QuNeo.assertDeckHorizArrowLEDs = function (deck) {
-    var on = []
+    var on = [];
     var mode = KANE_QuNeo.mode;
     if (mode != 9 && mode != 10) { // if not in sampler mode
 	var channel = deck - 1;
@@ -1894,10 +1870,11 @@ KANE_QuNeo.assertDeckHorizArrowLEDs = function (deck) {
 
 	// nested arrays of controls,LEDs for deck1,LEDs for deck2
 	var controls = [["keylock",0x24,0x25],
-			["pfl",0x26,0x27],
-			["slip_enabled",0x28,0x29]];
-	if (mode != 14 && mode != 15) // if in neither cuing mode,
-	    controls.push(["flanger",0x2a,0x2b]); // assert flanger
+			["pfl",0x26,0x27]];
+	if (mode != 14 && mode != 15) { // if in neither cuing mode,
+	    controls.push(["flanger",0x2a,0x2b]); // assert fx leds
+	    controls.push(["slip_enabled",0x28,0x29]); // and assert slip leds
+	}
 
 	// check which controls are enabled
 	for (var i = 0; i < controls.length; i++) {
@@ -2074,6 +2051,7 @@ KANE_QuNeo.assertLoopingLED = function (deck) {
 
 KANE_QuNeo.assertBeatCounterLEDs = function (deck) {
     var channel = deck - 1;
+    var channelName = KANE_QuNeo.getChannelName(deck)
     var beat = KANE_QuNeo.wholeBeat[channel];
     var mode = KANE_QuNeo.mode
 
@@ -2089,12 +2067,10 @@ KANE_QuNeo.assertBeatCounterLEDs = function (deck) {
 	    fours = [0x0a,0x0b];
 	} else print("ERROR: incompatible deck given to assertBeatCounterLEDs")
 
-	// now if the track is playing or
-	// a hotcue is pressed, decide what to do with those LEDs
-	if (KANE_QuNeo.trackPlaying[channel] ||
-	    KANE_QuNeo.hotcuePressed[channel]) {
+	// now, if a track is loaded, decided which LEDs to turn on
+	if (engine.getValue(channelName,"duration") != 0) {
 
-	    // ones counter first
+	    // first deal with the ones counter
 	    var beatmod4 = ((beat - 1) % 4) + 1;
 	    switch (beatmod4) {
 	    case 1: break; // off on beat 1
@@ -2117,7 +2093,8 @@ KANE_QuNeo.assertBeatCounterLEDs = function (deck) {
 		on.push(fours[1]) // red on
 	    else 
 		on = on.concat(fours) // orange on
-	}
+	} else // if a track is not loaded, no beat counter LEDs should be on
+	    on = [];
 
 	// emit updates
 	KANE_QuNeo.LEDs(0x91,ones.concat(fours),0x00) // old LEDs off
@@ -2272,8 +2249,6 @@ KANE_QuNeo.deckVuMeter = function (deck, value) {
     KANE_QuNeo.LEDs(0x91,KANE_QuNeo.reloopLEDs[channel],values.cubedNeverOff);
     // Horizontal Arrow LEDs
     KANE_QuNeo.LEDs(0x90,KANE_QuNeo.horizArrowLEDs[channel],values.cubedNeverOff);
-    // Regular Cue LEDs
-    KANE_QuNeo.LEDs(0x91,KANE_QuNeo.regularCueLEDs[channel],values.cubedNeverOff);
     // Jump Sync LED
     KANE_QuNeo.LEDs(0x91,KANE_QuNeo.jumpSyncLED[channel],values.cubedNeverOff);
     // Beat Counter LEDs
