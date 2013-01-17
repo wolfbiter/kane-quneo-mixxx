@@ -609,7 +609,7 @@ KANE_QuNeo.syncTrack = function (deck, type, scheduleFlag) {
     var otherTrackPlaying = engine.getValue("[Channel"+otherDeck+"]","play")
     if (otherTrackPlaying) {
 	// flash jumpsync LED to signify the sync
-	KANE_QuNeo.syncLEDRed(deck);
+	// KANE_QuNeo.syncLEDRed(deck);
 	if (scheduleFlag) // if this sync should be scheduled
 	    KANE_QuNeo.scheduleSync(deck, type); // then schedule it
 	else
