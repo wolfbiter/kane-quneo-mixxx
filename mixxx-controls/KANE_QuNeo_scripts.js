@@ -1696,6 +1696,10 @@ KANE_QuNeo.closeMode = function (mode) {
 	KANE_QuNeo.closeSliderMode()
 	print("case entered")
 	for (var channel = 0; channel < 2; channel++) {
+	    var deck = channel + 1;
+	    KANE_QuNeo.hotcueActivateLEDs[channel] = [];
+	    KANE_QuNeo.hotcueClearLEDs[channel] = [];
+	    KANE_QuNeo.clearHotcueLEDs(deck);
 	    KANE_QuNeo.jumpLoopLEDs[channel] = [];
 	    KANE_QuNeo.loopingLED[channel] = [];
 	    KANE_QuNeo.horizArrowLEDs[channel] = [];
@@ -1706,7 +1710,7 @@ KANE_QuNeo.closeMode = function (mode) {
 	    KANE_QuNeo.triggerVuMeter(channel + 1); // trigger the corresponding deck
 	} break;
     case 16:
-	KANE_QuNeo.playScratchToggle = 1; // return to scratch off
+	KANE_QuNeo.playScratchToggle = 1; // go back to having scratch off
 	KANE_QuNeo.loadLEDs = []; // reset Load LEDs
 	var LEDs = [[0x08,0x09],[0x0e,0x0f],[undefined,undefined],[undefined,undefined],[0x00,0x01],[0x02,0x03],[0x04,0x05],[0x06,0x07]];
 	for (var i = 0; i < LEDs.length; i++)
@@ -1820,11 +1824,6 @@ KANE_QuNeo.assertHotcueActivateLEDs = function (deck) {
     KANE_QuNeo.numNextHotcues[channel] = cuesToCome;
 
     // but don't forget to emit LED updates!
-    for (var i = 0; i < LEDs[channel].length; i++) {  // for all LEDs
-	var red = LEDs[channel][i];
-	var green = red - 1;
-	KANE_QuNeo.LEDs(0x91,[red,green],0x00); // reset green and red
-    }
     KANE_QuNeo.hotcueActivateLEDs[channel] = on; // then turn on the new ones
     KANE_QuNeo.triggerVuMeter(deck); // finally trigger deck VuMeter
 }
@@ -1847,6 +1846,23 @@ KANE_QuNeo.assertHotcueClearLEDs = function (deck) {
     // emit updates
     KANE_QuNeo.hotcueClearLEDs[channel] = on;
     KANE_QuNeo.triggerVuMeter(deck); // trigger deck VuMeter
+}
+
+KANE_QuNeo.clearHotcueLEDs = function (deck) {
+    var channel = deck - 1;
+    var LEDs = [[0x79,0x7b,0x7d,0x7f,
+		 0x69,0x6b,0x6d,0x6f,
+		 0x59,0x5b,0x5d,0x5f,
+		 0x49,0x4b,0x4d,0x4f],
+		[0x71,0x73,0x75,0x77,
+		 0x61,0x63,0x65,0x67,
+		 0x51,0x53,0x55,0x57,
+		 0x41,0x43,0x45,0x47]];
+    for (var i = 0; i < LEDs[channel].length; i++) {  // for all LEDs of this deck
+	var red = LEDs[channel][i];
+	var green = red - 1;
+	KANE_QuNeo.LEDs(0x91,[red,green],0x00); // reset green and red
+    }
 }
 
 KANE_QuNeo.assertHorizArrowLEDs = function (deck) {
