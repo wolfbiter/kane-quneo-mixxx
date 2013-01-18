@@ -1694,7 +1694,6 @@ KANE_QuNeo.closeMode = function (mode) {
     case 13: case 14: case 15:
 	// stop the flashing LEDs
 	KANE_QuNeo.closeSliderMode()
-	print("case entered")
 	for (var channel = 0; channel < 2; channel++) {
 	    var deck = channel + 1;
 	    KANE_QuNeo.hotcueActivateLEDs[channel] = [];
