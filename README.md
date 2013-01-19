@@ -214,6 +214,8 @@ The LED corresponding to the length of a present, activate loop lights up orange
 + When *Jumping Mode* is on (either forward or backward LED red), you can jump a number of beats by pressing the
 desired distance {1,2,4,8}. The track will jump either forwards or backwards appropriately. If the track's metadata
 contains the correct BPM information, jump will jump exactly on the beatgrid.
+If the pressed jump button is held, the deck will continue jumping in discrete steps of a number of beats equal to the number held until the button is released.
+NOTE: Both the hold time and jump speed resulting from a jump button hold can be [customized](#iii-customizing-this-preset).
 NOTE: Activating jumping mode will automatically toggle off looping mode, whereas deactivating jumping mode will
 automatically toggle on looping mode. These behaviours are for ease of use while DJing.
 + *JumpLoop Mode* (looping LED orange and either forward or backward LED red) can be achieved by toggling looping mode
