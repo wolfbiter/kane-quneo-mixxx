@@ -306,9 +306,9 @@ is invaluable to a DJ - the less time you spend finding a spot in a track, the m
 track.
 
 #### Cues 1-4: Intro Cues
-+ Cue 1 is usually right at the start of the song, and always 0 mod 32 beats
-+ Cue 2 is either 8 or 16 beats before the first transition section
-+ Cue 3 is also 0 mod 32 beats, but further in the song (usually with more instruments)
++ Cue 1 is usually right at the start of the song, and always 0 mod 16 beats, and either 16 or 32 beats from the first transition section
++ Cue 2 is either 8 or 16 beats before one of the first transition sections
++ Cue 3 is always 0 mod 32 beats, and usually 32 beats before the track should really be alone
 + Cue 4 is either 8 or 16 beats before the second transition section
 
 #### Cues 5-8: Rise and Drop Cues
@@ -324,9 +324,9 @@ are spares for miscenallious usage
 #### Cues 13-16: Outtro Cues
 + Cue 13 is almost always 0 mod 32 beats, and marks either the last important phrases of the song or the
 first outtro phrases of the song
-+ Cue 14 is always 8 beats before an often significant outtro transition section
-+ Cue 15 is often 0 mod 32 beats, but sometimes marks the location of a possible outtro loop
-+ Cue 16 is always 8 beats before the song ends
++ Cue 14 is always 8 beats before the first significant outtro transition section
++ Cue 15 is 0 mod 32 beats and is where the track has basically completed
++ Cue 16 is always 8 beats before the last beat of the song
 
 ## Contact Me
 #####One of four ways:
