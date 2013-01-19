@@ -604,7 +604,8 @@ KANE_QuNeo.scheduleSync = function (deck, syncType) {
 KANE_QuNeo.doSync = function (deck, syncType) {
     var deckType = KANE_QuNeo.getDeckType(deck);
 
-    if (deckType == "deck") { // regular sync works only for decks
+    if (deckType == "deck" && deck <= 2) { // regular sync works only for decks,
+	                                   // and we only have 2 decks atm
 	var channelName = KANE_QuNeo.getChannelName(deck)
 	// store start loop status
 	var loopEnabled = engine.getValue(channelName,"loop_enabled");
@@ -989,9 +990,8 @@ KANE_QuNeo.rateNudgeAll = function (callingDeck, direction) {
     // The point of this is to ensure that each nudge amount is
     // consistent between all decks
     for (var deck = 1; deck <= KANE_QuNeo.numDecks; deck++) {
-	if (deck != callingDeck) {
+	if (deck != callingDeck)
 	    KANE_QuNeo.doSync(deck, "tempo");
-	}
     }
 
     // now check if rate of calling deck is near 0%. if so, turn off auto nudging.
