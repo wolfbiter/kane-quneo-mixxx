@@ -1180,13 +1180,9 @@ KANE_QuNeo.quantizeCues = function (deck) {
 
 	// if cue is enabled, reset it
 	if (cuePosition >= 0) {
-	    print("setting cue " + cue)
 	    var diffBeats = Math.round((cuePosition - position) / spb)
 	    var newPosition = position + (diffBeats * spb)
 	    engine.setValue(channelName,"hotcue_"+cue+"_position",newPosition)
-	    print("old position: "+cuePosition)
-	    print("new position: "+newPosition)
-	    print("diffBeats: "+diffBeats)
 	}
     }
     // turn off LED to indicate completion
@@ -1578,6 +1574,7 @@ KANE_QuNeo.assertJumpLEDs = function (deck, numBeats) {
     old.splice(old.indexOf(off[0]),1) // turn off the off stuff
     KANE_QuNeo.jumpLoopLEDs[channel] = old.concat(on); // turn on the new stuff
     KANE_QuNeo.LEDs(0x91,off,0x00); // update offs
+    KANE_QuNeo.triggerVuMeter(deck); // update ons
 }
 
 /****** (RLED) Rotary LEDs ******/
@@ -1624,8 +1621,6 @@ KANE_QuNeo.circleLEDs = function (deck, value) {
 /***** (ALED) LED Assertions *****/
 
 KANE_QuNeo.assertLEDs = function (mode) {
-    print("old mode: "+KANE_QuNeo.mode);
-    print("new mode: "+mode);
     KANE_QuNeo.closeMode(KANE_QuNeo.mode) // first, close old mode
     KANE_QuNeo.mode = mode// immediately following, update global mode
 
@@ -2125,7 +2120,7 @@ KANE_QuNeo.assertBeatCounterLEDs = function (deck) {
 	    fours = [0x0a,0x0b];
 	} else print("ERROR: incompatible deck given to assertBeatCounterLEDs")
 
-	// now, if a track is loaded, decided which LEDs to turn on
+	// now, if a track is loaded, decide which LEDs to turn on
 	if (engine.getValue(channelName,"duration") != 0) {
 
 	    // first deal with the ones counter
