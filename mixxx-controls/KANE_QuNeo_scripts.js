@@ -1153,15 +1153,11 @@ KANE_QuNeo.resetBeat = function (deck) {
 
 /***** (QC) Quantize Cues *****/
 
-KANE_QuNeo.quantizeCues = function (deck) {
+KANE_QuNeo.quantizeCues = function (deck, LEDControl) {
     var channelName = KANE_QuNeo.getChannelName(deck);
 
     // light LED to indicate button press
-    var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
-    var control;
-    if (LEDGroup == 1) control = [0x28];
-    if (LEDGroup == 2) control = [0x29];
-    KANE_QuNeo.LEDs(0x90,control,0x7f)
+    KANE_QuNeo.LEDs(0x90,LEDControl,0x7f)
     
     // find out our current position, assume it's on the beatgrid
     var trackSamples = engine.getValue(channelName,"track_samples")
@@ -1185,7 +1181,9 @@ KANE_QuNeo.quantizeCues = function (deck) {
 	    engine.setValue(channelName,"hotcue_"+cue+"_position",newPosition)
 	}
     }
-    // turn off LED to indicate completion
+}
+
+KANE_QuNeo.quantizeCuesOff = function (deck, control) {
     KANE_QuNeo.LEDs(0x90,control,0x00)
 }
 
@@ -2838,12 +2836,21 @@ KANE_QuNeo.reset2Beat = function (channel, control, value, status, group) {
 
 //Quantize Cues
 KANE_QuNeo.quantize1Cues = function (channel, control, value, status, group) {
-    KANE_QuNeo.quantizeCues(1)
+    KANE_QuNeo.quantizeCues(1, [0x28]);
 }
 
 KANE_QuNeo.quantize2Cues = function (channel, control, value, status, group) {
-    KANE_QuNeo.quantizeCues(2)
+    KANE_QuNeo.quantizeCues(2, [0x29]);
 }
+
+KANE_QuNeo.quantize1CuesOff = function (channel, control, value, status, group) {
+    KANE_QuNeo.quantizeCuesOff(1, [0x28]);
+}
+
+KANE_QuNeo.quantize2CuesOff = function (channel, control, value, status, group) {
+    KANE_QuNeo.quantizeCuesOff(2, [0x29]);
+}
+
 	    
 /***** (SD) Sampler Dispatches *****/
 

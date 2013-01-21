@@ -1714,10 +1714,28 @@
 	</options>
       </control>
       <control>
+	<status>0x86</status>
+	<midino>0x08</midino>
+	<group>[Channel1]</group>
+	<key>KANE_QuNeo.quantize1CuesOff</key>
+	<options>
+	  <Script-Binding/>
+	</options>
+      </control>
+      <control>
 	<status>0x96</status>
 	<midino>0x09</midino>
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.quantize2Cues</key>
+	<options>
+	  <Script-Binding/>
+	</options>
+      </control>
+      <control>
+	<status>0x86</status>
+	<midino>0x09</midino>
+	<group>[Channel2]</group>
+	<key>KANE_QuNeo.quantize2CuesOff</key>
 	<options>
 	  <Script-Binding/>
 	</options>
