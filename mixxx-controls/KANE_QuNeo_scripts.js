@@ -60,7 +60,7 @@ END INDEX*/
 
 // Settings
 
-KANE_QuNeo.assertionDelayTimer = 60; // time(ms) to wait before asserting LEDs
+KANE_QuNeo.assertionDelayTimer = 60; // default time(ms) to wait on asserting LEDs
 KANE_QuNeo.jumpLoopTimer = 70; // time(ms) to wait before executing a jumped loop 
 KANE_QuNeo.jumpSyncTimer = 30; // time(ms) to wait before executing a jumped sync 
 KANE_QuNeo.beatOffset = 70; // time(ms) to wait before signaling a beat, used
@@ -273,6 +273,7 @@ KANE_QuNeo.hotcuePressed =
 
 // Stores which beat each deck is on, loops 1...KANE_QuNeo.totalBeats
 KANE_QuNeo.wholeBeat = KANE_QuNeo.makeVar(KANE_QuNeo.totalBeats);
+KANE_QuNeo.trackSamples = KANE_QuNeo.makeVar(-1); // total samples of tracks in decks
 KANE_QuNeo.lastBeatPosition = 
     KANE_QuNeo.makeVar(-4000);  // position in samples of last real beat on each deck
 KANE_QuNeo.beatLEDsOn = 1; // 1 if beat LEDs are on
@@ -1212,6 +1213,16 @@ KANE_QuNeo.timeKeeper = function (deck, value) {
 			      "KANE_QuNeo.handleBeat("+deck+")",
 			      true)];
 
+    // now determine whether or not the track has changed
+    var channelName = KANE_QuNeo.getChannelName(deck);
+    var trackSamples = engine.getValue(channelName, "track_samples");
+    // if the old and new values are not the same, the track must have changed
+    if (trackSamples != KANE_QuNeo.trackSamples[channel]) {
+	KANE_QuNeo.trackSamples[channel] = trackSamples; // so update to new value
+	KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertHotcueLEDs("+deck+")"
+				    ,true, 200);
+    }
+
     // if we're at the end of the song, set track to not playing
     if (value == 1) {
 	KANE_QuNeo.trackPlaying[channel] = 0
@@ -1389,8 +1400,12 @@ KANE_QuNeo.getSliderControl = function (deck, side) {
     } else print("ERROR: getSliderControl called with improper args.")
 }
 
-KANE_QuNeo.delayedAssertion = function (functionName, oneShotFlag) {
-    engine.beginTimer(KANE_QuNeo.assertionDelayTimer,functionName,oneShotFlag)
+KANE_QuNeo.delayedAssertion = function (functionName, oneShotFlag, delay) {
+    // if no delay is given, assume default
+    if (delay == undefined)
+	delay = KANE_QuNeo.assertionDelayTimer
+
+    engine.beginTimer(delay,functionName,oneShotFlag)
 }
 
 KANE_QuNeo.powerNeverOff = function (value,power) {
