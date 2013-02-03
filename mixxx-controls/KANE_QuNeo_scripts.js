@@ -473,20 +473,18 @@ KANE_QuNeo.togglePlayScratch = function (channel, control, value, status, group)
 }
 
 KANE_QuNeo.rotaryTouch = function (deck, value, status) {
-    if ((status & 0xF0) == 0x90) {    // If note press on midi channel 1
-        if (value == 0x7F) {   // if full velocity
-	    if (KANE_QuNeo.playScratchToggle) { // and scratch is toggled off
-		KANE_QuNeo.play(deck); // this is a play button
-		return;
-	    }
-	    // else proceed with scratching
-	    var alpha = 1.0/8, beta = alpha/32;
+    if ((status & 0xF0) == 0x90) {    // If note press on midi channel 1,
+	if (!KANE_QuNeo.playScratchToggle) { // and if in scratch mode,
+	    var alpha = 1.0/8, beta = alpha/32; // proceed with scratching
             engine.scratchEnable(deck, 128, 33+1/3, alpha, beta);
-       	}
-       	else {engine.scratchDisable(deck);}
+	}
     }
-    else if (value == 0x00) {    // If button up
+    else if ((status & 0xF0) == 0x80) { // else, if this is a release,
+	// turn off scratch no matter what,
         engine.scratchDisable(deck);
+
+	if (KANE_QuNeo.playScratchToggle) // and we are in play mode,
+	    KANE_QuNeo.play(deck); // then this is a stuttered play button.
     }
 }
 
@@ -504,16 +502,6 @@ KANE_QuNeo.toggleRecord = function (channel, control, value, status, group) {
     var old = KANE_QuNeo.recordToggle;
     KANE_QuNeo.recordToggle = (old + 1) % 2 // toggle global on/off
     engine.setValue("[Recording]","toggle_recording",1) // toggle engine
-    
-    // for each deck, print out the sample at which recording started
-    for (var deck = 1; deck <= 2; deck++) {
-	var channelName = KANE_QuNeo.getChannelName(deck);
-	var samples = engine.getValue(channelName,"track_samples");
-	var position = engine.getValue(channelName,"visual_playposition");
-	var samplePosition = samples * position;
-	print("Recording started with deck "+deck+ " at sample: "+samplePosition)
-    }
-    
     KANE_QuNeo.assertRecordLED() // update record LED
 }
 
