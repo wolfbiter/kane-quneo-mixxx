@@ -1,5 +1,5 @@
 /* Midi scripts for Kane's Quneo presets. Fills out some LED's, provides rotary
-   scratching/playing, and (2000+ lines of) other things. */
+   scratching/playing, and (3000+ lines of) other things. */
 
 function KANE_QuNeo () {}
 
@@ -737,42 +737,42 @@ KANE_QuNeo.verticalSliderMove = function (slider, value, resetFlag) {
 	case 1:
 	    KANE_QuNeo.deckZoom(1,value); break;
 	case 2:
-	    KANE_QuNeo.deckZoom(2,value); break;
-	case 3:
 	    KANE_QuNeo.deckCursor(1,value); break;
+	case 3:
+	    KANE_QuNeo.deckZoom(2,value); break;
 	case 4:
 	    KANE_QuNeo.deckCursor(2,value); break;
 	} break;
     case 1: // mode 1
 	switch (slider) {
 	case 1:
-	    engine.setValue("[Channel1]","pregain",values.zeroToFour); break;
+	    engine.setValue("[Channel1]","volume",values.denormalized); break;
 	case 2:
-	    engine.setValue("[Channel2]","pregain",values.zeroToFour); break;
-	case 3:
 	    engine.setValue("[Channel1]","rate",values.negOneToOne); break;
+	case 3:
+	    engine.setValue("[Channel2]","volume",values.denormalized); break;
 	case 4:
 	    engine.setValue("[Channel2]","rate",values.negOneToOne); break;
 	} break;
     case 2: // mode 2
 	switch (slider) {
 	case 1:
-	    engine.setValue("[Channel1]","volume",values.denormalized); break;
+	    engine.setValue("[Channel1]","pregain",values.zeroToFour); break;
 	case 2:
-	    engine.setValue("[Channel2]","volume",values.denormalized); break;
-	case 3:
 	    engine.setValue("[Channel1]","filterHigh",values.zeroToFour); break;
+	case 3:
+	    engine.setValue("[Channel1]","filterMid",values.zeroToFour); break;
 	case 4:
-	    engine.setValue("[Channel2]","filterHigh",values.zeroToFour); break;
+	    engine.setValue("[Channel1]","filterLow",values.zeroToFour); break;
 	} break;
     case 3: // mode 3
 	switch (slider) {
 	case 1:
-	    engine.setValue("[Channel1]","filterMid",values.zeroToFour); break;
+	    engine.setValue("[Channel2]","pregain",values.zeroToFour); break;
 	case 2:
-	    engine.setValue("[Channel2]","filterMid",values.zeroToFour); break;
+	    engine.setValue("[Channel2]","filterHigh",values.zeroToFour); break;
 	case 3:
-	    engine.setValue("[Channel1]","filterLow",values.zeroToFour); break;
+	    engine.setValue("[Channel2]","filterMid",values.zeroToFour); break;
 	case 4:
 	    engine.setValue("[Channel2]","filterLow",values.zeroToFour); break;
 	} break;
@@ -786,49 +786,49 @@ KANE_QuNeo.openSliderMode = function () {
 	// control connections
 	engine.connectControl("[Channel1]","waveform_zoom",
 			      "KANE_QuNeo.deck1ZoomLEDs")
-	engine.connectControl("[Channel2]","waveform_zoom",
-			      "KANE_QuNeo.deck2ZoomLEDs")
 	engine.connectControl("[Channel1]","playposition",
 			      "KANE_QuNeo.deck1CursorLEDs")
+	engine.connectControl("[Channel2]","waveform_zoom",
+			      "KANE_QuNeo.deck2ZoomLEDs")
 	engine.connectControl("[Channel2]","playposition",
 			      "KANE_QuNeo.deck2CursorLEDs")
 	// actual LED updates
 	KANE_QuNeo.LEDs(0x90,[0x2c,0x2d],0x00) // rhombus off
 	engine.trigger("[Channel1]","waveform_zoom")
-	engine.trigger("[Channel2]","waveform_zoom")
 	engine.trigger("[Channel1]","playposition")
+	engine.trigger("[Channel2]","waveform_zoom")
 	engine.trigger("[Channel2]","playposition")
 	break;
     case 1:
-	engine.connectControl("[Channel1]","pregain","KANE_QuNeo.deck1Pregain")
-	engine.connectControl("[Channel2]","pregain","KANE_QuNeo.deck2Pregain")
 	engine.connectControl("[Channel1]","rate","KANE_QuNeo.deck1Rate")
 	engine.connectControl("[Channel2]","rate","KANE_QuNeo.deck2Rate")
 	KANE_QuNeo.LEDs(0x90,[0x2c],0x7f) // rhombus green on
-	engine.trigger("[Channel1]","pregain")
-	engine.trigger("[Channel2]","pregain")
+	engine.trigger("[Channel1]","VuMeter")
 	engine.trigger("[Channel1]","rate")
+	engine.trigger("[Channel2]","VuMeter")
 	engine.trigger("[Channel2]","rate")
 	break;
     case 2:
+	engine.connectControl("[Channel1]","pregain","KANE_QuNeo.deck1Pregain")
 	engine.connectControl("[Channel1]","filterHigh","KANE_QuNeo.deck1Highs")
-	engine.connectControl("[Channel2]","filterHigh","KANE_QuNeo.deck2Highs")
+	engine.connectControl("[Channel1]","filterMid","KANE_QuNeo.deck1Mids")
+	engine.connectControl("[Channel1]","filterLow","KANE_QuNeo.deck1Lows")
 	KANE_QuNeo.LEDs(0x90,[0x2c],0x00) // rhombus green off
 	KANE_QuNeo.LEDs(0x90,[0x2d],0x7f) // rhombus red on
-	engine.trigger("[Channel1]","VuMeter")
-	engine.trigger("[Channel2]","VuMeter")
+	engine.trigger("[Channel1]","pregain")
 	engine.trigger("[Channel1]","filterHigh")
-	engine.trigger("[Channel2]","filterHigh")
+	engine.trigger("[Channel1]","filterMid")
+	engine.trigger("[Channel1]","filterLow")
 	break;
     case 3:
-	engine.connectControl("[Channel1]","filterMid","KANE_QuNeo.deck1Mids")
+	engine.connectControl("[Channel2]","pregain","KANE_QuNeo.deck2Pregain")
+	engine.connectControl("[Channel2]","filterHigh","KANE_QuNeo.deck2Highs")
 	engine.connectControl("[Channel2]","filterMid","KANE_QuNeo.deck2Mids")
-	engine.connectControl("[Channel1]","filterLow","KANE_QuNeo.deck1Lows")
 	engine.connectControl("[Channel2]","filterLow","KANE_QuNeo.deck2Lows")
 	KANE_QuNeo.LEDs(0x90,[0x2c,0x2d],0x7f) // rhombus orange on
-	engine.trigger("[Channel1]","filterMid")
+	engine.trigger("[Channel2]","pregain")
+	engine.trigger("[Channel2]","filterHigh")
 	engine.trigger("[Channel2]","filterMid")
-	engine.trigger("[Channel1]","filterLow")
 	engine.trigger("[Channel2]","filterLow")
 	break;
     default:
@@ -842,27 +842,27 @@ KANE_QuNeo.closeSliderMode = function () {
     case 0:
 	engine.connectControl("[Channel1]","waveform_zoom",
 			      "KANE_QuNeo.deck1ZoomLEDs",true)
-	engine.connectControl("[Channel2]","waveform_zoom",
-			      "KANE_QuNeo.deck2ZoomLEDs",true)
 	engine.connectControl("[Channel1]","playposition",
 			      "KANE_QuNeo.deck1CursorLEDs",true)
+	engine.connectControl("[Channel2]","waveform_zoom",
+			      "KANE_QuNeo.deck2ZoomLEDs",true)
 	engine.connectControl("[Channel2]","playposition",
 			      "KANE_QuNeo.deck2CursorLEDs",true)
 	break;
     case 1:
-	engine.connectControl("[Channel1]","pregain","KANE_QuNeo.deck1Pregain",true)
-	engine.connectControl("[Channel2]","pregain","KANE_QuNeo.deck2Pregain",true)
 	engine.connectControl("[Channel1]","rate","KANE_QuNeo.deck1Rate",true)
 	engine.connectControl("[Channel2]","rate","KANE_QuNeo.deck2Rate",true)
 	break;
     case 2:
+	engine.connectControl("[Channel1]","pregain","KANE_QuNeo.deck1Pregain",true)
 	engine.connectControl("[Channel1]","filterHigh","KANE_QuNeo.deck1Highs",true)
-	engine.connectControl("[Channel2]","filterHigh","KANE_QuNeo.deck2Highs",true)
+	engine.connectControl("[Channel1]","filterMid","KANE_QuNeo.deck1Mids",true)
+	engine.connectControl("[Channel1]","filterLow","KANE_QuNeo.deck1Lows",true)
 	break;
     case 3:
-	engine.connectControl("[Channel1]","filterMid","KANE_QuNeo.deck1Mids",true)
+	engine.connectControl("[Channel2]","pregain","KANE_QuNeo.deck2Pregain",true)
+	engine.connectControl("[Channel2]","filterHigh","KANE_QuNeo.deck2Highs",true)
 	engine.connectControl("[Channel2]","filterMid","KANE_QuNeo.deck2Mids",true)
-	engine.connectControl("[Channel1]","filterLow","KANE_QuNeo.deck1Lows",true)
 	engine.connectControl("[Channel2]","filterLow","KANE_QuNeo.deck2Lows",true)
 	break;
     default:
@@ -1394,22 +1394,6 @@ KANE_QuNeo.oneToFiveKnob = function (value) {
 	return value * 127 / 2;
     else // second half of the knob, 1-5
 	return 63.5 + (value - 1) * 63.5 / 4
-}
-
-KANE_QuNeo.getSliderControl = function (deck, side) {
-    var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
-
-    // left side
-    if (side == 0) {
-	if (LEDGroup == 1) return [0x01]; // leftmost slider
-	else if (LEDGroup == 2) return [0x02]; // middle left slider
-
-	// right side
-    } else if (side == 1) {
-	if (LEDGroup == 1) return [0x03]; // middle right slider
-	else if (LEDGroup == 2) return [0x04]; // rightmost slider
-
-    } else print("ERROR: getSliderControl called with improper args.")
 }
 
 KANE_QuNeo.delayedAssertion = function (functionName, oneShotFlag, delay) {
@@ -2304,14 +2288,18 @@ KANE_QuNeo.deckVuMeter = function (deck, value) {
 
     // Vertical Vu Meters, only when in modes which use slider modes
     mode = KANE_QuNeo.mode
-    if (KANE_QuNeo.sliderMode == 2 &&
+    if (KANE_QuNeo.sliderMode == 1 &&
 	(mode == 13 || mode == 14 || mode == 15 || mode == 16)) {
 	var level;
 	if (KANE_QuNeo.trackPlaying[channel]) // if track is playing, do VuMeter
 	    level = values.squared;
 	else // else do volume
 	    level = KANE_QuNeo.scaleToSlider(engine.getValue(channelName,"volume"))
-	KANE_QuNeo.LEDs(0xb0,KANE_QuNeo.getSliderControl(deck,0),level);
+	// now determine control
+	var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
+	if (LEDGroup == 1) control = [0x01];
+	else if (LEDGroup == 2) control = [0x03];
+	KANE_QuNeo.LEDs(0xb0,control,level);
     }
 
     // Hotcue LEDs
@@ -2360,9 +2348,10 @@ KANE_QuNeo.masterVuMeter = function (value) {
 KANE_QuNeo.deckZoomLEDs = function (deck, value) {
     var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
     // normalize zoom LED value to be 0-127
-    var zoom = ((value - 1) / 5) * 127
-    // determine which control we are manipulating
-    var control = KANE_QuNeo.getSliderControl(deck, 0)
+    var control, zoom = ((value - 1) / 5) * 127
+    // now determine control
+    if (LEDGroup == 1) control = [0x01];
+    else if (LEDGroup == 2) control = [0x03];
     // emit message
     KANE_QuNeo.LEDs(0xb0,control,127 - zoom) // inverted because high is zoomed in
 }	
@@ -2372,37 +2361,38 @@ KANE_QuNeo.deckCursorLEDs = function (deck, position) {
     var channel = deck - 1;
     var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
     // normalize position LED value to be 0-127
-    var normalized = position * 127;
-    // determine which control we are manipulating
-    var control = KANE_QuNeo.getSliderControl(deck, 1)
+    var control, normalized = position * 127;
+    // now determine control
+    if (LEDGroup == 1) control = [0x02];
+    else if (LEDGroup == 2) control = [0x04];
     // emit LED message
     KANE_QuNeo.LEDs(0xb0,control,127 - normalized) // inverted to show time left
 }
 
+KANE_QuNeo.deckRate = function (deck, value) {
+    var control, LEDGroup = KANE_QuNeo.getLEDGroup(deck)
+    // determine rate
+    var rate = (value * 63.5) + 63.5 // scaled for -1..1 to map to 0..127
+    // now determine control
+    var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
+    if (LEDGroup == 1) control = [0x02];
+    else if (LEDGroup == 2) control = [0x04];
+    // emit message
+    midi.sendShortMsg(0xb0,control,0x00+rate);
+}
 
 // Slider Mode == 1
 KANE_QuNeo.deckPregain = function (deck, value) {
-    var gain, LEDGroup = KANE_QuNeo.getLEDGroup(deck)
+    var gain, control, LEDGroup = KANE_QuNeo.getLEDGroup(deck)
     
     // determine gain
     if (value < 1) // first half of the knob, 0-1
 	gain = value * 127 / 2;
     else // second half of the knob, 1-4
 	gain = 63.5 + (value - 1) * 63.5 / 3;
- 
-    // now determine control
-    var control = KANE_QuNeo.getSliderControl(deck, 0)
+    
+    control = [0x01];
     midi.sendShortMsg(0xb0,control,0x00+gain);
-}
-
-KANE_QuNeo.deckRate = function (deck, value) {
-    var LEDGroup = KANE_QuNeo.getLEDGroup(deck)
-    // determine rate
-    var rate = (value * 63.5) + 63.5 // scaled for -1...1 to map to 0...127
-    // now determine control
-    var control = KANE_QuNeo.getSliderControl(deck, 1)
-    // emit message
-    midi.sendShortMsg(0xb0,control,0x00+rate);
 }
 
 KANE_QuNeo.deckHighs = function (deck, value) {
@@ -2413,8 +2403,7 @@ KANE_QuNeo.deckHighs = function (deck, value) {
     else // second half of the knob, 1-4
 	level = 63.5 + (value - 1) * 63.5 / 3
     
-    // now determine control
-    var control = KANE_QuNeo.getSliderControl(deck, 1)
+    control = [0x02];
     // emit updates
     midi.sendShortMsg(0xb0,control,0x00+level);
 }
@@ -2428,8 +2417,7 @@ KANE_QuNeo.deckMids = function (deck, value) {
     else // second half of the knob, 1-4
 	level = 63.5 + (value - 1) * 63.5 / 3
     
-    // now determine control
-    var control = KANE_QuNeo.getSliderControl(deck, 0)
+    control = [0x03];
     // emit updates
     midi.sendShortMsg(0xb0,control,0x00+level);
 }
@@ -2442,8 +2430,7 @@ KANE_QuNeo.deckLows = function (deck, value) {
     else // second half of the knob, 1-4
 	level = 63.5 + (value - 1) * 63.5 / 3
     
-    // now determine control
-    var control = KANE_QuNeo.getSliderControl(deck, 1)
+    control = [0x04];
     // emit updates
     midi.sendShortMsg(0xb0,control,0x00+level);
 }
