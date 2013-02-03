@@ -1,5 +1,8 @@
 #Kane QuNeo Mixxx Preset
-Version 1.0.x
+Version 1.1.x
+
+<a href="http://flattr.com/thing/1119430/" target="_blank">
+<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
 
 ------------------------
 ###Featuring a [Demo Video](https://youtu.be/dpdWzb0PEWo) and an [Intro Tutorial](https://youtu.be/dnWSqPFBHGk)!
@@ -289,12 +292,12 @@ NOTE: Activating library mode defaults playscratch to off.
 ### III) Customizing This Preset
 + I've incorporated some tweakable parameters, but of course you can hack on any part of the preset!
   - Look for the **(GV) Global Variables** in your instance of kane-quneo-preset/mixxx-controls/KANE_QuNeo_scripts.js for a list of available parameters and their descriptions.
-  - **EXAMPLE:** The sensitivity of the scratches can be modified by changed the KANE_QuNeo.scratchSpeed variable (make sure Mixxx rereads the preset after modifying!).
+  - **EXAMPLE:** The sensitivity of the scratches can be modified by changing the KANE_QuNeo.scratchSpeed variable (make sure Mixxx rereads the preset after modifying!).
 + You can also customize visualizer LEDs.
   - Check out the the comments and code for the functions KANE_QuNeo.playerSequence and KANE_QuNeo.visualize in kane-quneo-preset/mixxx-controls/KANE_QuNeo_scripts.js - they're also in (GV) Global Variables, just below the tweakable parameters.
 
 ### IV) Troubleshooting
-#####1. LED's out of whack:
+#####1. LEDs out of whack:
 You can simply reselect whatever mode you happen to be in, and reassert the LEDs.
 Doing this should simultaneously clear any garbage LED values and assert the proper values.
 
