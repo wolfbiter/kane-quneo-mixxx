@@ -1568,13 +1568,13 @@ KANE_QuNeo.assertJumpLEDs = function (deck, numBeats) {
     case 1:
 	on = [LEDs[0][1]]; off = [LEDs[0][0]]; // green off, red on
 	break;
-    case 2:
+    case 4:
 	on = [LEDs[1][1]]; off = [LEDs[1][0]]; // green off, red on
 	break;
-    case 4:
+    case 8:
 	on = [LEDs[2][1]]; off = [LEDs[2][0]]; // green off, red on
 	break;
-    case 8:
+    case 16:
 	on = [LEDs[3][1]]; off = [LEDs[3][0]]; // green off, red on
 	break;
     }
@@ -2670,15 +2670,15 @@ KANE_QuNeo.deck1JumpLoop1 = function (channel, control, value, status, group) {
 }
 
 KANE_QuNeo.deck1JumpLoop2 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(1,2)
-}
-
-KANE_QuNeo.deck1JumpLoop4 = function (channel, control, value, status, group) {
     KANE_QuNeo.jumpLoop(1,4)
 }
 
-KANE_QuNeo.deck1JumpLoop8 = function (channel, control, value, status, group) {
+KANE_QuNeo.deck1JumpLoop4 = function (channel, control, value, status, group) {
     KANE_QuNeo.jumpLoop(1,8)
+}
+
+KANE_QuNeo.deck1JumpLoop8 = function (channel, control, value, status, group) {
+    KANE_QuNeo.jumpLoop(1,16)
 }
 
 KANE_QuNeo.deck2JumpLoop1 = function (channel, control, value, status, group) {
@@ -2686,15 +2686,15 @@ KANE_QuNeo.deck2JumpLoop1 = function (channel, control, value, status, group) {
 }
 
 KANE_QuNeo.deck2JumpLoop2 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(2,2)
-}
-
-KANE_QuNeo.deck2JumpLoop4 = function (channel, control, value, status, group) {
     KANE_QuNeo.jumpLoop(2,4)
 }
 
-KANE_QuNeo.deck2JumpLoop8 = function (channel, control, value, status, group) {
+KANE_QuNeo.deck2JumpLoop4 = function (channel, control, value, status, group) {
     KANE_QuNeo.jumpLoop(2,8)
+}
+
+KANE_QuNeo.deck2JumpLoop8 = function (channel, control, value, status, group) {
+    KANE_QuNeo.jumpLoop(2,16)
 }
 
 //JumpOff

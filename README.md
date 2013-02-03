@@ -140,6 +140,7 @@ vertical slider modes, with unique functionality offered by each mode. The modes
 the maximum time between taps which constitutes a double tap. Default window: 400ms.
 
 **Vertical Slider Mode 1 (Rhombus Off)**
+Deck 1's zoom and cursor are on the left, deck 2's zoom and cursor are on the right (in that order).
 + *Zoom*: zooms the waveform in and out with 6 discrete steps.
 + *Cursor*: transforms the slider into a 0..1 position indicator for the deck. For example, if deck 1 is at the start of
 the loaded song, then the slider will be empty. As deck 1 progresses through the song, the slider LEDs will
@@ -148,18 +149,29 @@ ouching the slider will jump the song to the place you press; however, be forewa
 slider values (0..127) lends the cursor to imprecision.
 
 **Vertical Slider Mode 2 (Rhombus Green)**
-+ *Gain* (ChannelN, gain)
-  - double tap to reset gain to 50%
+Deck 1's volume and rate are on the left, deck 2's volume and rate are on the right (in that order).
++ *Deck Volume* (ChannelN, volume), but the LEDs correspond to the *Deck VuMeter* (ChannelN, VuMeter) unless the deck is paused (then the LEDs represent volume)
+  - double tap to reset volume to 100%
 + *Rate* (ChannelN, rate)
   - double tap to reset rate to 50%
 
 **Vertical Slider Mode 3 (Rhombus Red)**
-+ *Deck Volume* (ChannelN, volume), but the LEDs correspond to the *Deck VuMeter* (ChannelN, VuMeter)
-  - double tap to reset volume to 100%
-+ *Highs* (ChannelN, filterHigh)
+This mode controls these parameters (in slider order from left to right) for deck 1.
++ *Gain* (ChannelN, gain)
+  - double tap to reset gain to 50%
++ *FilterHighs* (ChannelN, filterHigh)
   - double tap to reset highs to 50%
++ *FilterMids* (ChannelN, filterMid)
+  - double tap to reset mids to 50%
++ *FilterLows* (ChannelN, filterLow)
+  - double tap to reset lows to 50%
 
 **Vertical Slider Mode 4 (Rhombus Orange)**
+This mode controls these parameters (in slider order from left to right) for deck 2.
++ *Gain* (ChannelN, gain)
+  - double tap to reset gain to 50%
++ *FilterHighs* (ChannelN, filterHigh)
+  - double tap to reset highs to 50%
 + *FilterMids* (ChannelN, filterMid)
   - double tap to reset mids to 50%
 + *FilterLows* (ChannelN, filterLow)
@@ -211,24 +223,24 @@ to X*4^1. X is 1 when the LED is off, 2 when the LED is green, 3 when the LED is
   - Specifics on Beat Counter algorithm: currently, a given deck's beat counter changes only under1 of 3 conditions. 1, the regular situation wherein a playing deck moving to the next beat increments the beat counter. 2, it will add or subtract the number of beats when beat jumping. 3, it will reset to beat 1 whenever any other kind of jump occurs in the deck (including hotcues). The idea is that jumps will be to hotcues, and hotcues generally lie on the beginning of a sixteen beat loop.
 
 #####9) Jumping / Looping / Scheduling Loops
-+ When in *Looping* mode (looping button LED orange), you can set a loop by selecting the desired length from {1,2,4,8}.
++ When in *Looping* mode (looping button LED orange), you can set a loop by selecting the desired length from {1,4,8,16}.
 The LED corresponding to the length of a present, activate loop lights up orange.
 + When a loop is present, it can be doubled or halved by pressing *Double Loop* (ChannelN loop_double) or *Halve Loop*
 (ChannelN, loop_halve)
 + *Reloop* (ChannelN, reloop_exit) will toggle a set loop on or off.
 + When *Jumping Mode* is on (either forward or backward LED red), you can jump a number of beats by pressing the
-desired distance {1,2,4,8}. The track will jump either forwards or backwards appropriately. If the track's metadata
+desired distance {1,4,8,16}. The track will jump either forwards or backwards appropriately. If the track's metadata
 contains the correct BPM information, jump will jump exactly on the beatgrid.
 If the pressed jump button is held, the deck will continue jumping in discrete steps of a number of beats equal to the number held until the button is released.
 NOTE: Both the hold time and jump speed resulting from a jump button hold can be [customized](#iii-customizing-this-preset).
 NOTE: Activating jumping mode will automatically toggle off looping mode, whereas deactivating jumping mode will
 automatically toggle on looping mode. These behaviours are for ease of use while DJing.
 + *JumpLoop Mode* (looping LED orange and either forward or backward LED red) can be achieved by toggling looping mode
-while already in jumping mode. While in jumploop mode, pressing {1,2,4,8} will jump the deck that number of beats
+while already in jumping mode. While in jumploop mode, pressing {1,4,8,16} will jump the deck that number of beats
 forward or backward depending upon which jump is on, and then loop over that many beats. This is incredibly useful if,
 while mixing two songs, you miss a looping point and need to smoothly recover.
 + *Loop Scheduling Mode* (looping LED green and both jump LEDs off) is achieved by toggling off looping mode while in
-looping mode. Pressing {1,2,4,8} in this mode will light the LED corresponding to that number red, indicating that a
+looping mode. Pressing {1,4,8,16} in this mode will light the LED corresponding to that number red, indicating that a
 loop of that length is scheduled for that deck's next jump. A jump is defined as the deck position changing in any way
 other than moving forward by playing or jumping forward one beat. A loop may be unscheduled if it is reselected while
 in loop scheduling mode.
