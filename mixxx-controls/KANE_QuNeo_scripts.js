@@ -884,7 +884,7 @@ KANE_QuNeo.deckZoom = function (deck, value) {
 KANE_QuNeo.deckCursor = function (deck, value) {
     var channel = deck - 1; // track channels start at 0 to properly reference arrays
     var channelName = KANE_QuNeo.getChannelName(deck)
-    var normalized = 1 - (value / 127);
+    var normalized = (value / 127);
     // adjust play positions
     engine.setValue(channelName,"visual_playposition", normalized)
     engine.setValue(channelName,"playposition", normalized)

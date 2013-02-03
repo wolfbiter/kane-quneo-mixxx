@@ -138,10 +138,11 @@ the maximum time between taps which constitutes a double tap. Default window: 40
 
 **Vertical Slider Mode 1 (Rhombus Off)**
 + *Zoom*: zooms the waveform in and out with 6 discrete steps.
-+ *Cursor*: transforms the slider into a 1 - 0 position indicator for the deck. For example, if deck 1 is at the start of
-the loaded song, then the slider will be full. As deck 1 progresses through the song, the slider LED value will decrease
-linearly until it reaches empty when the song is at the end. Touching the slider will jump the song to the place you
-press; however, be forewarned that the limited range of slider values (0 - 127) lends the cursor to imprecision.
++ *Cursor*: transforms the slider into a 0..1 position indicator for the deck. For example, if deck 1 is at the start of
+the loaded song, then the slider will be empty. As deck 1 progresses through the song, the slider LEDs will
+creep upwards linearly until the slider is full, indicating that the corresponding deck ng is at the end.
+ouching the slider will jump the song to the place you press; however, be forewarned that the limited range of
+slider values (0..127) lends the cursor to imprecision.
 
 **Vertical Slider Mode 2 (Rhombus Green)**
 + *Gain* (ChannelN, gain)
