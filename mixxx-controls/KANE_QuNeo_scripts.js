@@ -1049,14 +1049,38 @@ KANE_QuNeo.makeCueDispatch = function (deck, cue, clearFlag, activateFlag) {
 	}
 	KANE_QuNeo[name] = function(channel, control, value, status, group) {
 	    var channel = deck - 1;
-	    // first update global press status
-	    KANE_QuNeo.hotcuePressed[channel] = activateFlag;
-	    // then activate the pressed hotcue
 	    var channelName = KANE_QuNeo.getChannelName(deck);
-	    engine.setValue(channelName,"hotcue_"+cue+"_activate",activateFlag)
-	    // emit LED updates
+	    
+	    if ((status & 0xF0) == 0x90) { // true if this is a note press
+
+		// if this hotcue's deck is not playing or the hotcue doesn't exist,
+		// treat it like a regular hotcue press
+		if ((!KANE_QuNeo.trackPlaying[channel]) || 
+		    !(engine.getValue(channelName, "hotcue_"+cue+"_enabled"))) {
+		    // first update global press status
+		    KANE_QuNeo.hotcuePressed[channel] = activateFlag;
+		    // then activate the pressed hotcue
+		   engine.setValue(channelName,"hotcue_"+cue+"_activate",
+				   activateFlag)
+		}
+
+	    } else if ((status & 0xF0) == 0x80) { // true if this is a note release
+
+		// if by now this hotcue's deck has no recorded hotcue press,
+		// then treat the hotcue like a stutter button (activate on release)
+		if (!KANE_QuNeo.hotcuePressed[channel])
+		    engine.setValue(channelName, "hotcue_"+cue+"_goto",1);
+
+		// if this hotcue is active, a button release needs to deactivate it
+		if (engine.getValue(channelName, "hotcue_"+cue+"_activate")) {
+		    KANE_QuNeo.hotcuePressed[channel] = 0;
+		    engine.setValue(channelName,"hotcue_"+cue+"_activate",0);
+		}
+	    }
+
+	    // emit LED updates regardless of button press or release
 	    KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertHotcueLEDs("+deck+")"
-					,true);
+						,true);
 	}
     }
 }
