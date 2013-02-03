@@ -176,10 +176,11 @@ to, for example, unnoticably nudge down during the outtro of a 132 BPM song to r
 a single button press (thereby freeing the DJ to perform more complex transitions).
 
 #####6) Hotcues
-+ *Hotcues* (ChannelN, hotcue_X_activate) jump to the location of the hotcue in the corresponding deck, and if held
-while track is not playing, will temporarily play until release (after release, the track jumps back to the
-pressed hotcue).
-+ Hotcue LEDs convey information about the track:
++ *Hotcues* (ChannelN, hotcue_X_activate) do many things.
+  - if the pressed hotcue is not set, then a hotcue will be set
+  - if the deck of the pressed hotcue is playing and the hotcue is set, then the hotcue will act like a stutter button (activate on release)
+  - if the deck of the pressed hotcue is not playing and the hotcue is set, then the deck will play from the hotcue's position until release. After release, the track will stop playing and jump back to the location of the pressed hotcue.
++ Additionally, hotcue LEDs convey information about the loaded track:
 + A **Set** hotcue is **Red** if the track has *passed* it,
 + **Orange** if it's the *next* hotcue to be passed,
 + and **Green** if it's *yet to be passed*.
