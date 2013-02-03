@@ -126,7 +126,7 @@ The controls are as follows:
 #####3) Rotaries / Playscratch
 The rotaries, in dj mode, serve one of two functions:
 + If playscratch is enabled (the play transport button is green), then the left and right rotaries are play buttons on
-touch for the left and right decks respectively.
+release (stutter) for the left and right decks respectively.
 + Pressing the playscratch button toggles playscratch off (the play transport button is dark), which turns the rotaries
 into turntables for scratching. You can [customize](#iii-customizing-this-preset) the scratch speed.
 + Playscratch defaults to on unless otherwise specified.
