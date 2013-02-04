@@ -1,7 +1,7 @@
 #Kane QuNeo Mixxx Preset
 Version 1.1.x
 
-<a href="http://flattr.com/thing/1119430/" target="_blank">
+<a href="http://flattr.com/thing/1122857/" target="_blank">
 <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
 
 ------------------------
