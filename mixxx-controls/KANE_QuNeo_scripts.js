@@ -22,6 +22,7 @@ function KANE_QuNeo () {}
    3) Functionality
    
        (JL) Jump, Sync, and/or Loop over 1,2,4,8 Beats
+       (AL) Auto Loop (Double or Halve)
        (VS) Vertical Sliders
        (ZC) Zoom and Cursor
        (VN) Visual Nudging
@@ -87,6 +88,7 @@ KANE_QuNeo.visualNudgeSpeed = 20; // time(ms) to wait for each tick while scroll
 KANE_QuNeo.rateNudgeSpeed = 800; // ms to wait between each auto nudge
 KANE_QuNeo.rateNudgeTolerance = .006251/2 // determines how close rate must
                                // be to 0 in order to trigger turning off auto nudge
+KANE_QuNeo.autoLoopHoldTime = 1000; // time (ms) to hold loop multiply to auto loop
 
 // LED Sequencers for each deck - easy to edit!
 // simply choose which LEDs you want for each
@@ -293,6 +295,8 @@ KANE_QuNeo.assertLED = []; // stores assert LED if it's on
     KANE_QuNeo.playScratchLED = []; // stores playscratch LED if it's on
 KANE_QuNeo.reloopLEDs =
     KANE_QuNeo.makeVar([]); // stores which reloop LEDs are on
+KANE_QuNeo.multiplyLoopLEDs =
+    KANE_QuNeo.makeVar([]); // stores which multiply loop LEDs are on
 KANE_QuNeo.loadLEDs = []; // stores which tracks are ready for loading
 KANE_QuNeo.hotcueActivateLEDs = 
     KANE_QuNeo.makeVar([]); // stores which hotcues are active
@@ -330,10 +334,15 @@ KANE_QuNeo.slipEnabled = KANE_QuNeo.makeVar(0) // 1 if slip is enabled
 KANE_QuNeo.verticalSliderDoubleTap = [0,0,0,0]; // 1 when a the next tap will
                                                 // activate the double tap
 
+KANE_QuNeo.autoLoop = KANE_QuNeo.makeVar(0); // nonzero when autolooping
+KANE_QuNeo.autoLoopActivate = KANE_QuNeo.makeVar(0); // 1 when button release will
+                                                     // activate auto loop, else 0
+
 // the following hold arrays of timers which may be stopped
 KANE_QuNeo.nextBeatTimer = KANE_QuNeo.makeVar([]);
 KANE_QuNeo.scheduledBeats = KANE_QuNeo.makeVar([]);
 KANE_QuNeo.jumpHoldTimers = KANE_QuNeo.makeVar([]) // hold timers for continued jumps
+KANE_QuNeo.loopHoldTimers = KANE_QuNeo.makeVar([]); // for auto loop
 	    
 /***** (IS) Initialization and Shutdown *****/
 
@@ -647,25 +656,7 @@ KANE_QuNeo.deckReloop = function (deck) {
     KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertBeatLEDs("+deck+")",true);
 }
 
-KANE_QuNeo.deckMultiplyLoop = function (deck, factor) {
-    var channelName = KANE_QuNeo.getChannelName(deck)
-    // store start loop status
-    var loopEnabled = engine.getValue(channelName,"loop_enabled");
 
-    // determine which operation to perform
-    var control;
-    if (factor == 1/2) control = "loop_halve";
-    else if (factor == 2) control = "loop_double";
-    else print("ERROR: wrong factor given for deckMultiplyLoop");
-    engine.setValue(channelName,control,1)
-    
-    // if our operation somehow changed loop enabling, immediately change it back
-    engine.beginTimer(KANE_QuNeo.checkLoopDelay,
-		      "KANE_QuNeo.checkLoop("+deck+","+loopEnabled+")", true);
-
-    // emit LED updates, timer because engine is slow at registering loop stuffs
-    KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertBeatLEDs("+deck+")",true);
-}
 
 KANE_QuNeo.checkLoop = function (deck, loopEnabled) {
     var channelName = KANE_QuNeo.getChannelName(deck)
@@ -703,6 +694,88 @@ KANE_QuNeo.jumpOff = function (deck, numBeats) {
     KANE_QuNeo.assertBeatLEDs(deck);
     KANE_QuNeo.cancelTimers(KANE_QuNeo.jumpHoldTimers[channel]);
     KANE_QuNeo.jumpHoldTimers[channel] = [];
+}
+
+/***** (AL) Auto Loop *****/
+
+KANE_QuNeo.startAutoLoop = function (deck) {
+    // if this function is reached, then we are supposed to activate auto loop
+    // either doubling or halving depending on which factor is being used.
+    print("=====> START AUTOLOOP ACTIVATED")
+    var channel = deck - 1;
+    KANE_QuNeo.autoLoopActivate[channel] = 1;
+}
+
+KANE_QuNeo.deckMultiplyLoop = function (deck, factor, status) {
+    var channel = deck - 1;
+    var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
+
+    // first determine LEDs of calling deck
+    var controls;
+    if (LEDGroup == 1) { // if deck on left side
+	if (factor == 1/2) controls = [0x24,0x25];
+	if (factor == 2) controls = [0x34,0x35];
+    } else if (LEDGroup == 2) { // if deck on right side
+	if (factor == 1/2) controls = [0x2a,0x2b];
+	if (factor == 2) controls = [0x3a,0x3b];
+    } else if (controls == undefined) {
+	print("error with deckmultiplyloop's LEDGroup"); return;
+    }
+
+    if ((status & 0xF0) == 0x90) { // if this is a note press,
+	// turn on the LEDs
+	KANE_QuNeo.multiplyLoopLEDs[channel] = controls;
+	// start a timer to see if we should auto loop
+	KANE_QuNeo.loopHoldTimers[channel].push(
+	    engine.beginTimer(KANE_QuNeo.autoLoopHoldTime,
+			      "KANE_QuNeo.startAutoLoop("+deck+")", true));
+	// if we are currently auto looping,
+	if (KANE_QuNeo.autoLoop[channel]) {
+	    KANE_QuNeo.autoLoop[channel] = 0; // stop auto looping
+	    KANE_QuNeo.multiplyLoopLEDs[channel] = []; // reset LEDs
+	    KANE_QuNeo.LEDs(0x91,controls,0x00); // set to 0
+	}
+
+	// then do a regular deck multiply loop
+	KANE_QuNeo.doDeckMultiplyLoop(deck, factor);
+
+    } else if ((status & 0xF0) == 0x80) { // if this is a note release,
+
+	// if button was held long enough, start auto loop on release
+	if (KANE_QuNeo.autoLoopActivate[channel]) {
+	    KANE_QuNeo.autoLoopActivate[channel] = 0; // reset the activate flag
+	    KANE_QuNeo.autoLoop[channel] = factor; // set auto loop to factor
+
+	} else { // if not autolooping and button not held, kill timers
+	    KANE_QuNeo.cancelTimers(KANE_QuNeo.loopHoldTimers[channel]);
+	    KANE_QuNeo.loopHoldTimers[channel] = [];
+	    KANE_QuNeo.multiplyLoopLEDs[channel] = []; // reset LED on release
+	    KANE_QuNeo.LEDs(0x91,controls,0x00); // set to 0
+	}
+    }
+    // trigger LED update no matter what
+    KANE_QuNeo.triggerVuMeter(deck);
+}
+
+KANE_QuNeo.doDeckMultiplyLoop = function (deck, factor) {
+    var channel = deck - 1;
+    var channelName = KANE_QuNeo.getChannelName(deck);
+    // store start loop status
+    var loopEnabled = engine.getValue(channelName,"loop_enabled");
+
+    // determine which operation to perform
+    var operation;
+    if (factor == 1/2) operation = "loop_halve";
+    else if (factor == 2) operation = "loop_double";
+    else print("ERROR: wrong factor given for deckMultiplyLoop");
+    engine.setValue(channelName,operation,1)
+
+    // if our operation somehow changed loop enabling, immediately change it back
+    engine.beginTimer(KANE_QuNeo.checkLoopDelay,
+		      "KANE_QuNeo.checkLoop("+deck+","+loopEnabled+")", true);
+
+    // emit LED updates, timer because engine is slow at registering loop stuffs
+    KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertBeatLEDs("+deck+")",true);
 }
 
 /***** (VS) Vertical Sliders *****/
@@ -1783,6 +1856,7 @@ KANE_QuNeo.closeMode = function (mode) {
 	    KANE_QuNeo.reloopLEDs[channel] = [];
 	    KANE_QuNeo.jumpDirectionLEDs[channel] = [];
 	    KANE_QuNeo.beatCounterLEDs[channel] = [];
+	    KANE_QuNeo.multiplyLoopLEDs[channel] = [];
 	    KANE_QuNeo.triggerVuMeter(channel + 1); // trigger the corresponding deck
 	} break;
     case 16:
@@ -2349,6 +2423,8 @@ KANE_QuNeo.deckVuMeter = function (deck, value) {
     KANE_QuNeo.LEDs(0x91,KANE_QuNeo.jumpSyncLED[channel],values.cubedNeverOff);
     // Beat Counter LEDs
     KANE_QuNeo.LEDs(0x91,KANE_QuNeo.beatCounterLEDs[channel],values.cubedNeverOff);
+    // Auto Loop LEDs
+    KANE_QuNeo.LEDs(0x91,KANE_QuNeo.multiplyLoopLEDs[channel],values.cubedNeverOff);
 }
 
 KANE_QuNeo.masterVuMeter = function (value) {
@@ -2639,16 +2715,16 @@ KANE_QuNeo.deck2reloop = function (channel, control, value, status, group) {
 
 //Loop double/halve
 KANE_QuNeo.deck1loop_double = function (channel, control, value, status, group) {
-    KANE_QuNeo.deckMultiplyLoop(1, 2) // 1 for deck 1, 2 for double
+    KANE_QuNeo.deckMultiplyLoop(1, 2, status) // 1 for deck 1, 2 for double, status
 }
 KANE_QuNeo.deck1loop_halve = function (channel, control, value, status, group) {
-    KANE_QuNeo.deckMultiplyLoop(1, 1/2) // 1 for deck 1, 1/2 for halve
+    KANE_QuNeo.deckMultiplyLoop(1, 1/2, status) // 1 for deck 1, 1/2 for halve, status
 }
 KANE_QuNeo.deck2loop_double = function (channel, control, value, status, group) {
-    KANE_QuNeo.deckMultiplyLoop(2, 2)
+    KANE_QuNeo.deckMultiplyLoop(2, 2, status)
 }
 KANE_QuNeo.deck2loop_halve = function (channel, control, value, status, group) {
-    KANE_QuNeo.deckMultiplyLoop(2, 1/2)
+    KANE_QuNeo.deckMultiplyLoop(2, 1/2, status)
 }
 
 //Playlist Mode

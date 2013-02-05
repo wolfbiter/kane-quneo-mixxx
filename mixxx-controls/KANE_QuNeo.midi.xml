@@ -1287,7 +1287,10 @@
 	<status>0x81</status>
 	<midino>0x08</midino>
 	<group>[Channel1]</group>
-	<key>loop_double</key>
+	<key>KANE_QuNeo.deck1loop_double</key>
+	<options>
+	  <Script-Binding/>
+	</options>
       </control>
       <control>
 	<status>0x91</status>
@@ -1302,7 +1305,10 @@
 	<status>0x81</status>
 	<midino>0x09</midino>
 	<group>[Channel1]</group>
-	<key>loop_halve</key>
+	<key>KANE_QuNeo.deck1loop_halve</key>
+	<options>
+	  <Script-Binding/>
+	</options>
       </control>
 
       <!-- Channel 2 Looping -->
@@ -1427,7 +1433,10 @@
 	<status>0x81</status>
 	<midino>0x14</midino>
 	<group>[Channel2]</group>
-	<key>loop_double</key>
+	<key>KANE_QuNeo.deck2loop_double</key>
+	<options>
+	  <Script-Binding/>
+	</options>
       </control>
       <control>
 	<status>0x91</status>
@@ -1442,7 +1451,10 @@
 	<status>0x81</status>
 	<midino>0x15</midino>
 	<group>[Channel2]</group>
-	<key>loop_halve</key>
+	<key>KANE_QuNeo.deck2loop_halve</key>
+	<options>
+	  <Script-Binding/>
+	</options>
       </control>
       <control>
 	<status>0x91</status>
@@ -3348,90 +3360,6 @@
 	<maximum>1</maximum>  
 	<minimum>1</minimum>
       </output>
-
-      <!-- Channel 1 Looping -->
-      <output>
-	<group>[Channel1]</group>
-	<key>loop_double</key>
-	<status>0x91</status>  
-	<midino>0x34</midino>  
-	<on>0x7F</on>  
-	<off>0x00</off> 
-	<maximum>127</maximum>  
-	<minimum>1</minimum>
-      </output>
-      <output>
-	<group>[Channel1]</group>
-	<key>loop_double</key>
-	<status>0x91</status>  
-	<midino>0x35</midino>  
-	<on>0x7F</on>  
-	<off>0x00</off> 
-	<maximum>127</maximum>  
-	<minimum>1</minimum>
-      </output>  
-      <output>
-	<group>[Channel1]</group>
-	<key>loop_halve</key>
-	<status>0x91</status>  
-	<midino>0x24</midino>  
-	<on>0x7F</on>  
-	<off>0x00</off> 
-	<maximum>127</maximum>  
-	<minimum>1</minimum>
-      </output>
-      <output>
-	<group>[Channel1]</group>
-	<key>loop_halve</key>
-	<status>0x91</status>  
-	<midino>0x25</midino>  
-	<on>0x7F</on>  
-	<off>0x00</off> 
-	<maximum>127</maximum>  
-	<minimum>1</minimum>
-      </output>  
-
-      <!-- Channel 2 Looping -->
-      <output>
-	<group>[Channel2]</group>
-	<key>loop_double</key>
-	<status>0x91</status>  
-	<midino>0x3a</midino>  
-	<on>0x7F</on>  
-	<off>0x00</off> 
-	<maximum>127</maximum>  
-	<minimum>1</minimum>
-      </output>
-      <output>
-	<group>[Channel2]</group>
-	<key>loop_double</key>
-	<status>0x91</status>  
-	<midino>0x3b</midino>  
-	<on>0x7F</on>  
-	<off>0x00</off> 
-	<maximum>127</maximum>  
-	<minimum>1</minimum>
-      </output>  
-      <output>
-	<group>[Channel2]</group>
-	<key>loop_halve</key>
-	<status>0x91</status>  
-	<midino>0x2a</midino>  
-	<on>0x7F</on>  
-	<off>0x00</off> 
-	<maximum>127</maximum>  
-	<minimum>1</minimum>
-      </output>
-      <output>
-	<group>[Channel2]</group>
-	<key>loop_halve</key>
-	<status>0x91</status>  
-	<midino>0x2b</midino>  
-	<on>0x7F</on>  
-	<off>0x00</off> 
-	<maximum>127</maximum>  
-	<minimum>1</minimum>
-      </output>  
 
       <!-- Sync, Cue -->
       <output>
