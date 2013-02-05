@@ -268,7 +268,7 @@ KANE_QuNeo.rateNudge = 0 // 1 for rate nudging, determines
 KANE_QuNeo.lastLight =
     KANE_QuNeo.makeVar(-1); // starting position of last rotary LED
     
-KANE_QuNeo.hotcuePressed =
+KANE_QuNeo.hotcuePressed = 
     KANE_QuNeo.makeVar(0) // 1 if a hotcue is currently held down
 
 // Stores which beat each deck is on, loops 1...KANE_QuNeo.totalBeats
@@ -511,76 +511,83 @@ KANE_QuNeo.toggleRecord = function (channel, control, value, status, group) {
 
 /***** (JL) Jump and/or Loop over 1,2,4 or 8 Beats *****/
 
-KANE_QuNeo.jumpLoop = function (deck, numBeats) {
+KANE_QuNeo.jumpLoop = function (deck, numBeats, bypass) {
     var channel = deck - 1; // track channels start at 0 to properly reference arrays
     var channelName = KANE_QuNeo.getChannelName(deck)
-
-    // first set a hold timer if none exist
-    if (KANE_QuNeo.jumpHoldTimers[channel].length < 1)
-	KANE_QuNeo.jumpHoldTimers[channel].push(
-	    engine.beginTimer(KANE_QuNeo.jumpHoldTime,
-			      "KANE_QuNeo.jumpHeld("+deck+","+numBeats+")",
-			      true));
-
-    // calculate samples per beat
-    var samplerate = engine.getValue(channelName,"track_samplerate");
-    var samples = engine.getValue(channelName,"track_samples");
-    var bpm = engine.getValue(channelName,"file_bpm");
-    var spb = samplerate * 60 * 2 / bpm // samples per beat, not sure on the 2.
-
-    // calculate the new position
-    var oldPosition = engine.getValue(channelName, "visual_playposition");
     var direction = KANE_QuNeo.trackJump[channel];
-    var beatsVector = numBeats * direction; // vectors have magnitude and direction
-    var newPosition = oldPosition + (beatsVector*spb/samples);
+    var playing = engine.getValue(channelName,"play");
 
     // if jump is on,
-    if (newPosition != oldPosition) {
-
-	// light appropriate jumpLED during button press
+    if (direction)
+	// light appropriate LED during button press
 	KANE_QuNeo.assertJumpLEDs(deck, numBeats);
 
-	engine.setValue(channelName,"playposition",newPosition); // jump
-	// then adjust current beat
-	var wholeBeat = KANE_QuNeo.wholeBeat[channel]
-	var newBeat = (wholeBeat + beatsVector);
-	// if playing, we will hit the next beat so add 1
-	if (engine.getValue(channelName,"play"))
-	    newBeat += 1
-	var totalBeats = KANE_QuNeo.totalBeats
+    // if we are not playing or not jumping or bypass is set, do jump stuff
+    if (!(playing) || !(direction) || bypass) {
 
-	if (newBeat < 1) // hand-made mod because javascript mod is wrong when < 0.
-	    newBeat += totalBeats 
-	else if (newBeat > 16)
-	    newBeat -= totalBeats
+	// first set a hold timer if none exist
+	if (KANE_QuNeo.jumpHoldTimers[channel].length < 1)
+	    KANE_QuNeo.jumpHoldTimers[channel].push(
+		engine.beginTimer(KANE_QuNeo.jumpHoldTime,
+				  "KANE_QuNeo.jumpHeld("+deck+","+numBeats+")",
+				  true));
 
-	KANE_QuNeo.wholeBeat[channel] = newBeat // set the new beat number
-	KANE_QuNeo.trackJumped[channel] = 1; // say that we jumped
-    }
+	// calculate samples per beat
+	var samplerate = engine.getValue(channelName,"track_samplerate");
+	var samples = engine.getValue(channelName,"track_samples");
+	var bpm = engine.getValue(channelName,"file_bpm");
+	var spb = samplerate * 60 * 2 / bpm // samples per beat, not sure on the 2.
 
-    // now figure out how/whether or not to loop
-    if (KANE_QuNeo.trackLooping[channel]) { // if in looping mode,
+	// calculate the new position
+	var oldPosition = engine.getValue(channelName, "visual_playposition");
+	var beatsVector = numBeats * direction; // vectors have magnitude and direction
+	var newPosition = oldPosition + (beatsVector*spb/samples);
 
-	if (!direction)                    // nor jumping,
-	    KANE_QuNeo.doLoop(deck, numBeats); // do loop now
-	else // else (if playing or jumping) schedule a loop
-	    KANE_QuNeo.scheduleLoop(deck, numBeats);
-    }
+	// if jump is on,
+	if (newPosition != oldPosition) {
 
-    // if neither jump nor loop, then we are in loop planning mode
-    else if (!(KANE_QuNeo.trackLooping[channel])
-	     && !(KANE_QuNeo.trackJump[channel])) {
+	    engine.setValue(channelName,"playposition",newPosition); // jump
+	    // then adjust current beat
+	    var wholeBeat = KANE_QuNeo.wholeBeat[channel]
+	    var newBeat = (wholeBeat + beatsVector);
+	    // if playing, we will hit the next beat so add 1
+	    if (playing)
+		newBeat += 1
+	    var totalBeats = KANE_QuNeo.totalBeats
 
-	// light appropriate jumpLED during button press
-	KANE_QuNeo.assertJumpLEDs(deck, numBeats);
+	    if (newBeat < 1) // hand-made mod because javascript mod is wrong when < 0.
+		newBeat += totalBeats 
+	    else if (newBeat > 16)
+		newBeat -= totalBeats
 
-	if (KANE_QuNeo.loopNextJump[channel] == numBeats) // if equal numBeats,
-	    // we already have a loop of this length planned, so a second button
-	    // press means to cancel the first
-	    KANE_QuNeo.loopNextJump[channel] = 0;
+	    KANE_QuNeo.wholeBeat[channel] = newBeat // set the new beat number
+	    KANE_QuNeo.trackJumped[channel] = 1; // say that we jumped
+	}
 
-	else // otherwise, proceed
-	    KANE_QuNeo.loopNextJump[channel] = numBeats; // set loop for next jump
+	// now figure out how/whether or not to loop
+	if (KANE_QuNeo.trackLooping[channel]) { // if in looping mode,
+
+	    if (!direction)                    // and not jumping,
+		KANE_QuNeo.doLoop(deck, numBeats); // do loop now
+	    else // else (if jumping) schedule a loop
+		KANE_QuNeo.scheduleLoop(deck, numBeats);
+	}
+
+	// if neither jump nor loop, then we are in loop planning mode
+	else if (!(KANE_QuNeo.trackLooping[channel])
+		 && !(KANE_QuNeo.trackJump[channel])) {
+
+	    // light appropriate jumpLED during button press
+	    KANE_QuNeo.assertJumpLEDs(deck, numBeats);
+
+	    if (KANE_QuNeo.loopNextJump[channel] == numBeats) // if equal numBeats,
+		// we already have a loop of this length planned, so a second button
+		// press means to cancel the first
+		KANE_QuNeo.loopNextJump[channel] = 0;
+
+	    else // otherwise, proceed
+		KANE_QuNeo.loopNextJump[channel] = numBeats; // set loop for next jump
+	}
     }
 }
 
@@ -690,9 +697,15 @@ KANE_QuNeo.jumpHeld = function (deck, numBeats) {
 KANE_QuNeo.jumpOff = function (deck, numBeats) {
     var channel = deck - 1;
     var channelName = KANE_QuNeo.getChannelName(deck);
+
+    // if track is playing, assume this is a stuttered jump
+    if (engine.getValue(channelName,"play"))
+	KANE_QuNeo.jumpLoop(deck, numBeats, 1); // set bypass so jump is executed
+    else {
+	KANE_QuNeo.assertBeatLEDs(deck);
+    }
     KANE_QuNeo.cancelTimers(KANE_QuNeo.jumpHoldTimers[channel]);
     KANE_QuNeo.jumpHoldTimers[channel] = [];
-    KANE_QuNeo.assertBeatLEDs(deck);
 }
 
 /***** (VS) Vertical Sliders *****/
@@ -1055,9 +1068,10 @@ KANE_QuNeo.makeCueDispatch = function (deck, cue, clearFlag, activateFlag) {
 
 		// if this hotcue's deck is not playing or the hotcue doesn't exist,
 		// treat it like a regular hotcue press
-		if ((!KANE_QuNeo.trackPlaying[channel]) || 
+		if (!(engine.getValue(channelName,"play")) ||
 		    !(engine.getValue(channelName, "hotcue_"+cue+"_enabled"))) {
 		    // first update global press status
+		    print("updating hotcue press to: "+activateFlag);
 		    KANE_QuNeo.hotcuePressed[channel] = activateFlag;
 		    // then activate the pressed hotcue
 		   engine.setValue(channelName,"hotcue_"+cue+"_activate",
@@ -1073,6 +1087,7 @@ KANE_QuNeo.makeCueDispatch = function (deck, cue, clearFlag, activateFlag) {
 
 		// if this hotcue is active, a button release needs to deactivate it
 		if (engine.getValue(channelName, "hotcue_"+cue+"_activate")) {
+		    print("2nd update of hotcue press to: 0");
 		    KANE_QuNeo.hotcuePressed[channel] = 0;
 		    engine.setValue(channelName,"hotcue_"+cue+"_activate",0);
 		}
@@ -1204,10 +1219,28 @@ KANE_QuNeo.quantizeCuesOff = function (deck, control) {
 
 KANE_QuNeo.timeKeeper = function (deck, value) {
     var channel = deck - 1;
+
     var channelName = KANE_QuNeo.getChannelName(deck)
 
+ /*   // if we think we're not playing, but we are, and it's not a cue,
+    print("cue status: "+engine.getValue(channelName,"cue_default"));
+    print("our play status: "+KANE_QuNeo.trackPlaying[channel])
+    print("mixxx play status: "+engine.getValue(channelName, "play"));
+    var bool = false;
+    if (!(KANE_QuNeo.trackPlaying[channel]) &&
+	engine.getValue(channelName,"play") &&
+	!(engine.getValue(channelName,"cue_default")) &&
+        !(KANE_QuNeo.hotcuePressed[channel])) {
+	bool = true; // set our status to playing because the gui play was clicked
+	             // although we also n
+    }
+    print("total eval: "+bool);*/
+
+
+    // TODO: add regular cue check to below so we don't spin rotary until playing
+
     // if we're actually playing (not just a hotcue press), then do these things
-    if (KANE_QuNeo.trackPlaying[channel] || !KANE_QuNeo.hotcuePressed[channel]) {
+    if (KANE_QuNeo.trackPlaying[channel] || !(KANE_QuNeo.hotcuePressed[channel])) {
 	// check for a next nearest hotcue, and update if we've passed it
 	if ((value - KANE_QuNeo.nextHotcuePosition[channel]) >= 0 &&
 	    KANE_QuNeo.numNextHotcues[channel])
@@ -1240,7 +1273,7 @@ KANE_QuNeo.timeKeeper = function (deck, value) {
 	KANE_QuNeo.trackPlaying[channel] = 0
 	if (KANE_QuNeo.mode == 16)
 	    KANE_QuNeo.assertLoadLEDs(deck);
-	KANE_QuNeo.triggerVuMeter(0); // trigger master VuMeter
+	KANE_QuNeo.triggerVuMeter(0); // trigger master VuMeter for deck end
     }
 }
 
@@ -2205,9 +2238,9 @@ KANE_QuNeo.assertBeatLEDs = function (deck) {
 
     // controls to consider, put in an array with affected LEDs grouped
     var controls = [["beatloop_1_enabled",[0x31],[0x3d],[0x71],[0x7d]],
-		    ["beatloop_2_enabled",[0x33],[0x3f],[0x73],[0x7f]],
-		    ["beatloop_4_enabled",[0x21],[0x2d],[0x61],[0x6d]],
-		    ["beatloop_8_enabled",[0x23],[0x2f],[0x63],[0x6f]]];
+		    ["beatloop_4_enabled",[0x33],[0x3f],[0x73],[0x7f]],
+		    ["beatloop_8_enabled",[0x21],[0x2d],[0x61],[0x6d]],
+		    ["beatloop_16_enabled",[0x23],[0x2f],[0x63],[0x6f]]];
 
     // now consider those controls
     for (var i = 0; i < controls.length; i++) {
@@ -2704,15 +2737,15 @@ KANE_QuNeo.deck1JumpOff1 = function (channel, control, value, status, group) {
 }
 
 KANE_QuNeo.deck1JumpOff2 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpOff(1,2)
-}
-
-KANE_QuNeo.deck1JumpOff4 = function (channel, control, value, status, group) {
     KANE_QuNeo.jumpOff(1,4)
 }
 
-KANE_QuNeo.deck1JumpOff8 = function (channel, control, value, status, group) {
+KANE_QuNeo.deck1JumpOff4 = function (channel, control, value, status, group) {
     KANE_QuNeo.jumpOff(1,8)
+}
+
+KANE_QuNeo.deck1JumpOff8 = function (channel, control, value, status, group) {
+    KANE_QuNeo.jumpOff(1,16)
 }
 
 KANE_QuNeo.deck2JumpOff1 = function (channel, control, value, status, group) {
@@ -2720,15 +2753,15 @@ KANE_QuNeo.deck2JumpOff1 = function (channel, control, value, status, group) {
 }
 
 KANE_QuNeo.deck2JumpOff2 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpOff(2,2)
-}
-
-KANE_QuNeo.deck2JumpOff4 = function (channel, control, value, status, group) {
     KANE_QuNeo.jumpOff(2,4)
 }
 
-KANE_QuNeo.deck2JumpOff8 = function (channel, control, value, status, group) {
+KANE_QuNeo.deck2JumpOff4 = function (channel, control, value, status, group) {
     KANE_QuNeo.jumpOff(2,8)
+}
+
+KANE_QuNeo.deck2JumpOff8 = function (channel, control, value, status, group) {
+    KANE_QuNeo.jumpOff(2,16)
 }
 
 //Rotaries
