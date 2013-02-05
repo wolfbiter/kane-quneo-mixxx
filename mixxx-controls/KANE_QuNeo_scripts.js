@@ -517,10 +517,9 @@ KANE_QuNeo.jumpLoop = function (deck, numBeats, bypass) {
     var direction = KANE_QuNeo.trackJump[channel];
     var playing = engine.getValue(channelName,"play");
 
-    // if jump is on,
-    if (direction)
-	// light appropriate LED during button press
-	KANE_QuNeo.assertJumpLEDs(deck, numBeats);
+    // if jump is on and bypass is off,
+    if (direction && !(bypass))
+	KANE_QuNeo.assertJumpLEDs(deck, numBeats); // light LED during button press
 
     // if we are not playing or not jumping or bypass is set, do jump stuff
     if (!(playing) || !(direction) || bypass) {
@@ -572,22 +571,20 @@ KANE_QuNeo.jumpLoop = function (deck, numBeats, bypass) {
 	    else // else (if jumping) schedule a loop
 		KANE_QuNeo.scheduleLoop(deck, numBeats);
 	}
+    }
+    // if neither jump nor loop, then we are in loop planning mode
+    if (!(KANE_QuNeo.trackLooping[channel])
+	&& !(KANE_QuNeo.trackJump[channel])) {
+	// light appropriate jumpLED during button press
+	KANE_QuNeo.assertJumpLEDs(deck, numBeats);
 
-	// if neither jump nor loop, then we are in loop planning mode
-	else if (!(KANE_QuNeo.trackLooping[channel])
-		 && !(KANE_QuNeo.trackJump[channel])) {
+	if (KANE_QuNeo.loopNextJump[channel] == numBeats) // if equal numBeats,
+	    // we already have a loop of this length planned, so a second button
+	    // press means to cancel the first
+	    KANE_QuNeo.loopNextJump[channel] = 0;
 
-	    // light appropriate jumpLED during button press
-	    KANE_QuNeo.assertJumpLEDs(deck, numBeats);
-
-	    if (KANE_QuNeo.loopNextJump[channel] == numBeats) // if equal numBeats,
-		// we already have a loop of this length planned, so a second button
-		// press means to cancel the first
-		KANE_QuNeo.loopNextJump[channel] = 0;
-
-	    else // otherwise, proceed
-		KANE_QuNeo.loopNextJump[channel] = numBeats; // set loop for next jump
-	}
+	else // otherwise, proceed
+	    KANE_QuNeo.loopNextJump[channel] = numBeats; // set loop for next jump
     }
 }
 
@@ -698,12 +695,12 @@ KANE_QuNeo.jumpOff = function (deck, numBeats) {
     var channel = deck - 1;
     var channelName = KANE_QuNeo.getChannelName(deck);
 
-    // if track is playing, assume this is a stuttered jump
-    if (engine.getValue(channelName,"play"))
+    // if track is playing and jump is on, assume this is a stuttered jump
+    if (engine.getValue(channelName,"play") &&
+        KANE_QuNeo.trackJump[channel])
 	KANE_QuNeo.jumpLoop(deck, numBeats, 1); // set bypass so jump is executed
-    else {
-	KANE_QuNeo.assertBeatLEDs(deck);
-    }
+
+    KANE_QuNeo.assertBeatLEDs(deck);
     KANE_QuNeo.cancelTimers(KANE_QuNeo.jumpHoldTimers[channel]);
     KANE_QuNeo.jumpHoldTimers[channel] = [];
 }
@@ -1357,7 +1354,7 @@ KANE_QuNeo.handleBeat = function (deck) {
     KANE_QuNeo.scheduleBeat(deck, KANE_QuNeo.wholeBeat[channel], 1);
     // update beat counter LEDs no matter what happened
     KANE_QuNeo.assertBeatCounterLEDs(deck);
-    KANE_QuNeo.assertBeatLEDs(deck);
+    //KANE_QuNeo.assertBeatLEDs(deck);
     // set the last beat to this position
     KANE_QuNeo.lastBeatPosition[channel] = position;
 }
