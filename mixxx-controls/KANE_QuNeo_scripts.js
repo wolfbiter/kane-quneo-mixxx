@@ -335,6 +335,7 @@ KANE_QuNeo.verticalSliderDoubleTap = [0,0,0,0]; // 1 when a the next tap will
                                                 // activate the double tap
 
 KANE_QuNeo.autoLoop = KANE_QuNeo.makeVar(0); // nonzero when autolooping
+KANE_QuNeo.autoLoopFactor = KANE_QuNeo.makeVar(0); // multiply factor for autoloop
 KANE_QuNeo.autoLoopActivate = KANE_QuNeo.makeVar(0); // 1 when button release will
                                                      // activate auto loop, else 0
 
@@ -698,63 +699,89 @@ KANE_QuNeo.jumpOff = function (deck, numBeats) {
 
 /***** (AL) Auto Loop *****/
 
-KANE_QuNeo.startAutoLoop = function (deck) {
+KANE_QuNeo.startAutoLoop = function (deck, factor) {
     // if this function is reached, then we are supposed to activate auto loop
     // either doubling or halving depending on which factor is being used.
     print("=====> START AUTOLOOP ACTIVATED")
     var channel = deck - 1;
-    KANE_QuNeo.autoLoopActivate[channel] = 1;
+    KANE_QuNeo.autoLoopActivate[channel] = 1; // signal to activate auto loop
+    KANE_QuNeo.autoLoop[channel] = 1; // signal this is the first tick of auto loop
+}
+
+KANE_QuNeo.doAutoLoop = function (deck) {
+    // TODO: make it work for loop doubling as well (need to reverse activations)
+    // TODO: calculate button is released to activate auto loop,
+    //       for the purpose of making the loops always halve on time
+    // TODO: fix bug with first double or halve after autoloop terminates(?)
+    
+    var channel = deck - 1;
+    switch (KANE_QuNeo.autoLoop[channel]) {
+
+    case 4: case 6: // do loops only for these iterations
+	KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
+	break;
+
+    case 8: // last loop, thenstop auto loop since we're done
+	KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
+	KANE_QuNeo.stopAutoLoop(deck); break;
+    default: break;
+    }
+    KANE_QuNeo.autoLoop[channel]++; // increment autoloop each call
+}
+
+KANE_QuNeo.stopAutoLoop = function (deck) {
+    print("=====> STOPPING AUTOLOOP")
+    var channel = deck - 1;
+    KANE_QuNeo.cancelTimers(KANE_QuNeo.loopHoldTimers[channel]);
+    KANE_QuNeo.loopHoldTimers[channel] = []; // clear timers
+    KANE_QuNeo.autoLoop[channel] = 0; // set globals to 0
+    KANE_QuNeo.assertAutoLoopLEDs(deck); // reassert LEDs after state change
 }
 
 KANE_QuNeo.deckMultiplyLoop = function (deck, factor, status) {
     var channel = deck - 1;
-    var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
-
-    // first determine LEDs of calling deck
-    var controls;
-    if (LEDGroup == 1) { // if deck on left side
-	if (factor == 1/2) controls = [0x24,0x25];
-	if (factor == 2) controls = [0x34,0x35];
-    } else if (LEDGroup == 2) { // if deck on right side
-	if (factor == 1/2) controls = [0x2a,0x2b];
-	if (factor == 2) controls = [0x3a,0x3b];
-    } else if (controls == undefined) {
-	print("error with deckmultiplyloop's LEDGroup"); return;
-    }
+    KANE_QuNeo.autoLoopFactor[channel] = factor; // set global factor
 
     if ((status & 0xF0) == 0x90) { // if this is a note press,
-	// turn on the LEDs
-	KANE_QuNeo.multiplyLoopLEDs[channel] = controls;
 	// start a timer to see if we should auto loop
 	KANE_QuNeo.loopHoldTimers[channel].push(
 	    engine.beginTimer(KANE_QuNeo.autoLoopHoldTime,
-			      "KANE_QuNeo.startAutoLoop("+deck+")", true));
-	// if we are currently auto looping,
-	if (KANE_QuNeo.autoLoop[channel]) {
-	    KANE_QuNeo.autoLoop[channel] = 0; // stop auto looping
-	    KANE_QuNeo.multiplyLoopLEDs[channel] = []; // reset LEDs
-	    KANE_QuNeo.LEDs(0x91,controls,0x00); // set to 0
-	}
-
-	// then do a regular deck multiply loop
-	KANE_QuNeo.doDeckMultiplyLoop(deck, factor);
+			      "KANE_QuNeo.startAutoLoop("+deck+","+factor+")",
+			      true));
+	KANE_QuNeo.assertAutoLoopLEDs(deck); // turn LEDs on
 
     } else if ((status & 0xF0) == 0x80) { // if this is a note release,
 
 	// if button was held long enough, start auto loop on release
 	if (KANE_QuNeo.autoLoopActivate[channel]) {
-	    KANE_QuNeo.autoLoopActivate[channel] = 0; // reset the activate flag
-	    KANE_QuNeo.autoLoop[channel] = factor; // set auto loop to factor
+	    var channelName = KANE_QuNeo.getChannelName(deck);
 
-	} else { // if not autolooping and button not held, kill timers
+	    // timer needs to be every four beats, so find time of four beats
+	    var bpm = engine.getValue(channelName,"bpm"); // need current bpm
+	    var spb = 60 / bpm // seconds per beat
+	    var timer = (spb * 1000 * 2) // need milliseconds per 2 beats
+	    KANE_QuNeo.loopHoldTimers[channel].push(
+		engine.beginTimer(timer, "KANE_QuNeo.doAutoLoop("+deck+")"));
+
+	    // cancel jumpsync for this deck because it clashes with autoloop
+	    KANE_QuNeo.trackJumpSync[channel] = 0;
+	    KANE_QuNeo.assertJumpSyncLED(deck);
+
+	    KANE_QuNeo.autoLoopActivate[channel] = 0; // reset the activate flag
+	    KANE_QuNeo.doDeckMultiplyLoop(deck, factor); // do autoloop
+
+	} else if (KANE_QuNeo.autoLoop[channel]) {
+	    KANE_QuNeo.stopAutoLoop(deck);
+
+	    // we are not stopping autoloop, not starting autoloop => do regular
+	} else {
 	    KANE_QuNeo.cancelTimers(KANE_QuNeo.loopHoldTimers[channel]);
 	    KANE_QuNeo.loopHoldTimers[channel] = [];
-	    KANE_QuNeo.multiplyLoopLEDs[channel] = []; // reset LED on release
-	    KANE_QuNeo.LEDs(0x91,controls,0x00); // set to 0
+	    KANE_QuNeo.doDeckMultiplyLoop(deck, factor);
+	    KANE_QuNeo.assertAutoLoopLEDs(deck); // reassert LEDs after state change
 	}
+
     }
-    // trigger LED update no matter what
-    KANE_QuNeo.triggerVuMeter(deck);
 }
 
 KANE_QuNeo.doDeckMultiplyLoop = function (deck, factor) {
@@ -1141,7 +1168,6 @@ KANE_QuNeo.makeCueDispatch = function (deck, cue, clearFlag, activateFlag) {
 		if (!(engine.getValue(channelName,"play")) ||
 		    !(engine.getValue(channelName, "hotcue_"+cue+"_enabled"))) {
 		    // first update global press status
-		    print("updating hotcue press to: "+activateFlag);
 		    KANE_QuNeo.hotcuePressed[channel] = activateFlag;
 		    // then activate the pressed hotcue
 		   engine.setValue(channelName,"hotcue_"+cue+"_activate",
@@ -1157,7 +1183,6 @@ KANE_QuNeo.makeCueDispatch = function (deck, cue, clearFlag, activateFlag) {
 
 		// if this hotcue is active, a button release needs to deactivate it
 		if (engine.getValue(channelName, "hotcue_"+cue+"_activate")) {
-		    print("2nd update of hotcue press to: 0");
 		    KANE_QuNeo.hotcuePressed[channel] = 0;
 		    engine.setValue(channelName,"hotcue_"+cue+"_activate",0);
 		}
@@ -1803,6 +1828,7 @@ KANE_QuNeo.assertMode13 = function () {
 	KANE_QuNeo.assertLoopingLED(deck);
 	KANE_QuNeo.assertJumpDirectionLEDs(deck);
 	KANE_QuNeo.assertBeatLEDs(deck);
+	KANE_QuNeo.assertAutoLoopLEDs(deck);
 	KANE_QuNeo.LEDSequencing[deck - 1] = 0; // turn off sequencers
 	KANE_QuNeo.assertHotcueLEDs(deck);
 	// filter kills
@@ -1824,6 +1850,7 @@ KANE_QuNeo.assertMode16 = function () {
     KANE_QuNeo.LEDSequencing[0] = 1; // turn on sequencer
     KANE_QuNeo.LEDSequencing[1] = 1; // turn on sequencer
     KANE_QuNeo.playScratchToggle = 0; // default: scrolling is on
+    KANE_QuNeo.assertAutoLoopLEDs(deck); // auto loop is there until 4 decks
     KANE_QuNeo.assertPlayScratchLED();
     // light squares
     KANE_QuNeo.assertLoadLEDs();
@@ -2052,6 +2079,37 @@ KANE_QuNeo.assertDeckHorizArrowLEDs = function (deck) {
     // turn off all LEDs which were on
     KANE_QuNeo.LEDs(0x90,KANE_QuNeo.horizArrowLEDs[channel],0x00)
     KANE_QuNeo.horizArrowLEDs[channel] = on;
+    KANE_QuNeo.triggerVuMeter(deck);
+}
+
+
+KANE_QuNeo.assertAutoLoopLEDs = function (deck) {
+    var channel = deck - 1;
+    var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
+
+    // first determine LEDs of calling deck
+    var controls, factor = KANE_QuNeo.autoLoopFactor[channel];
+    if (LEDGroup == 1) { // if deck on left side
+	if (factor == 1/2) controls = [0x24,0x25];
+	else if (factor == 2) controls = [0x34,0x35];
+    } else if (LEDGroup == 2) { // if deck on right side
+	if (factor == 1/2) controls = [0x2a,0x2b];
+	else if (factor == 2) controls = [0x3a,0x3b];
+    } else {
+	print("error with assert autoloopLED's LEDGroup"); return;
+    }
+
+    // if currently autolooping or button is held down, have LEDs on
+    if (KANE_QuNeo.autoLoop[channel] ||
+	(KANE_QuNeo.loopHoldTimers[channel].length > 0)) {
+	KANE_QuNeo.multiplyLoopLEDs[channel] = controls;
+    } else { // if not, then have LEDs off
+	var activeLEDs = KANE_QuNeo.multiplyLoopLEDs[channel];
+	KANE_QuNeo.multiplyLoopLEDs[channel] = []; // reset LED array
+	KANE_QuNeo.LEDs(0x91,activeLEDs,0x00); // set active LEDs to 0
+    }
+
+    // trigger LED update no matter what
     KANE_QuNeo.triggerVuMeter(deck);
 }
 
