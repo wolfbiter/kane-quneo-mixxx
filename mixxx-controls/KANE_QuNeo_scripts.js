@@ -798,7 +798,7 @@ KANE_QuNeo.stopAutoLoop = function (deck) {
      KANE_QuNeo.assertAutoLoopLEDs(deck); // reassert LEDs after state change
  }
 
- KANE_QuNeo.deckMultiplyLoop = function (deck, factor, status) {
+KANE_QuNeo.deckMultiplyLoop = function (deck, factor, status) {
      var channel = deck - 1;
      KANE_QuNeo.autoLoopFactor[channel] = factor; // set global factor
 
