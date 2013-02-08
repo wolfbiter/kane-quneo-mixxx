@@ -1927,7 +1927,8 @@ KANE_QuNeo.deckMultiplyLoop = function (deck, factor, status) {
      KANE_QuNeo.LEDSequencing[0] = 1; // turn on sequencer
      KANE_QuNeo.LEDSequencing[1] = 1; // turn on sequencer
      KANE_QuNeo.playScratchToggle = 0; // default: scrolling is on
-     KANE_QuNeo.assertAutoLoopLEDs(deck); // auto loop is there until 4 decks
+     KANE_QuNeo.assertAutoLoopLEDs(1); // auto loop is there until 4 decks
+     KANE_QuNeo.assertAutoLoopLEDs(2); // auto loop is there until 4 decks
      KANE_QuNeo.assertPlayScratchLED();
      // light squares
      KANE_QuNeo.assertLoadLEDs();
