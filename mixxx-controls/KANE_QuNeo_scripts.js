@@ -2608,7 +2608,7 @@ KANE_QuNeo.deckCursorLEDs = function (deck, position) {
     if (LEDGroup == 1) control = [0x02];
     else if (LEDGroup == 2) control = [0x04];
     // emit LED message
-    KANE_QuNeo.LEDs(0xb0,control,127 - normalized) // inverted to show time left
+    KANE_QuNeo.LEDs(0xb0,control,normalized)
 }
 
 KANE_QuNeo.deckRate = function (deck, value) {
