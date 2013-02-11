@@ -246,6 +246,17 @@ loop of that length is scheduled for that deck's next jump. A jump is defined as
 other than moving forward by playing or jumping forward one beat. A loop may be unscheduled if it is reselected while
 in loop scheduling mode.
 
+#####10) Autoloop
++ *Autoloop* requires an active loop and can be activated by holding *Halve Loop* for a [customizable](#iii-customizing-this-preset) amount of time (default: 600ms).
++ Autoloop, activated on button release, first performs the loop multiplication (in this case, halves the loop), and then begins a timer to automagically continue halving loops.
+The loop halve button will remain orange for the duration of Autoloop, and Autoloop can be canceled by a press of either loop double or loop halve. In addition, Autoloop terminates
+itself when it has run its course.
+  - If Autoloop is activated while a **loop of 2** is active (wherein the button release to activate Autoloop brings the current loop to a loop of 1), Autoloop will halve loops such that
+    the track is ready for a drop **16 beats** after release.
+  - If Autoloop is activated while a **loop of either 4 or 8** is active (wherein the button release to activate Autoloop brings the current loop to a loop of 2 or 4 respectively),
+    Autoloop will halve loops such that the track is ready for a drop **32 beats** after release. **NOTE**: Autoloop halves at different times depending upon a starting loop of 4 or 8.
+    I recommend playing with it to get a feel for how it works.
+
 ####Cueleft Mode (14) / Cueright Mode (15)
 + These modes are used for cueing, as they provide cue deletes for the left and right decks respectively.
 + Unless otherwise specified, all controls default to the functionality specified in DJ Mode (13)

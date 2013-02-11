@@ -88,7 +88,7 @@ KANE_QuNeo.visualNudgeSpeed = 20; // time(ms) to wait for each tick while scroll
 KANE_QuNeo.rateNudgeSpeed = 800; // ms to wait between each auto nudge
 KANE_QuNeo.rateNudgeTolerance = .006251/2 // determines how close rate must
                                // be to 0 in order to trigger turning off auto nudge
-KANE_QuNeo.autoLoopHoldTime = 1000; // time (ms) to hold loop multiply to auto loop
+KANE_QuNeo.autoLoopHoldTime = 600; // time (ms) to hold loop multiply to auto loop
 
 // LED Sequencers for each deck - easy to edit!
 // simply choose which LEDs you want for each
