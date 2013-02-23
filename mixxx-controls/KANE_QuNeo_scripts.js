@@ -738,6 +738,9 @@ KANE_QuNeo.startAutoLoop = function (deck) {
 	print("USAGE: autoloop works only for prior beatloops of length {2,4,8}");
 	KANE_QuNeo.stopAutoLoop(deck); // so stop auto loop and quit
 	return;
+    case 1:
+	KANE_QuNeo.loopHoldTimers[channel].push(
+	    engine.beginTimer(timer, "KANE_QuNeo.doAutoLoop1("+deck+")")); break;
     case 2:
 	KANE_QuNeo.loopHoldTimers[channel].push(
 	    engine.beginTimer(timer, "KANE_QuNeo.doAutoLoop2("+deck+")")); break;
@@ -749,7 +752,20 @@ KANE_QuNeo.startAutoLoop = function (deck) {
 	    engine.beginTimer(timer, "KANE_QuNeo.doAutoLoop8("+deck+")")); break;
     }
 }
-	
+
+KANE_QuNeo.doAutoLoop1 = function (deck) { // lasts 16 beats
+    var channel = deck - 1;
+    switch (KANE_QuNeo.autoLoop[channel]) {
+    case 8:
+	KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
+	break;
+    case 12: // last loop, then stop auto loop since we're done
+	KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
+	KANE_QuNeo.stopAutoLoop(deck); return;
+    }
+    KANE_QuNeo.autoLoop[channel]++; // increment autoloop each call
+}
+
 KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
     var channel = deck - 1;
      switch (KANE_QuNeo.autoLoop[channel]) {
@@ -818,7 +834,7 @@ KANE_QuNeo.deckMultiplyLoop = function (deck, factor, status) {
 
 	     // find out how many beats we are looping to start with
 	     var numBeats = 0;
-	     for (var x = 2; x < 16; x *= 2) {
+	     for (var x = 1; x < 16; x *= 2) {
 		 if (engine.getValue(channelName, "beatloop_"+x+"_enabled")) {
 		     numBeats = x; // if true, this is our number of beats
 		     break;
