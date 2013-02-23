@@ -634,8 +634,8 @@ KANE_QuNeo.doSync = function (deck, syncType) {
 	engine.setValue(channelName,"beatsync_"+syncType,1);
 
 	// if our operation somehow changed loop enabling, immediately change it back
-	engine.beginTimer(KANE_QuNeo.checkLoopDelay,
-			  "KANE_QuNeo.checkLoop("+deck+","+loopEnabled+")", true);
+	//engine.beginTimer(KANE_QuNeo.checkLoopDelay,
+	//		  "KANE_QuNeo.checkLoop("+deck+","+loopEnabled+")", true);
     }
 }
 
@@ -671,8 +671,7 @@ KANE_QuNeo.deckReloop = function (deck) {
     KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertBeatLEDs("+deck+")",true);
 }
 
-
-
+/*
 KANE_QuNeo.checkLoop = function (deck, loopEnabled) {
     var channelName = KANE_QuNeo.getChannelName(deck)
 
@@ -681,7 +680,7 @@ KANE_QuNeo.checkLoop = function (deck, loopEnabled) {
 	print("retoggling loop")
 	KANE_QuNeo.deckReloop(deck) // toggle the loop back to what it was
     }
-}
+}*/
 
 // function that is reached only when one of the beat jump buttons is held
 KANE_QuNeo.jumpHeld = function (deck, numBeats) {
@@ -869,8 +868,8 @@ KANE_QuNeo.deckMultiplyLoop = function (deck, factor, status) {
      engine.setValue(channelName,operation,1)
 
      // if our operation somehow changed loop enabling, immediately change it back
-     engine.beginTimer(KANE_QuNeo.checkLoopDelay,
-		       "KANE_QuNeo.checkLoop("+deck+","+loopEnabled+")", true);
+     //engine.beginTimer(KANE_QuNeo.checkLoopDelay,
+	//	       "KANE_QuNeo.checkLoop("+deck+","+loopEnabled+")", true);
 
      // emit LED updates, timer because engine is slow at registering loop stuffs
      KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertBeatLEDs("+deck+")",true);
