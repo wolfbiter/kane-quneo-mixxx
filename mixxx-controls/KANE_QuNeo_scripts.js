@@ -610,11 +610,23 @@ KANE_QuNeo.scheduleSync = function (deck, syncType) {
 
 KANE_QuNeo.doSync = function (deck, syncType) {
     var channel = deck - 1;
+    var channelName = KANE_QuNeo.getChannelName(deck)
     var deckType = KANE_QuNeo.getDeckType(deck);
+
+    // if doing a phase sync,
+    if (syncType == "phase") {
+	// verify both decks are playing before syncing to avoid glitchy syncs
+	var otherDeck = ((channel + 1) % 2) + 1;
+	var otherTrackPlaying = engine.getValue("[Channel"+otherDeck+"]","play")
+	var trackPlaying = engine.getValue(channelName, "play");
+	if (!(otherTrackPlaying) || !(trackPlaying)) {
+	    print("Phase sync ignored due to a deck not playing.");
+	    return;
+	}
+    }
 
     if (deckType == "deck" && deck <= 2) { // regular sync works only for decks,
 	                                   // and we only have 2 decks atm
-	var channelName = KANE_QuNeo.getChannelName(deck)
 
 	// store start loop status
 	var loopEnabled = engine.getValue(channelName,"loop_enabled");
@@ -632,17 +644,6 @@ KANE_QuNeo.syncTrack = function (deck, type, scheduleFlag) {
     // flash jumpsync LED to signify the sync
     // KANE_QuNeo.syncLEDRed(deck);
     print("==============> SYNCING DECK "+deck+" WITH SYNC TYPE: "+type);
-
-    // if doing a phase sync,
-    if (type == "phase") {
-	// verify other track is playing before syncing to avoid glitchy syncs
-	var otherDeck = ((channel + 1) % 2) + 1;
-	var otherTrackPlaying = engine.getValue("[Channel"+otherDeck+"]","play")
-	if (!otherTrackPlaying) {
-	    print("Phase sync ignored due to other deck not playing.");
-	    return;
-	}
-    }
 
     if (scheduleFlag) // if this sync should be scheduled
 	KANE_QuNeo.scheduleSync(deck, type); // then schedule it
