@@ -361,7 +361,7 @@ first outtro phrases of the song
 
 ## Contact Me
 #####One of four ways:
-1. post to this preset's [Mixxx Forum Thread](http://mixxx.org/forums/viewtopic.php?f=7&t=4130&sid=d276c35cf0670fa571eb4e8519a6ffa8)
+1. post to this preset's [Mixxx Forum Thread](http://www.mixxx.org/forums/viewtopic.php?f=7&t=4130)
 2. post to this preset's [KMI Forums Thread](http://forum.keithmcmillen.com/viewtopic.php?f=52&t=677)
 3. check out our music group [beatfn](http://beatfn.com)
 4. email me: wolfbiter--at--gmail.com
