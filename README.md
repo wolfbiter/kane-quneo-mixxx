@@ -5,7 +5,7 @@ Version 1.1.x
 <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
 
 ------------------------
-###Featuring a [Demo Video](https://youtu.be/dpdWzb0PEWo) and an [Intro Tutorial](https://youtu.be/dnWSqPFBHGk)!
+###Featuring a [Live Demo](https://youtu.be/dpdWzb0PEWo) and an [Intro Tutorial](https://youtu.be/dnWSqPFBHGk)!
 ------------------------
 + This repository contains all the components necessary to link a QuNeo to Mixxx with
 my customized set of controls and LEDs.
