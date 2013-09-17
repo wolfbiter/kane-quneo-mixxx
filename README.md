@@ -17,12 +17,8 @@ my customized set of controls and LEDs.
 + For any questions, suggestions, or bug reports, I encourage you to either [Submit An Issue](https://github.com/wolfbiter/kane-quneo-mixxx/issues?state=open) or [Contact Me](#contact-me)!
 
 ####NOTE: The guide assumes the user has Mixxx v1.11 installed.
-Possible Mixxx v1.11 downloads:
-+ [Mixxx v1.11 Beta 1](http://www.mixxx.org/forums/viewtopic.php?f=1&t=3834&sid=e66b9897d467b3b07209584fe085730c)
-  - This version works with all controls except slip_enabled
-  - The error message Mixxx presents says that slip enabled won't work, and can safely be ignored
-+ [Mixxx v1.11 Beta 2 (r3460)](http://builds.mixxx.org/builds/release-1.11.x/r3460/)
-  - This version works with all controls but is more unstable
+Mixxx v1.11 download:
++ [Mixxx v1.11, all platforms](http://www.mixxx.org/)
 
 ## Install:
 ### I) How to apply this preset
@@ -58,7 +54,7 @@ However, this is the only step where it matters: Update the QuNeo once in either
 be done until next update. Wine unfortunately also does not work.
 
 ######Click "Update All Presets"
-Note for Mac users: For some reason, Update All Presets can result in a crash. If this happens, then go individually to each of the presets 5, 13, 14, 15, 16 and click "Update Preset". The corresponding pads on the QuNeo should flash in response to each update.
+Note for ALL users: For some reason, Update All Presets can result in a crash at ~68%. If this happens, then go individually to each of the presets 5, 13, 14, 15, 16 and click "Update Preset". The corresponding pads on the QuNeo should flash in response to each update.
 ######Switch QuNeo's mode to DJ Mode
 + Press the mode button,
 + Then select the upper left pad.
