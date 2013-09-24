@@ -385,6 +385,7 @@ KANE_QuNeo.init = function (id) { // called when the device is opened & set up
       engine.setValue(channelName,"quantize",1);   
       engine.setValue(channelName,"pregain",KANE_QuNeo.pregain)
   }
+  engine.setValue("[Master]","volume",2);   
 
   //engine.setValue("[Samplers]","show_samplers",1)
   //engine.setValue("[Microphone]","show_microphone",1)
@@ -509,10 +510,34 @@ KANE_QuNeo.wheelTurn = function (deck, value) {
 
 /***** (R) Toggling Record *****/
 
+//
+KANE_QuNeo.getActiveDeck = function () {
+
+	var crossfader = engine.getValue("[Master]", "crossfader");
+
+	print("crossfader value: " + crossfader);
+
+	if (crossfader <= 0.0) // left deck
+	  return "[Channel1]";
+	else if (crossfader > 0.0) // right deck
+	  return "[Channel2]";
+}
+//
+
 KANE_QuNeo.toggleRecord = function (channel, control, value, status, group) {
     var old = KANE_QuNeo.recordToggle;
     KANE_QuNeo.recordToggle = (old + 1) % 2 // toggle global on/off
+
     engine.setValue("[Recording]","toggle_recording",1) // toggle engine
+
+    /*
+		var channelName = KANE_QuNeo.getActiveDeck();
+		var visualPos = engine.getValue(channelName, "visual_playposition");
+		var duration = engine.getValue(channelName, "duration");
+		var timePos = visualPos * duration;
+		print("timePos: " + timePos);
+		*/
+
     KANE_QuNeo.assertRecordLED() // update record LED
 }
 
