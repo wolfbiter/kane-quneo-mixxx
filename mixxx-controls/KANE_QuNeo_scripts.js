@@ -1425,52 +1425,56 @@ KANE_QuNeo.quantizeCuesOff = function (deck, control) {
 /***** (TK) Time Keeping *****/
 
 KANE_QuNeo.timeKeeper = function (deck, value) {
- var channel = deck - 1;
+  var channel = deck - 1;
 
- var channelName = KANE_QuNeo.getChannelName(deck)
+  var channelName = KANE_QuNeo.getChannelName(deck)
 
- // TODO: make the following work
- // TODO: make it so 
-  /*   // if we think we're not playing, but we are, and it's not a cue,
-     print("cue status: "+engine.getValue(channelName,"cue_default"));
-     print("our play status: "+KANE_QuNeo.trackPlaying[channel])
-     print("mixxx play status: "+engine.getValue(channelName, "play"));
-     var bool = false;
-     if (!(KANE_QuNeo.trackPlaying[channel]) &&
-	 engine.getValue(channelName,"play") &&
-	 !(engine.getValue(channelName,"cue_default")) &&
-	 !(KANE_QuNeo.hotcuePressed[channel])) {
-	 bool = true; // set our status to playing because the gui play was clicked
-		      // although we also n
-     }
-     print("total eval: "+bool);*/
+  // if we think we're not playing, but we are, and it's not a cue or a hotcue,
+  var hotcuePressed = KANE_QuNeo.hotcuePressed[channel],
+      cuePressed = engine.getValue(channelName,"cue_default"),
+      bool = false;
+  if (!(KANE_QuNeo.trackPlaying[channel]) &&
+    engine.getValue(channelName,"play") &&
+    !(cuePressed) &&
+    !(hotcuePressed)) {
+    KANE_QuNeo.trackPlaying[channel] = 1; // set our status to playing because the gui play was clicked
+    bool = true;
+  }
+  /*
+  print("cue status: "+engine.getValue(channelName,"cue_default"));
+  print("hotcue status: "+KANE_QuNeo.hotcuePressed[channel]);
+  print("our play status: "+KANE_QuNeo.trackPlaying[channel]);
+  print("mixxx play status: "+engine.getValue(channelName, "play"));
+  print("total eval: "+bool);
+  */
 
+  // if we're actually playing, then do these things
+  if (KANE_QuNeo.trackPlaying[channel] &&
+    !(hotcuePressed) &&
+    !(cuePressed)) {
+    // check for a next nearest hotcue, and update if we've passed it
+    if ((value - KANE_QuNeo.nextHotcuePosition[channel]) >= 0 &&
+      KANE_QuNeo.numNextHotcues[channel])
+      KANE_QuNeo.assertHotcueLEDs(deck);
 
-     // if we're actually playing (not just a hotcue press), then do these things
-     if (KANE_QuNeo.trackPlaying[channel] || !(KANE_QuNeo.hotcuePressed[channel])) {
-	 // check for a next nearest hotcue, and update if we've passed it
-	 if ((value - KANE_QuNeo.nextHotcuePosition[channel]) >= 0 &&
-    KANE_QuNeo.numNextHotcues[channel])
-    KANE_QuNeo.assertHotcueLEDs(deck)
+    // update rotary LEDs
+    KANE_QuNeo.circleLEDs(deck, value);
 
-	 // update rotary LEDs
-	 KANE_QuNeo.circleLEDs(deck, value)
- }
-
-     // report when there are beats and we haven't reached our last beat report
-     if (engine.getValue(channelName,"beat_active") &&
+    // report when there are beats and we haven't reached our last beat report
+    if (engine.getValue(channelName,"beat_active") &&
       KANE_QuNeo.nextBeatTimer[channel].length == 0) {
       KANE_QuNeo.nextBeatTimer[channel] =
-    [engine.beginTimer(KANE_QuNeo.beatOffset,
-      "KANE_QuNeo.handleBeat("+deck+")",
-      true)];
-	 // also check to see if we need to start autoloop timer
-	 if (KANE_QuNeo.autoLoop[channel] < 0) {
-    KANE_QuNeo.autoLoop[channel] = -KANE_QuNeo.autoLoop[channel];
-    engine.beginTimer(KANE_QuNeo.beatOffset - 20,
-      "KANE_QuNeo.startAutoLoop("+deck+")", true);
-  }
-}
+      [engine.beginTimer(KANE_QuNeo.beatOffset,
+        "KANE_QuNeo.handleBeat("+deck+")",
+        true)];
+
+      // also check to see if we need to start autoloop timer
+      if (KANE_QuNeo.autoLoop[channel] < 0) {
+        KANE_QuNeo.autoLoop[channel] = -KANE_QuNeo.autoLoop[channel];
+        engine.beginTimer(KANE_QuNeo.beatOffset - 20,
+          "KANE_QuNeo.startAutoLoop("+deck+")", true);
+      }
+    }
 
     // now determine whether or not the track has changed
     var channelName = KANE_QuNeo.getChannelName(deck);
@@ -1480,16 +1484,16 @@ KANE_QuNeo.timeKeeper = function (deck, value) {
       KANE_QuNeo.trackSamples[channel] = trackSamples; // so update to new value
       KANE_QuNeo.assertBeatLEDs(deck);
       KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertHotcueLEDs("+deck+")"
-      ,true, 200);
+        ,true, 200);
     }
+  }
 
-     // if we're at the end of the song, set track to not playing
-     if (value == 1) {
-      KANE_QuNeo.trackPlaying[channel] = 0
-      if (KANE_QuNeo.mode == 16)
-        KANE_QuNeo.assertLoadLEDs(deck);
-	 KANE_QuNeo.triggerVuMeter(0); // trigger master VuMeter for deck end
- }
+  // if we're at the end of the song, set track to not playing
+  if (value == 1) {
+    KANE_QuNeo.trackPlaying[channel] = 0
+    if (KANE_QuNeo.mode == 16) KANE_QuNeo.assertLoadLEDs(deck);
+    KANE_QuNeo.triggerVuMeter(0); // trigger master VuMeter for deck end
+  }
 }
 
 /***** (B) Beat Handling *****/
