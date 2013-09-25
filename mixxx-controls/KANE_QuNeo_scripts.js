@@ -74,6 +74,7 @@ KANE_QuNeo.doubleTapWindow = 700; // time(ms) window in which to consider
                                   // two note presses as a double tap
 KANE_QuNeo.numHotcues = 16; // total hotcues we are currently supporting
 KANE_QuNeo.pregain = 1.0 // initialize deck gains to this value
+KANE_QuNeo.masterVolume = 1.0 // initialize master volume to this value
 KANE_QuNeo.scratchSpeed = 5.0 // Scratch ticks per rotary sense
 KANE_QuNeo.rateNudgeHoldTime = 500 // time(ms) to hold nudges for scroll toggle
 KANE_QuNeo.jumpHoldTime = 70 // time(ms) to hold for continued jumping
@@ -385,7 +386,7 @@ KANE_QuNeo.init = function (id) { // called when the device is opened & set up
       engine.setValue(channelName,"quantize",1);   
       engine.setValue(channelName,"pregain",KANE_QuNeo.pregain)
     }
-    engine.setValue("[Master]","volume",2);   
+    engine.setValue("[Master]","volume",KANE_QuNeo.masterVolume);   
 
   //engine.setValue("[Samplers]","show_samplers",1)
   //engine.setValue("[Microphone]","show_microphone",1)
@@ -1260,6 +1261,7 @@ KANE_QuNeo.cancelRateNudge = function () {
         var channelName = KANE_QuNeo.getChannelName(deck);
         engine.setValue(channelName,"hotcue_"+cue+"_clear",1);
         KANE_QuNeo.assertHotcueLEDs(deck);
+        KANE_QuNeo.assertJumpLEDs(deck);
       }
      } else { // we are making a variant of cue set
 	 // LEDs indexed first by cue then by deck to signify button press
@@ -1301,6 +1303,8 @@ KANE_QuNeo.cancelRateNudge = function () {
 
 	     // emit LED updates regardless of button press or release
 	     KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertHotcueLEDs("+deck+")"
+       ,true);
+       KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertBeatLEDs("+deck+")"
        ,true);
      }
    }
