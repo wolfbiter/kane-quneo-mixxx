@@ -1473,15 +1473,16 @@ KANE_QuNeo.timeKeeper = function (deck, value) {
   }
 }
 
-     // now determine whether or not the track has changed
-     var channelName = KANE_QuNeo.getChannelName(deck);
-     var trackSamples = engine.getValue(channelName, "track_samples");
-     // if the old and new values are not the same, the track must have changed
-     if (trackSamples != KANE_QuNeo.trackSamples[channel]) {
-	 KANE_QuNeo.trackSamples[channel] = trackSamples; // so update to new value
-	 KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertHotcueLEDs("+deck+")"
-   ,true, 200);
- }
+    // now determine whether or not the track has changed
+    var channelName = KANE_QuNeo.getChannelName(deck);
+    var trackSamples = engine.getValue(channelName, "track_samples");
+    // if the old and new values are not the same, the track must have changed
+    if (trackSamples != KANE_QuNeo.trackSamples[channel]) {
+      KANE_QuNeo.trackSamples[channel] = trackSamples; // so update to new value
+      KANE_QuNeo.assertBeatLEDs(deck);
+      KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertHotcueLEDs("+deck+")"
+      ,true, 200);
+    }
 
      // if we're at the end of the song, set track to not playing
      if (value == 1) {
