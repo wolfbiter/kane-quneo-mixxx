@@ -577,10 +577,7 @@ KANE_QuNeo.jumpLoop = function (deck, numBeats, bypass) {
 	// calculate the new position
 	var oldPosition = engine.getValue(channelName, "visual_playposition");
 	var beatsVector = numBeats * direction; // vectors have magnitude and direction
-	var factor = beatsVector*spb/samples;
-	if (engine.getValue(channelName,"play")) // if deck is playing,
-	    factor += (direction * .000000005); // account for deck movement
-   var newPosition = oldPosition + factor;
+  var newPosition = oldPosition + beatsVector*spb/samples;
 
 	// if jump is on,
 	if (newPosition != oldPosition) {
