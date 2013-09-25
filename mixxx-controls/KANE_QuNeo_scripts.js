@@ -626,6 +626,7 @@ KANE_QuNeo.assertJumpLEDs(deck, numBeats);
 	else // otherwise, proceed
 	    KANE_QuNeo.loopNextJump[channel] = numBeats; // set loop for next jump
   }
+
 }
 
 KANE_QuNeo.scheduleSync = function (deck, syncType) {
@@ -639,42 +640,41 @@ KANE_QuNeo.doSync = function (deck, syncType) {
   var channelName = KANE_QuNeo.getChannelName(deck)
   var deckType = KANE_QuNeo.getDeckType(deck);
 
-    // if doing a phase sync,
-    if (syncType == "phase") {
-	// verify both decks are playing before syncing to avoid glitchy syncs
-	var otherDeck = ((channel + 1) % 2) + 1;
-	var otherTrackPlaying = engine.getValue("[Channel"+otherDeck+"]","play")
-	var trackPlaying = engine.getValue(channelName, "play");
-	if (!(otherTrackPlaying) || !(trackPlaying)) {
-   print("Phase sync ignored due to a deck not playing.");
-   return;
- }
-}
+  // if doing a phase sync,
+  if (syncType == "phase") {
+  	// verify both decks are playing before syncing to avoid glitchy syncs
+  	var otherDeck = ((channel + 1) % 2) + 1;
+  	var otherTrackPlaying = engine.getValue("[Channel"+otherDeck+"]","play")
+  	var trackPlaying = engine.getValue(channelName, "play");
+  	if (!(otherTrackPlaying) || !(trackPlaying)) {
+     print("Phase sync ignored due to a deck not playing.");
+     return;
+    }
+  }
 
-    if (deckType == "deck" && deck <= 2) { // regular sync works only for decks,
+  if (deckType == "deck" && deck <= 2) { // regular sync works only for decks,
 	                                   // and we only have 2 decks atm
+  	// store start loop status
+  	var loopEnabled = engine.getValue(channelName,"loop_enabled");
+  	// do the sync
+  	engine.setValue(channelName,"beatsync_"+syncType,1);
 
-	// store start loop status
-	var loopEnabled = engine.getValue(channelName,"loop_enabled");
-	// do the sync
-	engine.setValue(channelName,"beatsync_"+syncType,1);
-
-	// if our operation somehow changed loop enabling, immediately change it back
-	//engine.beginTimer(KANE_QuNeo.checkLoopDelay,
-	//		  "KANE_QuNeo.checkLoop("+deck+","+loopEnabled+")", true);
-}
+  	// if our operation somehow changed loop enabling, immediately change it back
+  	//engine.beginTimer(KANE_QuNeo.checkLoopDelay,
+  	//		  "KANE_QuNeo.checkLoop("+deck+","+loopEnabled+")", true);
+  }
 }
 
 KANE_QuNeo.syncTrack = function (deck, type, scheduleFlag) {
-    var channel = deck - 1; // confusing, yes. channels start from 0.
-    // flash jumpsync LED to signify the sync
-    // KANE_QuNeo.syncLEDRed(deck);
-    print("==============> SYNCING DECK "+deck+" WITH SYNC TYPE: "+type);
+  var channel = deck - 1; // confusing, yes. channels start from 0.
+  // flash jumpsync LED to signify the sync
+  // KANE_QuNeo.syncLEDRed(deck);
+  print("==============> SYNCING DECK "+deck+" WITH SYNC TYPE: "+type);
 
-    if (scheduleFlag) // if this sync should be scheduled
-	KANE_QuNeo.scheduleSync(deck, type); // then schedule it
-else
-	KANE_QuNeo.doSync(deck,type); // else do it now
+  if (scheduleFlag) // if this sync should be scheduled
+    KANE_QuNeo.scheduleSync(deck, type); // then schedule it
+  else
+    KANE_QuNeo.doSync(deck,type); // else do it now
 }
 
 KANE_QuNeo.scheduleLoop = function (deck, numBeats) {
@@ -1553,7 +1553,7 @@ KANE_QuNeo.getWholeBeat = function (deck, position, spb) {
 
 	 // schedule a sync if we are in JumpSync mode
 	 if (KANE_QuNeo.trackJumpSync[channel]) {
-    KANE_QuNeo.syncTrack(deck,"phase",1);
+    KANE_QuNeo.scheduleSync(deck,"phase");
   }
 
 	 // update hotcue LEDs
@@ -1617,22 +1617,24 @@ KANE_QuNeo.getWholeBeat = function (deck, position, spb) {
     " for beat on deck: "+deck+ " is not valid");
   return;
 }
-     and = 1000*(spb * 1/2); // and is symmetric in either direction
+    and = 1000*(spb * 1/2); // and is symmetric in either direction
 
-     // now set and store actual timers, in case we want to cancel them
-     var startOfCall = "KANE_QuNeo.deckBeatLEDs("+deck+","+wholeBeat+",";
+    // now set and store actual timers, in case we want to cancel them
+    var startOfCall = "KANE_QuNeo.deckBeatLEDs("+deck+","+wholeBeat+",";
 
-     // the beat itself, do it now
-     KANE_QuNeo.deckBeatLEDs(deck,wholeBeat,0);
-     // e, add this and the following quarters to our list of timers
-     KANE_QuNeo.scheduledBeats[channel].push(
-      engine.beginTimer(e,startOfCall+"1/4)", true))
-     // and
-     KANE_QuNeo.scheduledBeats[channel].push(
-      engine.beginTimer(and,startOfCall+"1/2)", true))
-     // uh
-     KANE_QuNeo.scheduledBeats[channel].push(
-      engine.beginTimer(uh,startOfCall+"3/4)", true))
+    // the beat itself, do it now
+    KANE_QuNeo.deckBeatLEDs(deck,wholeBeat,0);
+    /*
+    // e, add this and the following quarters to our list of timers
+    KANE_QuNeo.scheduledBeats[channel].push(
+     engine.beginTimer(e,startOfCall+"1/4)", true))
+    // and
+    KANE_QuNeo.scheduledBeats[channel].push(
+     engine.beginTimer(and,startOfCall+"1/2)", true))
+    // uh
+    KANE_QuNeo.scheduledBeats[channel].push(
+     engine.beginTimer(uh,startOfCall+"3/4)", true))
+    */
    }
 
    /***** (U) Utilities *****/
