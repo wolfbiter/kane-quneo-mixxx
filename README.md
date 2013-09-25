@@ -5,7 +5,7 @@ Version 1.1.x
 <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
 
 ------------------------
-###Featuring a [Demo Video](https://youtu.be/dpdWzb0PEWo) and an [Intro Tutorial](https://youtu.be/dnWSqPFBHGk)!
+###Featuring a [Live Demo](https://youtu.be/dpdWzb0PEWo) and an [Intro Tutorial](https://youtu.be/dnWSqPFBHGk)!
 ------------------------
 + This repository contains all the components necessary to link a QuNeo to Mixxx with
 my customized set of controls and LEDs.
@@ -17,12 +17,8 @@ my customized set of controls and LEDs.
 + For any questions, suggestions, or bug reports, I encourage you to either [Submit An Issue](https://github.com/wolfbiter/kane-quneo-mixxx/issues?state=open) or [Contact Me](#contact-me)!
 
 ####NOTE: The guide assumes the user has Mixxx v1.11 installed.
-Possible Mixxx v1.11 downloads:
-+ [Mixxx v1.11 Beta 1](http://www.mixxx.org/forums/viewtopic.php?f=1&t=3834&sid=e66b9897d467b3b07209584fe085730c)
-  - This version works with all controls except slip_enabled
-  - The error message Mixxx presents says that slip enabled won't work, and can safely be ignored
-+ [Mixxx v1.11 Beta 2 (r3460)](http://builds.mixxx.org/builds/release-1.11.x/r3460/)
-  - This version works with all controls but is more unstable
+Mixxx v1.11 download:
++ [Mixxx v1.11, all platforms](http://www.mixxx.org/)
 
 ## Install:
 ### I) How to apply this preset
@@ -58,7 +54,7 @@ However, this is the only step where it matters: Update the QuNeo once in either
 be done until next update. Wine unfortunately also does not work.
 
 ######Click "Update All Presets"
-Note for Mac users: For some reason, Update All Presets can result in a crash. If this happens, then go individually to each of the presets 5, 13, 14, 15, 16 and click "Update Preset". The corresponding pads on the QuNeo should flash in response to each update.
+Note for ALL users: For some reason, Update All Presets can result in a crash at ~68%. If this happens, then go individually to each of the presets 5, 13, 14, 15, 16 and click "Update Preset". The corresponding pads on the QuNeo should flash in response to each update.
 ######Switch QuNeo's mode to DJ Mode
 + Press the mode button,
 + Then select the upper left pad.
@@ -361,7 +357,7 @@ first outtro phrases of the song
 
 ## Contact Me
 #####One of four ways:
-1. post to this preset's [Mixxx Forum Thread](http://mixxx.org/forums/viewtopic.php?f=7&t=4130&sid=d276c35cf0670fa571eb4e8519a6ffa8)
+1. post to this preset's [Mixxx Forum Thread](http://www.mixxx.org/forums/viewtopic.php?f=7&t=4130)
 2. post to this preset's [KMI Forums Thread](http://forum.keithmcmillen.com/viewtopic.php?f=52&t=677)
 3. check out our music group [beatfn](http://beatfn.com)
 4. email me: wolfbiter--at--gmail.com
