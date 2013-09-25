@@ -1429,6 +1429,8 @@ KANE_QuNeo.timeKeeper = function (deck, value) {
 
  var channelName = KANE_QuNeo.getChannelName(deck)
 
+ // TODO: make the following work
+ // TODO: make it so 
   /*   // if we think we're not playing, but we are, and it's not a cue,
      print("cue status: "+engine.getValue(channelName,"cue_default"));
      print("our play status: "+KANE_QuNeo.trackPlaying[channel])
@@ -1551,8 +1553,13 @@ KANE_QuNeo.getWholeBeat = function (deck, position, spb) {
 
 	 // schedule a sync if we are in JumpSync mode
 	 if (KANE_QuNeo.trackJumpSync[channel]) {
-    KANE_QuNeo.scheduleSync(deck,"phase");
-  }
+    // make sure this is not a hotcue press on a track which is crossfaded away
+    var crossfader = engine.getValue("[Master]", "crossfader");
+    print("crossfader!: "+crossfader);
+    print("deck!: "+deck);
+    if (!((deck == 2 && crossfader == -1) || (deck == 1 && crossfader == 1)))
+      KANE_QuNeo.scheduleSync(deck,"phase");
+   }
 
 	 // update hotcue LEDs
 	 KANE_QuNeo.assertHotcueLEDs(deck);
@@ -1944,6 +1951,7 @@ KANE_QuNeo.assertMode5 = function () {
      // vertical sliders
      KANE_QuNeo.openSliderMode();
      for (deck = 1; deck <= 2; deck++) { // 1 and 2 for sides left and right
+      KANE_QuNeo.assertHorizArrowLEDs(deck)
       KANE_QuNeo.assertJumpSyncLED(deck);
       KANE_QuNeo.assertLoopingLED(deck);
       KANE_QuNeo.assertJumpDirectionLEDs(deck);
@@ -2192,13 +2200,20 @@ KANE_QuNeo.assertHorizArrowLEDs = function (deck) {
 
 	 // check which controls are enabled
 	 for (var i = 0; i < controls.length; i++) {
-	     if (engine.getValue(channelName, controls[i][0])) // if val on,
-		 on.push(controls[i][LEDGroup]); // light led
+	     if (engine.getValue(channelName, controls[i][0])) {// if val on,
+    		 on.push(controls[i][LEDGroup]); // light led
+    }
   }
 }
      // update LEDs
-     // turn off all LEDs which were on
-     KANE_QuNeo.LEDs(0x90,KANE_QuNeo.horizArrowLEDs[channel],0x00)
+     // turn off all horiz LEDs which were on
+     var off;
+     if (deck == 1) {
+      off = [0x24,0x26,0x28,0x2a];
+     } else if (deck == 2) {
+      off = [0x25,0x27,0x29,0x2b];
+     } else { print("ERROR: wrong deck given to assertDeckHoriz: "+deck); }
+     KANE_QuNeo.LEDs(0x90,off,0x00);
      KANE_QuNeo.horizArrowLEDs[channel] = on;
      KANE_QuNeo.triggerVuMeter(deck);
    }
