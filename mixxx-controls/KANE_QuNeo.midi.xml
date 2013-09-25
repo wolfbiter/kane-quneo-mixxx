@@ -1507,9 +1507,9 @@
 	<status>0x81</status>
 	<midino>0x0f</midino>
 	<group>[Channel1]</group>
-	<key>cue_default</key>
+	<key>KANE_QuNeo.deck1CueDefaultOff</key>
 	<options>
-	  <normal/>
+	  <Script-Binding/>
 	</options>
       </control>
       <control>
@@ -1531,22 +1531,20 @@
 	</options>
       </control>
       <control>
-	<status>0x91</status>
-	<midino>0x13</midino>
-	<group>[Channel2]</group>
-	<key>cue_default</key>
-	<options>
-	  <normal/>
-	</options>
-      </control>
-      <control>
 	<status>0x81</status>
 	<midino>0x13</midino>
 	<group>[Channel2]</group>
-	<key>cue_default</key>
+  <key>KANE_QuNeo.deck2CueDefaultOff</key>
 	<options>
-	  <normal/>
+    <Script-Binding/>
 	</options>
+  <status>0x81</status>
+  <midino>0x13</midino>
+  <group>[Channel2]</group>
+  <key>cue_default</key>
+  <options>
+    <normal/>
+  </options>
       </control>
 
       <!-- Kill High, Lows, Mids -->

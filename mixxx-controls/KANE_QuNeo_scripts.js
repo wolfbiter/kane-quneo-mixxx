@@ -24,6 +24,7 @@ function KANE_QuNeo () {}
        (JL) Jump, Sync, and/or Loop over 1,2,4,8 Beats
        (AL) Auto Loop (Double or Halve)
        (VS) Vertical Sliders
+       (RC) Regular Cue
        (ZC) Zoom and Cursor
        (VN) Visual Nudging
        (RN) Periodic and Regular Rate Nudging
@@ -274,6 +275,9 @@ KANE_QuNeo.rateNudge = 0 // 1 for rate nudging, determines
     KANE_QuNeo.hotcuePressed = 
     KANE_QuNeo.makeVar(0) // 1 if a hotcue is currently held down
 
+    KANE_QuNeo.playPressedWhileCuing = 
+    KANE_QuNeo.makeVar(0) // 1 if play was pressed while holding any cue
+
 // Stores which beat each deck is on, loops 1...KANE_QuNeo.totalBeats
 KANE_QuNeo.wholeBeat = KANE_QuNeo.makeVar(KANE_QuNeo.totalBeats);
 KANE_QuNeo.trackSamples = KANE_QuNeo.makeVar(-1); // total samples of tracks in decks
@@ -456,7 +460,13 @@ KANE_QuNeo.sliderCycle = function (channel, control, value, status, group) {
   KANE_QuNeo.play = function (deck) {
     var channel = deck - 1;
     var channelName = KANE_QuNeo.getChannelName(deck);
-    var playing = engine.getValue(channelName,"play");
+    var playing = KANE_QuNeo.isTrackPlaying(deck);
+
+    // if play is being pressed while any cue is held, signify that.
+    if (KANE_QuNeo.hotcuePressed[channel] ||
+      engine.getValue(channelName, "cue_default")) {
+      KANE_QuNeo.playPressedWhileCuing[channel] = 1;
+    }
 
     if (playing) {    // If currently playing
         engine.setValue(channelName,"play",0);    // Stop
@@ -471,13 +481,22 @@ KANE_QuNeo.sliderCycle = function (channel, control, value, status, group) {
    KANE_QuNeo.syncTrack(deck,"phase",0);
 }
     // update global value
-    var hotcuePressed = KANE_QuNeo.hotcuePressed[channel];
-    KANE_QuNeo.trackPlaying[channel] = (playing + 1 + hotcuePressed) % 2;
+    KANE_QuNeo.trackPlaying[channel] = (playing + 1) % 2;
 
     // send LED messages to report play press
-    if (KANE_QuNeo.mode != 16) // but not while in playlist mode
+    if (KANE_QuNeo.mode != 16) // but not while in playlist mode b/c 
+                               // rotaries already light up
      KANE_QuNeo.playPressLEDs(deck)
  }
+
+KANE_QuNeo.isTrackPlaying = function (deck) {
+  var channel = deck - 1;
+  var channelName = KANE_QuNeo.getChannelName(deck);
+  // double "!" to force a boolean value
+  return !!(KANE_QuNeo.trackPlaying[channel] &&
+    !(KANE_QuNeo.hotcuePressed[channel]) &&
+    !(engine.getValue(channelName,"cue_default")));
+}
 
  KANE_QuNeo.togglePlayScratch = function (channel, control, value, status, group) {
   var old = KANE_QuNeo.playScratchToggle;
@@ -1109,6 +1128,26 @@ KANE_QuNeo.closeSliderMode = function () {
      engine.setValue(channelName,"playposition", normalized)
    }
 
+   /***** (RC) Regular Cues *****/
+
+  KANE_QuNeo.deck1CueDefaultOff = function() {
+    var deck = 1,
+        channel = deck - 1,
+        channelName = KANE_QuNeo.getChannelName(deck);
+    engine.setValue(channelName, "cue_default", 0);
+    KANE_QuNeo.assertBeatCounterLEDs(deck);
+    KANE_QuNeo.playPressedWhileCuing[channel] = 0;
+  }
+
+  KANE_QuNeo.deck2CueDefaultOff = function() {
+    var deck = 2,
+        channel = deck - 1,
+        channelName = KANE_QuNeo.getChannelName(deck);
+    engine.setValue(channelName, "cue_default", 0);
+    KANE_QuNeo.assertBeatCounterLEDs(deck);
+    KANE_QuNeo.playPressedWhileCuing[channel] = 0;
+  }
+
    /***** (VN) Visual Nudging *****/
 
    KANE_QuNeo.visualNudge = function (deck, direction) {
@@ -1286,6 +1325,9 @@ KANE_QuNeo.cancelRateNudge = function () {
 
 	     } else if ((status & 0xF0) == 0x80) { // true if this is a note release
 
+        // make sure to update playPressedWhileCuing
+        KANE_QuNeo.playPressedWhileCuing[channel] = 0;
+
 		 // if by now this hotcue's deck has no recorded hotcue press,
 		 // then treat the hotcue like a stutter button (activate on release)
 		 if (!KANE_QuNeo.hotcuePressed[channel])
@@ -1426,32 +1468,46 @@ KANE_QuNeo.quantizeCuesOff = function (deck, control) {
 
 KANE_QuNeo.timeKeeper = function (deck, value) {
   var channel = deck - 1;
-
   var channelName = KANE_QuNeo.getChannelName(deck)
 
-  // if we think we're not playing, but we are, and it's not a cue or a hotcue,
-  var hotcuePressed = KANE_QuNeo.hotcuePressed[channel],
-      cuePressed = engine.getValue(channelName,"cue_default"),
-      bool = false;
-  if (!(KANE_QuNeo.trackPlaying[channel]) &&
-    engine.getValue(channelName,"play") &&
-    !(cuePressed) &&
-    !(hotcuePressed)) {
-    KANE_QuNeo.trackPlaying[channel] = 1; // set our status to playing because the gui play was clicked
-    bool = true;
+  //
+  // make sure engine playing and global playing are consistent
+  //
+  var enginePlaying = engine.getValue(channelName,"play"),
+      trackPlaying = KANE_QuNeo.trackPlaying[channel],
+      hotcuePressed = KANE_QuNeo.hotcuePressed[channel],
+      cuePressed = engine.getValue(channelName,"cue_default");
+  if (enginePlaying) {
+
+    // if we think we're playing, but a cue or hotcue is pressed, we're not
+    if (trackPlaying &&
+      (cuePressed || hotcuePressed) &&
+      !(KANE_QuNeo.playPressedWhileCuing[channel])) {
+
+      // so set our status to not playing
+      trackPlaying = KANE_QuNeo.trackPlaying[channel] = 0;
+
+    // if we think we're not playing, but the engine is playing and
+    // no cues are pressed, we must be playing
+    } else if (enginePlaying &&
+      !(trackPlaying) &&
+      !(cuePressed) &&
+      !(hotcuePressed)) {
+
+      // so set our status to playing
+      trackPlaying = KANE_QuNeo.trackPlaying[channel] = 1;
+    }
   }
+
   /*
   print("cue status: "+engine.getValue(channelName,"cue_default"));
   print("hotcue status: "+KANE_QuNeo.hotcuePressed[channel]);
   print("our play status: "+KANE_QuNeo.trackPlaying[channel]);
   print("mixxx play status: "+engine.getValue(channelName, "play"));
-  print("total eval: "+bool);
   */
 
   // if we're actually playing, then do these things
-  if (KANE_QuNeo.trackPlaying[channel] &&
-    !(hotcuePressed) &&
-    !(cuePressed)) {
+  if (trackPlaying) {
     // check for a next nearest hotcue, and update if we've passed it
     if ((value - KANE_QuNeo.nextHotcuePosition[channel]) >= 0 &&
       KANE_QuNeo.numNextHotcues[channel])
@@ -1490,7 +1546,7 @@ KANE_QuNeo.timeKeeper = function (deck, value) {
 
   // if we're at the end of the song, set track to not playing
   if (value == 1) {
-    KANE_QuNeo.trackPlaying[channel] = 0
+    trackPlaying = KANE_QuNeo.trackPlaying[channel] = 0
     if (KANE_QuNeo.mode == 16) KANE_QuNeo.assertLoadLEDs(deck);
     KANE_QuNeo.triggerVuMeter(0); // trigger master VuMeter for deck end
   }
@@ -2257,7 +2313,7 @@ KANE_QuNeo.assertHorizArrowLEDs = function (deck) {
      var on = [], LEDs = [[0x08,0x09],[0x0e,0x0f],[undefined,undefined],[undefined,undefined],[0x00,0x01],[0x02,0x03],[0x04,0x05],[0x06,0x07]];
      // choose color based on whether or not the track is playing
      for (var channel = 0; channel < KANE_QuNeo.numDecks; channel++) {
-	if (KANE_QuNeo.trackPlaying[channel]) // if track is playing,
+	if (KANE_QuNeo.isTrackPlaying(deck)) // if track is playing,
 	    on.push(LEDs[channel][1]) // light it red
 	else // if track not playing,
 	    on.push(LEDs[channel][0]) // light it green
@@ -2593,7 +2649,7 @@ KANE_QuNeo.deckVuMeter = function (deck, value) {
     if (KANE_QuNeo.sliderMode == 1 &&
      (mode == 13 || mode == 14 || mode == 15 || mode == 16)) {
      var level;
-	if (KANE_QuNeo.trackPlaying[channel]) // if track is playing, do VuMeter
+	if (KANE_QuNeo.isTrackPlaying(deck)) // if track is playing, do VuMeter
    level = values.squared;
 	else // else do volume
    level = KANE_QuNeo.scaleToSlider(engine.getValue(channelName,"volume"))
@@ -2632,7 +2688,7 @@ KANE_QuNeo.deckVuMeter = function (deck, value) {
     // top horizontal slider: master volume
     var level = -1; // -1 for no playing decks
     for (var channel = 0; channel < KANE_QuNeo.numDecks; channel++) {
-	if (KANE_QuNeo.trackPlaying[channel])  { // if any deck is playing,
+	if (KANE_QuNeo.isTrackPlaying(channel+1))  { // if any deck is playing,
 	    level = values.squared; break; // do VuMeter then break
    }
  }
