@@ -389,6 +389,7 @@ KANE_QuNeo.init = function (id) { // called when the device is opened & set up
       engine.setValue(channelName,"keylock",1);
       engine.setValue(channelName,"quantize",1);   
       engine.setValue(channelName,"pregain",KANE_QuNeo.pregain)
+      engine.setValue(channelName,"waveform_zoom",6.0)
     }
     engine.setValue("[Master]","volume",KANE_QuNeo.masterVolume);   
 
@@ -802,7 +803,6 @@ KANE_QuNeo.doAutoLoop1 = function (deck) { // lasts 16 beats
     KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     break;
     case 16: // stop auto loop and the track since we're done
-    KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     KANE_QuNeo.stopAutoLoop(deck); return;
   }
     KANE_QuNeo.autoLoop[channel]++; // increment autoloop each call
@@ -815,7 +815,6 @@ KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
    KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
    break;
      case 16: // stop auto loop and the track since we're done
-     KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
      KANE_QuNeo.stopAutoLoop(deck); return;
    }
     KANE_QuNeo.autoLoop[channel]++; // increment autoloop each call
@@ -828,7 +827,6 @@ KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
     KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     break;
     case 32: // stop auto loop and the track since we're done
-    KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     KANE_QuNeo.stopAutoLoop(deck); return;
   }
     KANE_QuNeo.autoLoop[channel]++; // increment autoloop each call
@@ -841,13 +839,13 @@ KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
     KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     break;
     case 32: // stop auto loop and the track since we're done
-    KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     KANE_QuNeo.stopAutoLoop(deck); return;
   }
     KANE_QuNeo.autoLoop[channel]++; // increment autoloop each call
   }
 
-  KANE_QuNeo.stopAutoLoop = function (deck) {
+  KANE_QuNeo.stopAutoLoop = function (deck, dontStop) {
+   dontStop = dontStop || false;
    print("=====> STOPPING AUTOLOOP");
    var channel = deck - 1;
    KANE_QuNeo.cancelTimers(KANE_QuNeo.loopHoldTimers[channel]);
@@ -855,7 +853,8 @@ KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
    KANE_QuNeo.autoLoop[channel] = 0; // set globals to 0
    KANE_QuNeo.assertAutoLoopLEDs(deck); // reassert LEDs after state change
    // pause playing deck since autoloop has completed
-   if (KANE_QuNeo.trackPlaying[channel]) KANE_QuNeo.play(deck);
+   if (KANE_QuNeo.trackPlaying[channel] && !(dontStop))
+    KANE_QuNeo.play(deck);
   }
 
    KANE_QuNeo.deckMultiplyLoop = function (deck, factor, status) {
@@ -906,7 +905,7 @@ KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
 	     KANE_QuNeo.doDeckMultiplyLoop(deck, factor); // do autoloop
 
      } else if (KANE_QuNeo.autoLoop[channel]) {
-      KANE_QuNeo.stopAutoLoop(deck);
+      KANE_QuNeo.stopAutoLoop(deck, true);
 
 	     // we are not stopping autoloop, not starting autoloop => do regular
      } else {
@@ -1615,8 +1614,8 @@ KANE_QuNeo.getWholeBeat = function (deck, position, spb) {
      // if we have moved either more than a beat OR backwards,
      // this is not a consecutive beat:
      else if (diff >= 1.1*spb || (diff <= 0)) { // diff == 0 means repeat beat
-      print("non consecutive beat on deck "+deck)
-      print("diff: "+diff)
+      //print("non consecutive beat on deck "+deck)
+      //print("diff: "+diff)
 	 KANE_QuNeo.cancelScheduledBeats(deck); // first cancel any scheduled beats
 
 	 if (!(KANE_QuNeo.trackJumped[channel])) { // if there was not a jump press,
