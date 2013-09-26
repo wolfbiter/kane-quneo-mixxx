@@ -47,9 +47,11 @@ mixxx-controls/KANE_QuNeo_scripts.js
 ######Plug in your QuNeo
 Via usb, this should be trivial. The QuNeo's LED's will go from left to right
 upon a successful connection.
-######Run QuNeo Editor/QuNeo Editor.exe (QuNeo Editor.app for Mac Users)
+######Run QuNeo Editor/QuNeo Editor.exe
 It is important that you run the editor in the above folder so that the correct presets are loaded.
-+ Note: KMI does not currently offer [Linux support](http://forum.keithmcmillen.com/viewtopic.php?f=50&t=651&sid=6061ca7debf028e5317ae6156a91dc4e).
++ Note for **Mac** users: I haven't included the mac executable (see relevant [issue here](https://github.com/wolfbiter/kane-quneo-mixxx/issues/98)),
+but if you're adventurous you can use the tip from more advanced (see above) to load the presets from your own downloaded copy of the quneo editor. Just make sure to import the presets as follows: DJ mode into 13, cueLeft into 14, cueRight into 15, library into 16, and visualizer into 5.
++ Note for **Linux** users: KMI does not currently offer [Linux support](http://forum.keithmcmillen.com/viewtopic.php?f=50&t=651&sid=6061ca7debf028e5317ae6156a91dc4e).
 However, this is the only step where it matters: Update the QuNeo once in either Mac or Windows, and it will
 be done until next update. Wine unfortunately also does not work.
 
