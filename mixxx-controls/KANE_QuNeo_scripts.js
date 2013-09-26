@@ -777,7 +777,7 @@ KANE_QuNeo.initAutoLoop = function (deck, factor) {
     // decide what to do based on our current loop size
     switch (numBeats) {
     case 0: // we found no matching beatloop
-    print("USAGE: autoloop works only for prior beatloops of length {2,4,8}");
+    print("USAGE: autoloop works only for prior beatloops of length {1,2,4,8}");
 	KANE_QuNeo.stopAutoLoop(deck); // so stop auto loop and quit
 	return;
   case 1:
@@ -798,10 +798,10 @@ KANE_QuNeo.initAutoLoop = function (deck, factor) {
 KANE_QuNeo.doAutoLoop1 = function (deck) { // lasts 16 beats
   var channel = deck - 1;
   switch (KANE_QuNeo.autoLoop[channel]) {
-    case 8:
+    case 8: case 12:
     KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     break;
-    case 12: // last loop, then stop auto loop since we're done
+    case 16: // stop auto loop and the track since we're done
     KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     KANE_QuNeo.stopAutoLoop(deck); return;
   }
@@ -811,10 +811,10 @@ KANE_QuNeo.doAutoLoop1 = function (deck) { // lasts 16 beats
 KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
   var channel = deck - 1;
   switch (KANE_QuNeo.autoLoop[channel]) {
-   case 8:
+   case 8: case 12:
    KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
    break;
-     case 12: // last loop, then stop auto loop since we're done
+     case 16: // stop auto loop and the track since we're done
      KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
      KANE_QuNeo.stopAutoLoop(deck); return;
    }
@@ -824,10 +824,10 @@ KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
   KANE_QuNeo.doAutoLoop4 = function (deck) {
     var channel = deck - 1;
     switch (KANE_QuNeo.autoLoop[channel]) {
-    case 8: case 16: // do loops only for these iterations
+    case 8: case 16: case 24: case 28: // do loops only for these iterations
     KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     break;
-    case 28: // last loop, then stop auto loop since we're done
+    case 32: // stop auto loop and the track since we're done
     KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     KANE_QuNeo.stopAutoLoop(deck); return;
   }
@@ -837,10 +837,10 @@ KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
   KANE_QuNeo.doAutoLoop8 = function (deck) {
     var channel = deck - 1;
     switch (KANE_QuNeo.autoLoop[channel]) {
-    case 8: case 16: case 24: // do loops only for these iterations
+    case 8: case 16: case 24: case 28: // do loops only for these iterations
     KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     break;
-    case 28: // last loop, then stop auto loop since we're done
+    case 32: // stop auto loop and the track since we're done
     KANE_QuNeo.doDeckMultiplyLoop(deck, KANE_QuNeo.autoLoopFactor[channel]);
     KANE_QuNeo.stopAutoLoop(deck); return;
   }
@@ -848,13 +848,15 @@ KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
   }
 
   KANE_QuNeo.stopAutoLoop = function (deck) {
-   print("=====> STOPPING AUTOLOOP")
+   print("=====> STOPPING AUTOLOOP");
    var channel = deck - 1;
    KANE_QuNeo.cancelTimers(KANE_QuNeo.loopHoldTimers[channel]);
-     KANE_QuNeo.loopHoldTimers[channel] = []; // clear timers
-     KANE_QuNeo.autoLoop[channel] = 0; // set globals to 0
-     KANE_QuNeo.assertAutoLoopLEDs(deck); // reassert LEDs after state change
-   }
+   KANE_QuNeo.loopHoldTimers[channel] = []; // clear timers
+   KANE_QuNeo.autoLoop[channel] = 0; // set globals to 0
+   KANE_QuNeo.assertAutoLoopLEDs(deck); // reassert LEDs after state change
+   // pause playing deck since autoloop has completed
+   if (KANE_QuNeo.trackPlaying[channel]) KANE_QuNeo.play(deck);
+  }
 
    KANE_QuNeo.deckMultiplyLoop = function (deck, factor, status) {
      var channel = deck - 1;
@@ -886,9 +888,14 @@ KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
 	     // start auto loop
 	     KANE_QuNeo.autoLoopStart[channel] = numBeats; // starting loop length
 	     // we need to find out when the button was released
-	     if (KANE_QuNeo.nextBeatTimer[channel].length == 0) // if before the beat
-		 KANE_QuNeo.autoLoop[channel] = -1; // signal to start auto loop
-    else KANE_QuNeo.autoLoop[channel] = -2;
+	     if (KANE_QuNeo.nextBeatTimer[channel].length == 0) {// if before the beat
+		     KANE_QuNeo.autoLoop[channel] = -1; // signal to start auto loop
+         print("AUTO LOOP BEFORE TIMER");
+       } else {
+         KANE_QuNeo.autoLoop[channel] = -2;
+         print("AUTO LOOP AFTER TIMER");
+       }
+
 
 	     // cancel jumpsync for this deck because it clashes with autoloop
 	     KANE_QuNeo.syncTrack(deck, "phase", 1); // start us synced
@@ -1136,7 +1143,10 @@ KANE_QuNeo.closeSliderMode = function () {
         channelName = KANE_QuNeo.getChannelName(deck);
     engine.setValue(channelName, "cue_default", 0);
     KANE_QuNeo.assertBeatCounterLEDs(deck);
-    KANE_QuNeo.playPressedWhileCuing[channel] = 0;
+    if (KANE_QuNeo.playPressedWhileCuing[channel])
+      KANE_QuNeo.playPressedWhileCuing[channel] = 0;
+    else 
+      KANE_QuNeo.trackPlaying[channel] = 0;
   }
 
   KANE_QuNeo.deck2CueDefaultOff = function() {
@@ -1145,7 +1155,10 @@ KANE_QuNeo.closeSliderMode = function () {
         channelName = KANE_QuNeo.getChannelName(deck);
     engine.setValue(channelName, "cue_default", 0);
     KANE_QuNeo.assertBeatCounterLEDs(deck);
-    KANE_QuNeo.playPressedWhileCuing[channel] = 0;
+    if (KANE_QuNeo.playPressedWhileCuing[channel])
+      KANE_QuNeo.playPressedWhileCuing[channel] = 0;
+    else 
+      KANE_QuNeo.trackPlaying[channel] = 0;
   }
 
    /***** (VN) Visual Nudging *****/
@@ -1520,9 +1533,9 @@ KANE_QuNeo.timeKeeper = function (deck, value) {
     if (engine.getValue(channelName,"beat_active") &&
       KANE_QuNeo.nextBeatTimer[channel].length == 0) {
       KANE_QuNeo.nextBeatTimer[channel] =
-      [engine.beginTimer(KANE_QuNeo.beatOffset,
-        "KANE_QuNeo.handleBeat("+deck+")",
-        true)];
+        [engine.beginTimer(KANE_QuNeo.beatOffset,
+          "KANE_QuNeo.handleBeat("+deck+")",
+          true)];
 
       // also check to see if we need to start autoloop timer
       if (KANE_QuNeo.autoLoop[channel] < 0) {

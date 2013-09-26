@@ -1531,6 +1531,15 @@
 	</options>
       </control>
       <control>
+  <status>0x91</status>
+  <midino>0x13</midino>
+  <group>[Channel2]</group>
+  <key>cue_default</key>
+  <options>
+    <normal/>
+  </options>
+      </control>
+      <control>
 	<status>0x81</status>
 	<midino>0x13</midino>
 	<group>[Channel2]</group>
@@ -1538,13 +1547,6 @@
 	<options>
     <Script-Binding/>
 	</options>
-  <status>0x81</status>
-  <midino>0x13</midino>
-  <group>[Channel2]</group>
-  <key>cue_default</key>
-  <options>
-    <normal/>
-  </options>
       </control>
 
       <!-- Kill High, Lows, Mids -->
