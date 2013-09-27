@@ -398,7 +398,7 @@ KANE_QuNeo.init = function (id) { // called when the device is opened & set up
     }
     engine.setValue("[Master]","volume",KANE_QuNeo.masterVolume);   
 
-  //engine.setValue("[Samplers]","show_samplers",1)
+  engine.setValue("[Samplers]","show_samplers",0)
   //engine.setValue("[Microphone]","show_microphone",1)
 
 
