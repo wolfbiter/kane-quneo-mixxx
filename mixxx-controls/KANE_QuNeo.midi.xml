@@ -2027,7 +2027,82 @@
 	</options>
       </control>
 
-      <!-- Rotaries - Scripts -->
+  <!-- XY Pads -->
+  <control>
+    <status>0xb0</status>
+    <midino>0x00</midino>
+    <group>[Channel1]</group>
+    <key>KANE_QuNeo.xyPadTouch</key>
+    <options>
+      <Script-Binding/>
+    </options>
+  </control>
+  <control>
+    <status>0xb0</status>
+    <midino>0x01</midino>
+    <group>[Channel1]</group>
+    <key>KANE_QuNeo.xyPadTouch</key>
+    <options>
+      <Script-Binding/>
+    </options>
+  </control>
+  <control>
+    <status>0xb0</status>
+    <midino>0x02</midino>
+    <group>[Channel1]</group>
+    <key>KANE_QuNeo.xyPadTouch</key>
+    <options>
+      <Script-Binding/>
+    </options>
+  </control>
+  <control>
+    <status>0xb0</status>
+    <midino>0x03</midino>
+    <group>[Channel1]</group>
+    <key>KANE_QuNeo.xyPadTouch</key>
+    <options>
+      <Script-Binding/>
+    </options>
+  </control>
+  <control>
+    <status>0xb0</status>
+    <midino>0x04</midino>
+    <group>[Channel1]</group>
+    <key>KANE_QuNeo.xyPadTouch</key>
+    <options>
+      <Script-Binding/>
+    </options>
+  </control>
+  <control>
+    <status>0xb0</status>
+    <midino>0x05</midino>
+    <group>[Channel1]</group>
+    <key>KANE_QuNeo.xyPadTouch</key>
+    <options>
+      <Script-Binding/>
+    </options>
+  </control>
+  <control>
+    <status>0xb0</status>
+    <midino>0x06</midino>
+    <group>[Channel1]</group>
+    <key>KANE_QuNeo.xyPadTouch</key>
+    <options>
+      <Script-Binding/>
+    </options>
+  </control>
+  <control>
+    <status>0xb0</status>
+    <midino>0x07</midino>
+    <group>[Channel1]</group>
+    <key>KANE_QuNeo.xyPadTouch</key>
+    <options>
+      <Script-Binding/>
+    </options>
+  </control>
+
+
+  <!-- Rotaries - Scripts -->
       <control>
 	<status>0x92</status>
 	<midino>0x00</midino>
@@ -2318,10 +2393,19 @@
 	</options>
       </control>
       <control>
+  <status>0x97</status>
+  <midino>0x10</midino>
+  <group>[Master]</group>
+  <key>KANE_QuNeo.assert16LEDs</key>
+  <options>
+    <Script-Binding/>
+  </options>
+      </control>
+      <control>
 	<status>0x97</status>
-	<midino>0x10</midino>
+	<midino>0x15</midino>
 	<group>[Master]</group>
-	<key>KANE_QuNeo.assert16LEDs</key>
+	<key>KANE_QuNeo.assert9LEDs</key>
 	<options>
 	  <Script-Binding/>
 	</options>
@@ -2354,8 +2438,17 @@
 	</options>
       </control>
       <control>
+  <status>0x87</status>
+  <midino>0x10</midino>
+  <group>[Master]</group>
+  <key>KANE_QuNeo.assertLEDOn</key>
+  <options>
+    <Script-Binding/>
+  </options>
+      </control>
+      <control>
 	<status>0x87</status>
-	<midino>0x10</midino>
+	<midino>0x15</midino>
 	<group>[Master]</group>
 	<key>KANE_QuNeo.assertLEDOn</key>
 	<options>

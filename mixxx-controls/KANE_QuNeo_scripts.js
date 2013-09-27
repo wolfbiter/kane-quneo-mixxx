@@ -24,6 +24,7 @@ function KANE_QuNeo () {}
        (JL) Jump, Sync, and/or Loop over 1,2,4,8 Beats
        (AL) Auto Loop (Double or Halve)
        (VS) Vertical Sliders
+       (XY) XY Pads
        (RC) Regular Cue
        (ZC) Zoom and Cursor
        (VN) Visual Nudging
@@ -284,6 +285,10 @@ KANE_QuNeo.trackSamples = KANE_QuNeo.makeVar(-1); // total samples of tracks in 
 KANE_QuNeo.lastBeatPosition = 
     KANE_QuNeo.makeVar(-4000);  // position in samples of last real beat on each deck
 KANE_QuNeo.beatLEDsOn = 1; // 1 if beat LEDs are on
+
+// past values of pad axes, needed to determine total position based on hypotenuse
+KANE_QuNeo.xyPadVals = [[1,1],[1,1],[1,1],[1,1]];
+
 KANE_QuNeo.activeBeatLEDs =
     KANE_QuNeo.makeVar([]); // beat LEDS currently receiving midi msgs
     KANE_QuNeo.jumpLoopLEDs = 
@@ -895,7 +900,6 @@ KANE_QuNeo.doAutoLoop2 = function (deck) { // lasts 16 beats
          print("AUTO LOOP AFTER TIMER");
        }
 
-
 	     // cancel jumpsync for this deck because it clashes with autoloop
 	     KANE_QuNeo.syncTrack(deck, "phase", 1); // start us synced
 	     KANE_QuNeo.trackJumpSync[channel] = 0; // remove jumpsync
@@ -1003,22 +1007,22 @@ KANE_QuNeo.verticalSliderMove = function (slider, value, resetFlag) {
       case 1:
       engine.setValue("[Channel1]","pregain",values.zeroToFour); break;
       case 2:
-      engine.setValue("[Channel1]","filterHigh",values.zeroToFour); break;
+      engine.setValue("[Channel1]","filterHigh",values.denormalized); break;
       case 3:
-      engine.setValue("[Channel1]","filterMid",values.zeroToFour); break;
+      engine.setValue("[Channel1]","filterMid",values.denormalized); break;
       case 4:
-      engine.setValue("[Channel1]","filterLow",values.zeroToFour); break;
+      engine.setValue("[Channel1]","filterLow",values.denormalized); break;
     } break;
      case 3: // mode 3
      switch (slider) {
       case 1:
       engine.setValue("[Channel2]","pregain",values.zeroToFour); break;
       case 2:
-      engine.setValue("[Channel2]","filterHigh",values.zeroToFour); break;
+      engine.setValue("[Channel2]","filterHigh",values.denormalized); break;
       case 3:
-      engine.setValue("[Channel2]","filterMid",values.zeroToFour); break;
+      engine.setValue("[Channel2]","filterMid",values.denormalized); break;
       case 4:
-      engine.setValue("[Channel2]","filterLow",values.zeroToFour); break;
+      engine.setValue("[Channel2]","filterLow",values.denormalized); break;
     } break;
   }
 }
@@ -1133,6 +1137,32 @@ KANE_QuNeo.closeSliderMode = function () {
      engine.setValue(channelName,"visual_playposition", normalized)
      engine.setValue(channelName,"playposition", normalized)
    }
+
+   /***** (XY) XY Pads *****/
+
+KANE_QuNeo.xyPadTouch = function (channel, control, value, status, group) {
+  value = value / 127.0; // scale value from 0..127 to 0..1
+
+  // first determine which pad and axis this is
+  switch (control) {
+    case 0x00:
+      engine.setValue("[Channel2]", "pregain", value); break;
+    case 0x01:
+      engine.setValue("[Channel1]", "pregain", value); break;
+    case 0x02:
+      engine.setValue("[Channel2]", "filterHigh", value); break;
+    case 0x03:
+      engine.setValue("[Channel1]", "filterHigh", value); break;
+    case 0x04:
+      engine.setValue("[Channel2]", "filterMid", value); break;
+    case 0x05:
+      engine.setValue("[Channel1]", "filterMid", value); break;
+    case 0x06:
+      engine.setValue("[Channel2]", "filterLow", value); break;
+    case 0x07:
+      engine.setValue("[Channel1]", "filterLow", value); break;
+  }
+}
 
    /***** (RC) Regular Cues *****/
 
@@ -1818,6 +1848,7 @@ KANE_QuNeo.getLEDGroup = function (deck) {
  // General io function for LEDs, takes array of controls and a single hex value
  KANE_QuNeo.LEDs = function (midiChannel, controls, value) {
 
+
      if (!(controls instanceof Array)) // if controls are not in an array,
 	 controls = [controls] // turn them into one
 
@@ -1989,6 +2020,9 @@ KANE_QuNeo.clearLastBeatLEDs = function (deck) {
      case 5: // visualizer mode
      KANE_QuNeo.assertMode5();
      break;
+     case 9: // DJ 2 mode
+     KANE_QuNeo.assertMode9();
+     break;
      case 13: // main dj mode
      KANE_QuNeo.assertMode13();
      break;
@@ -2017,6 +2051,40 @@ KANE_QuNeo.assertMode5 = function () {
      engine.connectControl("[Channel2]","VuMeterL","KANE_QuNeo.deck2LeftVol");
      engine.connectControl("[Channel2]","VuMeterR","KANE_QuNeo.deck2RightVol");
    }
+
+// only difference from main dj is to first connect and trigger the drum pad LEDs
+KANE_QuNeo.assertMode9 = function () {
+
+  // connect levels
+  engine.connectControl("[Channel2]","pregain",
+    "KANE_QuNeo.pad0axis0")
+  engine.connectControl("[Channel1]","pregain",
+    "KANE_QuNeo.pad0axis1")
+  engine.connectControl("[Channel2]","filterHigh",
+    "KANE_QuNeo.pad1axis0")
+  engine.connectControl("[Channel1]","filterHigh",
+    "KANE_QuNeo.pad1axis1")
+  engine.connectControl("[Channel2]","filterMid",
+    "KANE_QuNeo.pad2axis0")
+  engine.connectControl("[Channel1]","filterMid",
+    "KANE_QuNeo.pad2axis1")
+  engine.connectControl("[Channel2]","filterLow",
+    "KANE_QuNeo.pad3axis0")
+  engine.connectControl("[Channel1]","filterLow",
+    "KANE_QuNeo.pad3axis1")
+
+  // trigger levels
+  engine.trigger("[Channel1]","pregain")
+  engine.trigger("[Channel1]","filterHigh")
+  engine.trigger("[Channel1]","filterMid")
+  engine.trigger("[Channel1]","filterLow")
+  engine.trigger("[Channel2]","pregain")
+  engine.trigger("[Channel2]","filterHigh")
+  engine.trigger("[Channel2]","filterMid")
+  engine.trigger("[Channel2]","filterLow")
+
+  KANE_QuNeo.assertMode13();
+}
 
    KANE_QuNeo.assertMode13 = function () {
      var deck;
@@ -2057,22 +2125,10 @@ KANE_QuNeo.assertMode14 = function () {
      KANE_QuNeo.assertLoadLEDs();
    }
 
-   KANE_QuNeo.closeMode = function (mode) {
-     switch (mode) {
-       case 5:
-       engine.connectControl("[Channel1]","VuMeterL",
-        "KANE_QuNeo.deck1LeftVol",true);
-       engine.connectControl("[Channel1]","VuMeterR",
-        "KANE_QuNeo.deck1RightVol",true);
-       engine.connectControl("[Channel2]","VuMeterL",
-        "KANE_QuNeo.deck2LeftVol",true);
-       engine.connectControl("[Channel2]","VuMeterR",
-        "KANE_QuNeo.deck2RightVol",true);
-       break;
-       case 13: case 14: case 15:
-	 // stop the flashing LEDs
-	 KANE_QuNeo.closeSliderMode()
-	 for (var channel = 0; channel < 2; channel++) {
+   KANE_QuNeo.closeMainMode = function () {
+       // stop the flashing LEDs
+   KANE_QuNeo.closeSliderMode()
+   for (var channel = 0; channel < 2; channel++) {
     var deck = channel + 1;
     KANE_QuNeo.hotcueActivateLEDs[channel] = [];
     KANE_QuNeo.hotcueClearLEDs[channel] = [];
@@ -2085,8 +2141,48 @@ KANE_QuNeo.assertMode14 = function () {
     KANE_QuNeo.jumpDirectionLEDs[channel] = [];
     KANE_QuNeo.beatCounterLEDs[channel] = [];
     KANE_QuNeo.multiplyLoopLEDs[channel] = [];
-	     KANE_QuNeo.triggerVuMeter(channel + 1); // trigger the corresponding deck
-     } break;
+       KANE_QuNeo.triggerVuMeter(channel + 1); // trigger the corresponding deck
+     }
+   }
+
+   KANE_QuNeo.closeMode = function (mode) {
+     switch (mode) {
+
+       case 5:
+       engine.connectControl("[Channel1]","VuMeterL",
+        "KANE_QuNeo.deck1LeftVol",true);
+       engine.connectControl("[Channel1]","VuMeterR",
+        "KANE_QuNeo.deck1RightVol",true);
+       engine.connectControl("[Channel2]","VuMeterL",
+        "KANE_QuNeo.deck2LeftVol",true);
+       engine.connectControl("[Channel2]","VuMeterR",
+        "KANE_QuNeo.deck2RightVol",true);
+       break;
+
+       case 9:
+        engine.connectControl("[Channel2]","pregain",
+          "KANE_QuNeo.pad0axis0",true)
+        engine.connectControl("[Channel1]","pregain",
+          "KANE_QuNeo.pad0axis1",true)
+        engine.connectControl("[Channel2]","filterHigh",
+          "KANE_QuNeo.pad1axis0",true)
+        engine.connectControl("[Channel1]","filterHigh",
+          "KANE_QuNeo.pad1axis1",true)
+        engine.connectControl("[Channel2]","filterMid",
+          "KANE_QuNeo.pad2axis0",true)
+        engine.connectControl("[Channel1]","filterMid",
+          "KANE_QuNeo.pad2axis1",true)
+        engine.connectControl("[Channel2]","filterLow",
+          "KANE_QuNeo.pad3axis0",true)
+        engine.connectControl("[Channel1]","filterLow",
+          "KANE_QuNeo.pad3axis1",true)
+        KANE_QuNeo.closeMainMode();
+        break;
+
+       case 13: case 14: case 15:
+        KANE_QuNeo.closeMainMode();
+        break;
+
      case 16:
 	 KANE_QuNeo.playScratchToggle = 1; // go back to having scratch off
 	 KANE_QuNeo.loadLEDs = []; // reset Load LEDs
@@ -2117,6 +2213,25 @@ KANE_QuNeo.assertMode14 = function () {
      var channel = deck - 1;
      var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
      var mode = KANE_QuNeo.mode;
+     var LEDs;
+
+     // if in DJ Mode 2, only using first 8 hotcues
+     if (mode == 9) {
+      LEDs = [[0x71,0x73,0x75,0x77,
+      0x61,0x63,0x65,0x67],
+      [0x79,0x7b,0x7d,0x7f,
+     0x69,0x6b,0x6d,0x6f]];
+     } else {
+      LEDs =
+    [[0x71,0x73,0x75,0x77,
+      0x61,0x63,0x65,0x67,
+     0x51,0x53,0x55,0x57,
+     0x41,0x43,0x45,0x47],
+     [0x79,0x7b,0x7d,0x7f,
+     0x69,0x6b,0x6d,0x6f,
+     0x59,0x5b,0x5d,0x5f,
+     0x49,0x4b,0x4d,0x4f]];
+     }
 
      // first clear old garbage LEDs
      KANE_QuNeo.LEDs(0x91,KANE_QuNeo.hotcueActivateLEDs[channel],0x00);
@@ -2124,38 +2239,32 @@ KANE_QuNeo.assertMode14 = function () {
      KANE_QuNeo.LEDs(0x91,KANE_QuNeo.hotcueClearLEDs[channel],0x00);
      KANE_QuNeo.hotcueClearLEDs[channel] = [];
 
-     if (mode == 13) {// if in main dj mode 
-	 KANE_QuNeo.assertHotcueActivateLEDs(deck); // light activate hotcues
+     if (mode == 13 || mode == 9) {// if in main dj mode 
+	 KANE_QuNeo.assertHotcueActivateLEDs(deck, LEDs); // light activate hotcues
  }
      else if (mode == 14 && LEDGroup == 1) { // if in cue left mode, and group is 1
-	 KANE_QuNeo.assertHotcueActivateLEDs(deck); // assert this deck's activates
+	 KANE_QuNeo.assertHotcueActivateLEDs(deck, LEDs); // assert this deck's activates
 	 KANE_QuNeo.assertHotcueClearLEDs(deck); // and this deck's clears
 
      } else if (mode == 15 && LEDGroup == 2) { // if in cue right mode w group of 2
-	 KANE_QuNeo.assertHotcueActivateLEDs(deck); // assert this deck's activates
+	 KANE_QuNeo.assertHotcueActivateLEDs(deck, LEDs); // assert this deck's activates
 	 KANE_QuNeo.assertHotcueClearLEDs(deck); // and this deck's clears
      } else // assume hotcue LEDs must not be on
      return;
    }
 
-   KANE_QuNeo.assertHotcueActivateLEDs = function (deck) {
+   KANE_QuNeo.assertHotcueActivateLEDs = function (deck, LEDs) {
      var channel = deck - 1;
      var channelName = KANE_QuNeo.getChannelName(deck);
      var closest = [undefined,2]; // next hotcue wrt current playpos as [control,pos]
      var position = engine.getValue(channelName,"visual_playposition"); // song position
      var trackSamples = engine.getValue(channelName,"track_samples")
-     var on = [], LEDs = [[0x71,0x73,0x75,0x77,
-     0x61,0x63,0x65,0x67,
-     0x51,0x53,0x55,0x57,
-     0x41,0x43,0x45,0x47],
-     [0x79,0x7b,0x7d,0x7f,
-     0x69,0x6b,0x6d,0x6f,
-     0x59,0x5b,0x5d,0x5f,
-     0x49,0x4b,0x4d,0x4f]];
+     var on = [];
 
      // deal with all present hotcues
      var cuesToCome = 0;
-     for (var cue = 1; cue <= KANE_QuNeo.numHotcues; cue++) {
+     var numHotcues = (KANE_QuNeo.mode == 9) ? 8 : KANE_QuNeo.numHotcues;
+     for (var cue = 1; cue <= numHotcues; cue++) {
       var cuePosition = engine.getValue(channelName,"hotcue_"+cue+"_position") /
       trackSamples;
 
@@ -2165,7 +2274,7 @@ KANE_QuNeo.assertMode14 = function () {
 
 	     // if in main DJ mode, light past hotcues red,
 	     // upcoming hotcues green, and the next hotcue orange.
-	     if (KANE_QuNeo.mode == 13) { 
+	     if (KANE_QuNeo.mode == 13 || KANE_QuNeo.mode == 9) { 
        var red = LEDs[channel][cue - 1];
 
 		 // check to see if this hotcue is coming up
@@ -2325,7 +2434,7 @@ KANE_QuNeo.assertHorizArrowLEDs = function (deck) {
      var on = [], LEDs = [[0x08,0x09],[0x0e,0x0f],[undefined,undefined],[undefined,undefined],[0x00,0x01],[0x02,0x03],[0x04,0x05],[0x06,0x07]];
      // choose color based on whether or not the track is playing
      for (var channel = 0; channel < KANE_QuNeo.numDecks; channel++) {
-	if (KANE_QuNeo.isTrackPlaying(deck)) // if track is playing,
+	if (KANE_QuNeo.isTrackPlaying(channel+1)) // if track is playing,
 	    on.push(LEDs[channel][1]) // light it red
 	else // if track not playing,
 	    on.push(LEDs[channel][0]) // light it green
@@ -2487,7 +2596,7 @@ KANE_QuNeo.assertHorizArrowLEDs = function (deck) {
     var beat = KANE_QuNeo.wholeBeat[channel];
     var mode = KANE_QuNeo.mode
 
-    if (mode == 13 || mode == 14 || mode == 15) { // only these modes
+    if (mode == 13 || mode == 9 || mode == 14 || mode == 15) { // only these modes
 	// first determine with which LEDs we are working 
 	var LEDGroup = KANE_QuNeo.getLEDGroup(deck);
 	var ones, fours, on = [];
@@ -2538,7 +2647,7 @@ KANE_QuNeo.assertHorizArrowLEDs = function (deck) {
 KANE_QuNeo.assertBeatLEDs = function (deck) {
     // do nothing if not in these modes
     var mode = KANE_QuNeo.mode
-    if (!(mode == 13 || mode == 14 || mode == 15))
+    if (!(mode == 13 || mode == 9 || mode == 14 || mode == 15))
      return;
 
    var channel = deck - 1;
@@ -2659,7 +2768,7 @@ KANE_QuNeo.deckVuMeter = function (deck, value) {
     // Vertical Vu Meters, only when in modes which use slider modes
     mode = KANE_QuNeo.mode
     if (KANE_QuNeo.sliderMode == 1 &&
-     (mode == 13 || mode == 14 || mode == 15 || mode == 16)) {
+     (mode == 13 || mode == 9 || mode == 14 || mode == 15 || mode == 16)) {
      var level;
 	if (KANE_QuNeo.isTrackPlaying(deck)) // if track is playing, do VuMeter
    level = values.squared;
@@ -2755,57 +2864,108 @@ KANE_QuNeo.deckCursorLEDs = function (deck, position) {
 
 // Slider Mode == 1
 KANE_QuNeo.deckPregain = function (deck, value) {
-  var gain, control, LEDGroup = KANE_QuNeo.getLEDGroup(deck)
-  
-    // determine gain
+  var gain, controls, LEDGroup = KANE_QuNeo.getLEDGroup(deck)
+
+  // determine gain
     if (value < 1) // first half of the knob, 0-1
      gain = value * 127 / 2;
     else // second half of the knob, 1-4
      gain = 63.5 + (value - 1) * 63.5 / 3;
-   
-   control = [0x01];
-   midi.sendShortMsg(0xb0,control,0x00+gain);
+
+   controls = [0x01,0x1c];
+   // emit updates, slider first
+   midi.sendShortMsg(0xb0,controls[0],0x00+gain);
  }
 
  KANE_QuNeo.deckHighs = function (deck, value) {
-  var level, control;
-    // determine level
-    if (value < 1) // first half of the knob, 0-1
-     level = value * 127 / 2;
-    else // second half of the knob, 1-4
-     level = 63.5 + (value - 1) * 63.5 / 3
-   
-   control = [0x02];
-    // emit updates
-    midi.sendShortMsg(0xb0,control,0x00+level);
+  var level, controls;
+
+  level = (value > 1) ? 127 : 127.0 * value;
+
+   controls = [0x02,0x1e];
+    // emit updates, slider first
+    midi.sendShortMsg(0xb0,controls[0],0x00+level);
   }
 
 // Slider Mode == 3
 KANE_QuNeo.deckMids = function (deck, value) {
-  var level, control;
-    // determine level
-    if (value < 1) // first half of the knob, 0-1
-     level = value * 127 / 2;
-    else // second half of the knob, 1-4
-     level = 63.5 + (value - 1) * 63.5 / 3
+  var level, controls;
+
+  level = (value > 1) ? 127 : 127.0 * value;
    
-   control = [0x03];
-    // emit updates
-    midi.sendShortMsg(0xb0,control,0x00+level);
+   controls = [0x03,0x20];
+    // emit updates, slider first
+    midi.sendShortMsg(0xb0,controls[0],0x00+level);
   }
 
   KANE_QuNeo.deckLows = function (deck, value) {
-    var level, control;
-    // determine level
-    if (value < 1) // first half of the knob, 0-1
-     level = value * 127 / 2;
-    else // second half of the knob, 1-4
-     level = 63.5 + (value - 1) * 63.5 / 3
-   
-   control = [0x04];
-    // emit updates
-    midi.sendShortMsg(0xb0,control,0x00+level);
+    var level, controls;
+
+  level = (value > 1) ? 127 : 127.0 * value;
+
+   controls = [0x04,0x22];
+    // emit updates, slider first
+    midi.sendShortMsg(0xb0,controls[0],0x00+level);
   }
+
+// XY Pads
+
+KANE_QuNeo.xyPadLEDs = function (pad, axis, value) {
+  value = (value > 1) ? 1.0 : value;
+
+  // update this axis
+  KANE_QuNeo.xyPadVals[pad][axis] = value;
+
+  // find current xy position
+  var x = KANE_QuNeo.xyPadVals[pad][0];
+  var y = KANE_QuNeo.xyPadVals[pad][1];
+
+  // find this pad's grid LED controls
+  var controls;
+  switch (pad) {
+    case 0:
+      controls = {
+        "00": 0x40,
+        "10": 0x42,
+        "01": 0x50,
+        "11": 0x52
+      }; break;
+    case 1:
+      controls = {
+        "00": 0x44,
+        "10": 0x46,
+        "01": 0x54,
+        "11": 0x56
+      }; break;
+    case 2:
+      controls = {
+        "00": 0x48,
+        "10": 0x4a,
+        "01": 0x58,
+        "11": 0x5a
+      }; break;
+    case 3:
+      controls = {
+        "00": 0x4c,
+        "10": 0x4e,
+        "01": 0x5c,
+        "11": 0x5e
+      }; break;
+  }
+
+  // calculate brightness of each corner
+  var val00 = 0; // bottom left
+  var val10 = x-y; // bottom right
+  var val01 = y-x; // top left
+  var hypot = Math.sqrt(x*x + y*y) / Math.sqrt(2.0);
+  var val11 = hypot * Math.max(1-(y-x),1-(x-y)); // top right
+    
+   // emit updates
+   midi.sendShortMsg(0x92,controls["00"],127.0 * val00);
+   midi.sendShortMsg(0x92,controls["10"],127.0 * val10);
+   midi.sendShortMsg(0x92,controls["01"],127.0 * val01);
+   midi.sendShortMsg(0x92,controls["11"],127.0 * val11);
+ }
 
 // Other Sliders
 
@@ -2929,6 +3089,9 @@ KANE_QuNeo.deck1CursorLEDs = function (value) {
 
   KANE_QuNeo.assert5LEDs = function (channel, control, value, status, group) {
     KANE_QuNeo.assertLEDs(5) // assert mode 5 LEDs
+  }
+  KANE_QuNeo.assert9LEDs = function (channel, control, value, status, group) {
+    KANE_QuNeo.assertLEDs(9) // assert mode 9 LEDs
   }
   KANE_QuNeo.assert13LEDs = function (channel, control, value, status, group) {
     KANE_QuNeo.assertLEDs(13)
@@ -3143,6 +3306,33 @@ KANE_QuNeo.time1Keeper = function (value) {
 
 KANE_QuNeo.time2Keeper = function (value) {
   KANE_QuNeo.timeKeeper(2, value);
+}
+
+//XY Pads
+// connect levels
+KANE_QuNeo.pad0axis0 = function (value) {
+  KANE_QuNeo.xyPadLEDs(0, 0, value);
+}
+KANE_QuNeo.pad0axis1 = function (value) {
+  KANE_QuNeo.xyPadLEDs(0, 1, value);
+}
+KANE_QuNeo.pad1axis0 = function (value) {
+  KANE_QuNeo.xyPadLEDs(1, 0, value);
+}
+KANE_QuNeo.pad1axis1 = function (value) {
+  KANE_QuNeo.xyPadLEDs(1, 1, value);
+}
+KANE_QuNeo.pad2axis0 = function (value) {
+  KANE_QuNeo.xyPadLEDs(2, 0, value);
+}
+KANE_QuNeo.pad2axis1 = function (value) {
+  KANE_QuNeo.xyPadLEDs(2, 1, value);
+}
+KANE_QuNeo.pad3axis0 = function (value) {
+  KANE_QuNeo.xyPadLEDs(3, 0, value);
+}
+KANE_QuNeo.pad3axis1 = function (value) {
+  KANE_QuNeo.xyPadLEDs(3, 1, value);
 }
 
 //Visual Nudge
