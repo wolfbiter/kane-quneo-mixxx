@@ -1545,7 +1545,7 @@ KANE_QuNeo.timeKeeper = function (deck, value) {
   print("hotcue status: "+KANE_QuNeo.hotcuePressed[channel]);
   print("our play status: "+KANE_QuNeo.trackPlaying[channel]);
   print("mixxx play status: "+engine.getValue(channelName, "play"));
-  */
+  */  
 
   // if we're actually playing, then do these things
   if (trackPlaying) {
@@ -1572,17 +1572,18 @@ KANE_QuNeo.timeKeeper = function (deck, value) {
           "KANE_QuNeo.startAutoLoop("+deck+")", true);
       }
     }
+  }
 
-    // now determine whether or not the track has changed
-    var channelName = KANE_QuNeo.getChannelName(deck);
-    var trackSamples = engine.getValue(channelName, "track_samples");
-    // if the old and new values are not the same, the track must have changed
-    if (trackSamples != KANE_QuNeo.trackSamples[channel]) {
-      KANE_QuNeo.trackSamples[channel] = trackSamples; // so update to new value
-      KANE_QuNeo.assertBeatLEDs(deck);
-      KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertHotcueLEDs("+deck+")"
-        ,true, 200);
-    }
+  // now determine whether or not the track has changed
+  var channelName = KANE_QuNeo.getChannelName(deck);
+  var trackSamples = engine.getValue(channelName, "track_samples");
+  // if the old and new values are not the same, the track must have changed
+  if (trackSamples != KANE_QuNeo.trackSamples[channel]) {
+    KANE_QuNeo.trackSamples[channel] = trackSamples; // so update to new value
+    KANE_QuNeo.circleLEDs(deck, value);
+    KANE_QuNeo.assertBeatLEDs(deck); // for reloop LED in particular
+    KANE_QuNeo.delayedAssertion("KANE_QuNeo.assertHotcueLEDs("+deck+")"
+      ,true, 200);
   }
 
   // if we're at the end of the song, set track to not playing
@@ -1849,7 +1850,11 @@ KANE_QuNeo.getLEDGroup = function (deck) {
 
 
      if (!(controls instanceof Array)) // if controls are not in an array,
-	 controls = [controls] // turn them into one
+   controls = [controls] // turn them into one
+
+      //if (controls[0] == 0x30 && midiChannel == 0x90) {
+      //  print("controls: "+controls);
+      //}
 
      // else send each control each value
      for (var i=0; i < controls.length; i++) {
