@@ -51,7 +51,6 @@ function KANE_QuNeo () {}
        (VSD) Vertical Slider Dispatches
        (AD) LED Assertion Dispatches
        (DD) Deck Dispatches
-       (SD) Sampler Dispatches
    
        END INDEX*/
 
@@ -2911,6 +2910,7 @@ KANE_QuNeo.deckMids = function (deck, value) {
 // XY Pads
 
 KANE_QuNeo.xyPadLEDs = function (pad, axis, value) {
+  // cap value at 1
   value = (value > 1) ? 1.0 : value;
 
   // update this axis
@@ -2954,11 +2954,11 @@ KANE_QuNeo.xyPadLEDs = function (pad, axis, value) {
   }
 
   // calculate brightness of each corner
-  var val00 = 0; // bottom left
   var val10 = x-y; // bottom right
   var val01 = y-x; // top left
   var hypot = Math.sqrt(x*x + y*y) / Math.sqrt(2.0);
-  var val11 = hypot * Math.max(1-(y-x),1-(x-y)); // top right
+  var val11 = Math.max(0.0, hypot - Math.max(val10, val01)); // top right
+  var val00 = 0; // bottom left
     
    // emit updates
    midi.sendShortMsg(0x92,controls["00"],127.0 * val00);
@@ -3309,7 +3309,6 @@ KANE_QuNeo.time2Keeper = function (value) {
 }
 
 //XY Pads
-// connect levels
 KANE_QuNeo.pad0axis0 = function (value) {
   KANE_QuNeo.xyPadLEDs(0, 0, value);
 }
@@ -3425,205 +3424,4 @@ KANE_QuNeo.quantize1CuesOff = function (channel, control, value, status, group) 
 
 KANE_QuNeo.quantize2CuesOff = function (channel, control, value, status, group) {
   KANE_QuNeo.quantizeCuesOff(2, [0x29]);
-}
-
-
-/***** (SD) Sampler Dispatches *****/
-
-//JumpSyncing
-KANE_QuNeo.toggle3JumpSync = function (channel, control, value, status, group) {
-    KANE_QuNeo.toggleJumpSync(3); // toggle jumpsync for deck 3
-  }
-
-  KANE_QuNeo.toggle4JumpSync = function (channel, control, value, status, group) {
-    KANE_QuNeo.toggleJumpSync(4);
-  }
-
-  KANE_QuNeo.toggle5JumpSync = function (channel, control, value, status, group) {
-    KANE_QuNeo.toggleJumpSync(5); // toggle jumpsync for deck 5
-  }
-
-  KANE_QuNeo.toggle6JumpSync = function (channel, control, value, status, group) {
-    KANE_QuNeo.toggleJumpSync(6);
-  }
-
-//Jumping
-KANE_QuNeo.jump3Forward = function (channel, control, value, status, group) {
-    KANE_QuNeo.setJump(3, 1); // channel 3 to jump status 1
-  }
-
-  KANE_QuNeo.jump4Forward = function (channel, control, value, status, group) {
-    KANE_QuNeo.setJump(4, 1);
-  }
-
-  KANE_QuNeo.jump3Backward = function (channel, control, value, status, group) {
-    KANE_QuNeo.setJump(3, -1);
-  }
-
-  KANE_QuNeo.jump4Backward = function (channel, control, value, status, group) {
-    KANE_QuNeo.setJump(4, -1);
-  }
-
-  KANE_QuNeo.jump5Forward = function (channel, control, value, status, group) {
-    KANE_QuNeo.setJump(5, 1); // channel 5 to jump status 1
-  }
-
-  KANE_QuNeo.jump6Forward = function (channel, control, value, status, group) {
-    KANE_QuNeo.setJump(6, 1);
-  }
-
-  KANE_QuNeo.jump5Backward = function (channel, control, value, status, group) {
-    KANE_QuNeo.setJump(5, -1);
-  }
-
-  KANE_QuNeo.jump6Backward = function (channel, control, value, status, group) {
-    KANE_QuNeo.setJump(6, -1);
-  }
-
-//Looping
-KANE_QuNeo.toggle3Looping = function (channel, control, value, status, group) {
-  KANE_QuNeo.toggleLooping(3)
-}
-
-KANE_QuNeo.toggle4Looping = function (channel, control, value, status, group) {
-  KANE_QuNeo.toggleLooping(4)
-}
-
-KANE_QuNeo.toggle5Looping = function (channel, control, value, status, group) {
-  KANE_QuNeo.toggleLooping(5)
-}
-
-KANE_QuNeo.toggle6Looping = function (channel, control, value, status, group) {
-  KANE_QuNeo.toggleLooping(6)
-}
-
-//JumpLooping
-KANE_QuNeo.deck3JumpLoop1 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(3,1) // deck 3, 1 beat jump and/or loop
-  }
-
-  KANE_QuNeo.deck3JumpLoop2 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(3,2)
-  }
-
-  KANE_QuNeo.deck3JumpLoop4 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(3,4)
-  }
-
-  KANE_QuNeo.deck3JumpLoop8 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(3,8)
-  }
-
-  KANE_QuNeo.deck4JumpLoop1 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(4,1)
-  }
-
-  KANE_QuNeo.deck4JumpLoop2 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(4,2)
-  }
-
-  KANE_QuNeo.deck4JumpLoop4 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(4,4)
-  }
-
-  KANE_QuNeo.deck4JumpLoop8 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(4,8)
-  }
-
-  KANE_QuNeo.deck5JumpLoop1 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(5,1)
-  }
-
-  KANE_QuNeo.deck5JumpLoop2 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(5,2)
-  }
-
-  KANE_QuNeo.deck5JumpLoop4 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(5,4)
-  }
-
-  KANE_QuNeo.deck5JumpLoop8 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(5,8)
-  }
-
-  KANE_QuNeo.deck6JumpLoop1 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(6,1)
-  }
-
-  KANE_QuNeo.deck6JumpLoop2 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(6,2)
-  }
-
-  KANE_QuNeo.deck6JumpLoop4 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(6,4)
-  }
-
-  KANE_QuNeo.deck6JumpLoop8 = function (channel, control, value, status, group) {
-    KANE_QuNeo.jumpLoop(6,8)
-  }
-
-//JumpOff
-
-KANE_QuNeo.deck3JumpOff1 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(3,1)
-}
-
-KANE_QuNeo.deck3JumpOff2 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(3,2)
-}
-
-KANE_QuNeo.deck3JumpOff4 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(3,4)
-}
-
-KANE_QuNeo.deck3JumpOff8 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(3,8)
-}
-
-KANE_QuNeo.deck4JumpOff1 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(4,1)
-}
-
-KANE_QuNeo.deck4JumpOff2 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(4,2)
-}
-
-KANE_QuNeo.deck4JumpOff4 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(4,4)
-}
-
-KANE_QuNeo.deck4JumpOff8 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(4,8)
-}
-
-KANE_QuNeo.deck5JumpOff1 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(5,1)
-}
-
-KANE_QuNeo.deck5JumpOff2 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(5,2)
-}
-
-KANE_QuNeo.deck5JumpOff4 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(5,4)
-}
-
-KANE_QuNeo.deck5JumpOff8 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(5,8)
-}
-
-KANE_QuNeo.deck6JumpOff1 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(6,1)
-}
-
-KANE_QuNeo.deck6JumpOff2 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(6,2)
-}
-
-KANE_QuNeo.deck6JumpOff4 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(6,4)
-}
-
-KANE_QuNeo.deck6JumpOff8 = function (channel, control, value, status, group) {
-  KANE_QuNeo.jumpOff(6,8)
 }
