@@ -1,8 +1,10 @@
 #Kane QuNeo Mixxx Preset
-Version 1.1.x
 
-<a href="http://flattr.com/thing/1122857/" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
+-----
+##Deprecated: no longer maintaining this preset
+-----
+
+Version 1.1.x
 
 ------------------------
 ###Featuring a [Live Demo](https://youtu.be/dpdWzb0PEWo) and an [Intro Tutorial](https://youtu.be/dnWSqPFBHGk)!
